@@ -1499,15 +1499,11 @@
 <tbody>
 <tr>
 <td><code>infrastructure/networking</code></td>
-<td>DNS (BIND9), Reverse Proxy (Caddy), DDNS</td>
+<td>DNS (BIND9), Reverse Proxy (Caddy), DDNS, Tailscale</td>
 </tr>
 <tr>
 <td><code>infrastructure/monitoring</code></td>
 <td>Prometheus + Grafana</td>
-</tr>
-<tr>
-<td><code>infrastructure/tailscale</code></td>
-<td>Tailscale subnet router</td>
 </tr>
 <tr>
 <td><code>infrastructure/external-monitoring</code></td>
@@ -1557,7 +1553,7 @@
 <h2 id="usage"><a class="toclink" href="#usage">Usage</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-all<span class="w">       </span><span class="c1"># Deploy everything</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-media<span class="w">     </span><span class="c1"># Deploy media stack only</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="c1"># Deploy networking stack (DNS, reverse proxy)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="c1"># Deploy networking stack (DNS, reverse proxy, Tailscale)</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>task<span class="w"> </span>ansible:ping<span class="w">             </span><span class="c1"># Test connectivity</span>
 </code></pre></div>
 
