@@ -2102,6 +2102,7 @@
 <li><code>rtcsync</code> — synchronizes the system clock with the hardware clock</li>
 <li><code>hwtimestamp *</code> — enables hardware timestamping on all interfaces for precision</li>
 </ul>
+<p><small><strong>Sources:</strong> <code>ansible/playbooks/infrastructure/ntp/tasks/chrony.yml</code> · <code>ansible/playbooks/infrastructure/ntp/templates/server.conf.j2</code></small></p>
 <h2 id="configuration-reference"><a class="toclink" href="#configuration-reference">Configuration Reference</a></h2>
 <p>All variables are set in <code>ansible/environments/&lt;env&gt;/group_vars/infra_ntp/chrony.yml</code>.</p>
 <hr />
@@ -2132,6 +2133,7 @@
 <p class="admonition-title">Tip</p>
 <p>Each environment uses geographically local NTP servers for lower latency. WIL uses US-based servers (NIST, USNO); LDN uses UK and European servers (NPL, Cloudflare, Netnod).</p>
 </div>
+<p><small><strong>Sources:</strong> <code>ansible/environments/wil/group_vars/infra_ntp/chrony.yml</code> · <code>ansible/playbooks/infrastructure/ntp/templates/servers.conf.j2</code></small></p>
 <hr />
 <h3 id="chrony_allow"><a class="toclink" href="#chrony_allow"><code>chrony_allow</code></a></h3>
 <p>Networks allowed to query this NTP server. Controls which clients can synchronize time from this server.</p>
@@ -2150,6 +2152,7 @@
 </div>
 </div>
 </div>
+<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_ntp/chrony.yml</code> · <code>ansible/playbooks/infrastructure/ntp/templates/allow.conf.j2</code></small></p>
 <h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
 <h3 id="verify-time-synchronization"><a class="toclink" href="#verify-time-synchronization">Verify time synchronization</a></h3>
 <p>SSH to the NTP server and check the tracking status:</p>

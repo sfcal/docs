@@ -2253,6 +2253,7 @@
 <p>This logic lives in the <code>domain.zone.j2</code> template:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>{{ service.name }} IN A {{ reverse_proxy_ip if service.proxied else service.backend_host }}
 </code></pre></div>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/domain.zone.j2</code></small></p>
 <h2 id="zone-configuration"><a class="toclink" href="#zone-configuration">Zone Configuration</a></h2>
 <p>BIND9 generates zone files from two data sources:</p>
 <ol>
@@ -2286,6 +2287,7 @@
 </div>
 </div>
 </div>
+<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/all/vars.yml</code> · <code>ansible/playbooks/infrastructure/networking/templates/domain.zone.j2</code></small></p>
 <h2 id="cross-site-zone-transfers"><a class="toclink" href="#cross-site-zone-transfers">Cross-Site Zone Transfers</a></h2>
 <p>WIL and LDN replicate each other's zones as secondaries via AXFR. When a zone changes on the primary, it notifies the secondary, which pulls the updated zone.</p>
 <pre class="mermaid"><code>graph LR
@@ -2386,6 +2388,7 @@
 <p class="admonition-title">Note</p>
 <p>Cross-site zone transfers work over Tailscale. The CGNAT range (<code>100.64.0.0/10</code>) is included in both <code>dns_trusted_networks</code> and <code>dns_transfer_clients</code> to allow queries and transfers through the VPN tunnel.</p>
 </div>
+<p><small><strong>Sources:</strong> <code>ansible/environments/wil/group_vars/infra_networking/bind9.yml</code> · <code>ansible/environments/ldn/group_vars/infra_networking/bind9.yml</code></small></p>
 <h3 id="cross-site-query-flow"><a class="toclink" href="#cross-site-query-flow">Cross-Site Query Flow</a></h3>
 <p>When an LDN client accesses a WIL service (e.g., <code>plex.5am.video</code>), the query is resolved locally from the replicated secondary zone — no live forwarding to WIL is needed. The resulting IP routes through Tailscale to reach WIL's Caddy.</p>
 <pre class="mermaid"><code>sequenceDiagram
@@ -2414,6 +2417,7 @@
 <li><strong>Traffic routing</strong> — the <a href="../unifi/#static-routes">UDM Pro static route</a> sends <code>10.2.0.0/16</code> traffic to the Tailscale subnet router, which tunnels it to WIL</li>
 <li><strong>Full TLS chain</strong> — Caddy terminates TLS on the WIL side using the wildcard certificate for <code>*.5am.video</code></li>
 </ul>
+<p><small><strong>Sources:</strong> <code>ansible/environments/ldn/group_vars/infra_networking/bind9.yml</code> · <code>ansible/playbooks/infrastructure/networking/templates/named.conf.j2</code></small></p>
 <h2 id="reverse-dns-ptr-records"><a class="toclink" href="#reverse-dns-ptr-records">Reverse DNS (PTR Records)</a></h2>
 <p>Reverse DNS maps IP addresses back to hostnames. Each environment defines a reverse zone for its services subnet and a list of PTR records.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">dns_reverse_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;20.2.10.in-addr.arpa&quot;</span>
@@ -2427,6 +2431,7 @@
 <a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;time.wil.5am.cloud.&quot;</span>
 </code></pre></div>
 <p>The <code>octet</code> is the last octet of the IP address. The <code>hostname</code> must end with a trailing dot (<code>.</code>).</p>
+<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_networking/bind9.yml</code> · <code>ansible/playbooks/infrastructure/networking/templates/reverse.zone.j2</code></small></p>
 <h2 id="configuration-reference"><a class="toclink" href="#configuration-reference">Configuration Reference</a></h2>
 <p>All variables are set in <code>ansible/environments/&lt;env&gt;/group_vars/infra_networking/bind9.yml</code>.</p>
 <hr />
@@ -2438,6 +2443,7 @@
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;1.1.1.1&quot;</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;1.0.0.1&quot;</span>
 </code></pre></div>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/named.conf.j2</code></small></p>
 <hr />
 <h3 id="dns_trusted_networks"><a class="toclink" href="#dns_trusted_networks"><code>dns_trusted_networks</code></a></h3>
 <p>Networks allowed to query the DNS server and use recursion. Queries from outside these networks are refused.</p>
@@ -2449,6 +2455,7 @@
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.3.0.0/16</span><span class="w">         </span><span class="c1"># cross-site network</span>
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.64.0.0/10</span><span class="w">       </span><span class="c1"># Tailscale CGNAT</span>
 </code></pre></div>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/named.conf.j2</code></small></p>
 <hr />
 <h3 id="dns_secondary_zones"><a class="toclink" href="#dns_secondary_zones"><code>dns_secondary_zones</code></a></h3>
 <p>Zones to replicate from remote primaries via AXFR. Each entry specifies the zone name and the IP(s) of the primary server(s).</p>
@@ -2458,6 +2465,7 @@
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">masters</span><span class="p">:</span>
 <a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;10.3.20.53&quot;</span>
 </code></pre></div>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/named.conf.j2</code></small></p>
 <hr />
 <h3 id="dns_transfer_clients"><a class="toclink" href="#dns_transfer_clients"><code>dns_transfer_clients</code></a></h3>
 <p>IPs or CIDRs allowed to pull AXFR zone transfers from this server.</p>
@@ -2466,6 +2474,7 @@
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;10.3.20.53&quot;</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;100.64.0.0/10&quot;</span>
 </code></pre></div>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/named.conf.j2</code></small></p>
 <hr />
 <h3 id="dns_notify_targets"><a class="toclink" href="#dns_notify_targets"><code>dns_notify_targets</code></a></h3>
 <p>IPs to notify when a zone changes. Must be specific IPs, not CIDRs. Triggers the secondary to pull the updated zone.</p>
@@ -2473,6 +2482,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">dns_notify_targets</span><span class="p">:</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;10.3.20.53&quot;</span>
 </code></pre></div>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/named.conf.j2</code></small></p>
 <hr />
 <h3 id="dns_forward_zones"><a class="toclink" href="#dns_forward_zones"><code>dns_forward_zones</code></a></h3>
 <p>Zones to forward to external resolvers instead of resolving locally. Accepts either a string (uses default forwarders) or an object with custom forwarders.</p>
@@ -2488,18 +2498,21 @@
 <a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">    </span><span class="nt">forwarders</span><span class="p">:</span>
 <a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8.8.8.8&quot;</span>
 </code></pre></div>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/named.conf.j2</code></small></p>
 <hr />
 <h3 id="reverse_proxy_ip"><a class="toclink" href="#reverse_proxy_ip"><code>reverse_proxy_ip</code></a></h3>
 <p>IP address used for DNS A records of proxied services. This is the IP of the Caddy reverse proxy — typically the networking VM itself.</p>
 <p><strong>Type:</strong> <code>string</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">reverse_proxy_ip</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10.2.20.53&quot;</span>
 </code></pre></div>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/domain.zone.j2</code></small></p>
 <hr />
 <h3 id="dns_reverse_zone"><a class="toclink" href="#dns_reverse_zone"><code>dns_reverse_zone</code></a></h3>
 <p>Reverse DNS zone name, derived from the services subnet. Follows the <code>in-addr.arpa</code> convention.</p>
 <p><strong>Type:</strong> <code>string</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">dns_reverse_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;20.2.10.in-addr.arpa&quot;</span><span class="w">    </span><span class="c1"># for 10.2.20.x</span>
 </code></pre></div>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/named.conf.j2</code></small></p>
 <hr />
 <h3 id="dns_ptr_records"><a class="toclink" href="#dns_ptr_records"><code>dns_ptr_records</code></a></h3>
 <p>PTR records for reverse DNS lookups. Each entry maps the last IP octet to a fully-qualified hostname.</p>
@@ -2512,6 +2525,7 @@
 <p class="admonition-title">Note</p>
 <p>The <code>hostname</code> must end with a trailing dot (<code>.</code>) to be treated as a FQDN.</p>
 </div>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/reverse.zone.j2</code></small></p>
 <h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
 <h3 id="add-a-ptr-record"><a class="toclink" href="#add-a-ptr-record">Add a PTR record</a></h3>
 <ol>

@@ -2285,6 +2285,7 @@
     WIL_SR --- WIL_VM
     LDN_SR --- LDN_VM
     WIL_VM -.-&gt;|"via subnet router"| LDN_VM</code></pre>
+<p><small><strong>Source:</strong> <code>ansible/roles/tailscale/tasks/main.yml</code></small></p>
 <h2 id="configuration-reference"><a class="toclink" href="#configuration-reference">Configuration Reference</a></h2>
 <p>All variables are set in the host or group vars for machines running Tailscale. Defaults are defined in <code>ansible/roles/tailscale/defaults/main.yml</code>.</p>
 <hr />
@@ -2346,6 +2347,7 @@
 <p><strong>Default:</strong> <code>false</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">tailscale_force_reauth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
+<p><small><strong>Source:</strong> <code>ansible/roles/tailscale/defaults/main.yml</code></small></p>
 <h2 id="cross-site-connectivity"><a class="toclink" href="#cross-site-connectivity">Cross-Site Connectivity</a></h2>
 <p>Tailscale subnet routers enable three critical cross-site functions. For non-Tailscale devices on the local network to use these routes, the <a href="../unifi/#static-routes">UDM Pro must have static routes</a> pointing remote subnets at the Tailscale subnet router VM.</p>
 <h3 id="dns-zone-transfers"><a class="toclink" href="#dns-zone-transfers">DNS Zone Transfers</a></h3>
@@ -2363,11 +2365,13 @@
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.64.0.0/10</span><span class="w">  </span><span class="c1"># Tailscale CGNAT</span>
 </code></pre></div>
 <p>This allows DNS queries and zone transfers originating from Tailscale IPs.</p>
+<p><small><strong>Sources:</strong> <code>ansible/environments/wil/group_vars/infra_networking/bind9.yml</code> · <code>ansible/environments/ldn/group_vars/infra_networking/bind9.yml</code></small></p>
 <h2 id="dns-integration"><a class="toclink" href="#dns-integration">DNS Integration</a></h2>
 <p>Networking VMs run both BIND9 and Tailscale. To prevent Tailscale from overriding the local DNS configuration:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">tailscale_accept_dns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <p>Without this, Tailscale would push its own DNS servers (MagicDNS), which would conflict with the locally running BIND9 instance.</p>
+<p><small><strong>Source:</strong> <code>ansible/roles/tailscale/tasks/main.yml</code></small></p>
 <h2 id="security"><a class="toclink" href="#security">Security</a></h2>
 <table>
 <thead>

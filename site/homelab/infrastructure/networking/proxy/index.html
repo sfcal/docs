@@ -2423,6 +2423,7 @@
 <li><strong>Reverse proxy directives</strong> — each service gets a <code>handle</code> block with optional headers, encoding, and transport configuration</li>
 </ol>
 <p>Only services with <code>proxied: true</code> and <code>enabled: true</code> (default) generate Caddy entries.</p>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/Caddyfile.j2</code></small></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>*.5am.video {
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    tls { dns cloudflare ... }
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
@@ -2468,6 +2469,7 @@
 </tbody>
 </table>
 <p>The Caddy container exposes ports <code>80</code>, <code>443</code>, and <code>2019</code> (admin API), and mounts persistent volumes for certificate storage.</p>
+<p><small><strong>Sources:</strong> <code>ansible/playbooks/infrastructure/networking/templates/Dockerfile.j2</code> · <code>ansible/playbooks/infrastructure/networking/templates/compose.yaml.j2</code></small></p>
 <h2 id="service-definition-reference"><a class="toclink" href="#service-definition-reference">Service Definition Reference</a></h2>
 <p>Services are defined in per-domain YAML files under <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code>. Each file defines a list variable (e.g., <code>wil_services</code>, <code>video_services</code>) that is aggregated by <code>_services.yml</code>.</p>
 <h3 id="required-fields"><a class="toclink" href="#required-fields">Required Fields</a></h3>
@@ -2549,6 +2551,7 @@
 <p><strong>Default:</strong> not set</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">read_buffer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8192</span>
 </code></pre></div>
+<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/_services.yml</code> · <code>ansible/playbooks/infrastructure/networking/templates/Caddyfile.j2</code></small></p>
 <h2 id="service-configuration-examples"><a class="toclink" href="#service-configuration-examples">Service Configuration Examples</a></h2>
 <h3 id="minimal-service"><a class="toclink" href="#minimal-service">Minimal service</a></h3>
 <p>A basic proxied web application:</p>
@@ -2583,6 +2586,7 @@
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
 <a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
+<p><small><strong>Sources:</strong> <code>ansible/environments/wil/group_vars/all/proxy/5am.video.yml</code> · <code>ansible/environments/wil/group_vars/all/proxy/wil.5am.cloud.yml</code></small></p>
 <h2 id="service-aggregation"><a class="toclink" href="#service-aggregation">Service Aggregation</a></h2>
 <p>The <code>_services.yml</code> file in each environment aggregates all per-domain service lists and injects the <code>domain</code> field:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">WIL</label><label for="__tabbed_1_2">LDN</label></div>
@@ -2608,6 +2612,7 @@
 </div>
 </div>
 <p>Both BIND9 zone templates and the Caddyfile template consume the resulting <code>services</code> list.</p>
+<p><small><strong>Sources:</strong> <code>ansible/environments/wil/group_vars/all/proxy/_services.yml</code> · <code>ansible/environments/ldn/group_vars/all/proxy/_services.yml</code></small></p>
 <h2 id="best-practices"><a class="toclink" href="#best-practices">Best Practices</a></h2>
 <table>
 <thead>

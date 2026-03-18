@@ -2998,6 +2998,7 @@
 <li><strong>Storage:</strong> persistent volume at <code>/prometheus</code></li>
 <li><strong>User:</strong> runs as <code>monitoring_uid:monitoring_gid</code></li>
 </ul>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/monitoring/templates/prometheus.yml.j2</code></small></p>
 <h3 id="configuration-reference"><a class="toclink" href="#configuration-reference">Configuration Reference</a></h3>
 <hr />
 <h4 id="prometheus_version"><a class="toclink" href="#prometheus_version"><code>prometheus_version</code></a></h4>
@@ -3034,6 +3035,7 @@
 </div>
 </div>
 </div>
+<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/prometheus.yml</code> · <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/containers.yml</code></small></p>
 <hr />
 <h4 id="node_exporter_version"><a class="toclink" href="#node_exporter_version"><code>node_exporter_version</code></a></h4>
 <p>Docker image tag for the Node Exporter sidecar.</p>
@@ -3089,6 +3091,7 @@
 <p><strong>Type:</strong> <code>string</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">grafana_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://grafana.5am.video&quot;</span>
 </code></pre></div>
+<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/grafana.yml</code> · <code>ansible/playbooks/infrastructure/monitoring/templates/grafana-datasources.yml.j2</code></small></p>
 <hr />
 <h2 id="homepage"><a class="toclink" href="#homepage">Homepage</a></h2>
 <p>Homepage provides a service dashboard with status widgets, service health indicators, and quick links to all homelab services.</p>
@@ -3150,6 +3153,7 @@
 </tr>
 </tbody>
 </table>
+<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/containers.yml</code> · <code>ansible/playbooks/infrastructure/monitoring/templates/services.yaml.j2</code></small></p>
 <hr />
 <h2 id="external-monitoring-uptime-kuma"><a class="toclink" href="#external-monitoring-uptime-kuma">External Monitoring (Uptime Kuma)</a></h2>
 <p>Uptime Kuma runs on an external VPS to provide independent uptime monitoring. It connects to the internal network via Tailscale to monitor services that are not publicly exposed.</p>
@@ -3174,6 +3178,7 @@
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="nt">tailscale_accept_routes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p>This allows Uptime Kuma to reach internal services (e.g., <code>10.2.20.53</code>) through the Tailscale mesh without exposing them publicly. See <a href="../networking/tailscale/">VPN (Tailscale)</a> for details.</p>
+<p><small><strong>Sources:</strong> <code>ansible/environments/external/group_vars/infra_externalmonitoring/vars.yml</code> · <code>ansible/playbooks/infrastructure/external-monitoring/templates/compose.yaml.j2</code></small></p>
 <hr />
 <h2 id="shared-configuration"><a class="toclink" href="#shared-configuration">Shared Configuration</a></h2>
 <p>These variables apply to all monitoring containers:</p>

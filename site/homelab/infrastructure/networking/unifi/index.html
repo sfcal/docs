@@ -2065,6 +2065,7 @@
 </div>
 </div>
 <p>All Ansible-managed infrastructure and application VMs live on <strong>VLAN 20</strong> (Virtual Machines). The networking VM at <code>.53</code>, CA at <code>.9</code>, NTP at <code>.123</code>, and monitoring at <code>.30</code> are all on this VLAN.</p>
+<p><small><strong>Source:</strong> <code>README.md</code></small></p>
 <h2 id="static-routes"><a class="toclink" href="#static-routes">Static Routes</a></h2>
 <p>Static routes on the UDM Pro direct traffic for remote site subnets through the local Tailscale subnet router. Without these routes, traffic destined for other sites would be sent to the default gateway (the ISP) instead of through the Tailscale tunnel.</p>
 <h3 id="why-static-routes-are-needed"><a class="toclink" href="#why-static-routes-are-needed">Why Static Routes Are Needed</a></h3>
@@ -2135,6 +2136,7 @@
 <p class="admonition-title">Note</p>
 <p>The next hop is always the Tailscale subnet router VM (<code>.53</code> on VLAN 20). This VM runs Tailscale in <code>subnet_router</code> mode with IP forwarding and NAT masquerade enabled. See <a href="../tailscale/#deployment-modes">VPN (Tailscale) — Deployment Modes</a>.</p>
 </div>
+<p><small><strong>Source:</strong> <code>ansible/roles/tailscale/tasks/main.yml</code></small></p>
 <h3 id="adding-a-new-site-route"><a class="toclink" href="#adding-a-new-site-route">Adding a New Site Route</a></h3>
 <p>When adding a new site to the homelab:</p>
 <ol>
@@ -2195,6 +2197,7 @@
 <li>UDM Pro receives traffic on port 443, forwards to <code>10.2.20.53:443</code></li>
 <li>Caddy terminates TLS, matches the hostname, and proxies to the backend</li>
 </ol>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/networking/templates/compose.yaml.j2</code></small></p>
 <h2 id="inter-vlan-routing"><a class="toclink" href="#inter-vlan-routing">Inter-VLAN Routing</a></h2>
 <p>The UDM Pro routes traffic between VLANs by default. Key inter-VLAN traffic patterns:</p>
 <table>

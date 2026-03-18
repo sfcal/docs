@@ -2255,6 +2255,7 @@
 <li>Exports the root CA certificate to <code>/opt/step-ca/root_ca.crt</code></li>
 <li>Displays status output</li>
 </ol>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/ca/tasks/step-ca.yml</code></small></p>
 <h2 id="docker-compose"><a class="toclink" href="#docker-compose">Docker Compose</a></h2>
 <p>The container runs <code>smallstep/step-ca</code> with the following configuration:</p>
 <ul>
@@ -2263,6 +2264,7 @@
 <li><strong>Restart policy:</strong> <code>unless-stopped</code></li>
 <li><strong>Initialization:</strong> handled via <code>DOCKER_STEPCA_INIT_*</code> environment variables on first run</li>
 </ul>
+<p><small><strong>Source:</strong> <code>ansible/playbooks/infrastructure/ca/templates/compose.yaml.j2</code></small></p>
 <h2 id="configuration-reference"><a class="toclink" href="#configuration-reference">Configuration Reference</a></h2>
 <p>All variables are set in <code>ansible/environments/&lt;env&gt;/group_vars/infra_ca/vars.yml</code>.</p>
 <hr />
@@ -2364,6 +2366,7 @@
 <p class="admonition-title">Warning</p>
 <p>Stored in SOPS-encrypted <code>secrets.sops.yml</code>, never in plaintext.</p>
 </div>
+<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_ca/vars.yml</code> · <code>ansible/environments/&lt;env&gt;/group_vars/infra_ca/secrets.sops.yml</code></small></p>
 <h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
 <h3 id="verify-ca-health"><a class="toclink" href="#verify-ca-health">Verify CA health</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>task<span class="w"> </span>ca:health<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
