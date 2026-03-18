@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://docs.5am.cloud/homelab/infrastructure/networking/dns/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../unifi/">
       
       
         <link rel="next" href="../proxy/">
@@ -1083,6 +1083,8 @@
       
         
       
+        
+      
     
     
     
@@ -1132,6 +1134,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unifi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gateway (UniFi)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1241,6 +1271,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Cross-Site Zone Transfers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cross-site-query-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-Site Query Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1856,6 +1903,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Cross-Site Zone Transfers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cross-site-query-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-Site Query Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2322,6 +2386,34 @@
 <p class="admonition-title">Note</p>
 <p>Cross-site zone transfers work over Tailscale. The CGNAT range (<code>100.64.0.0/10</code>) is included in both <code>dns_trusted_networks</code> and <code>dns_transfer_clients</code> to allow queries and transfers through the VPN tunnel.</p>
 </div>
+<h3 id="cross-site-query-flow"><a class="toclink" href="#cross-site-query-flow">Cross-Site Query Flow</a></h3>
+<p>When an LDN client accesses a WIL service (e.g., <code>plex.5am.video</code>), the query is resolved locally from the replicated secondary zone — no live forwarding to WIL is needed. The resulting IP routes through Tailscale to reach WIL's Caddy.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client as LDN Client&lt;br/&gt;10.3.0.50
+    participant LDNS as LDN BIND9&lt;br/&gt;10.3.20.53
+    participant TS as Tailscale VPN&lt;br/&gt;100.64.x.x
+    participant Caddy as WIL Caddy&lt;br/&gt;10.2.20.53
+    participant Plex as Plex Server&lt;br/&gt;10.2.0.5
+
+    Client-&gt;&gt;LDNS: Query: plex.5am.video
+    note over LDNS: Secondary zone for 5am.video&lt;br/&gt;(replicated from WIL via AXFR)
+    LDNS--&gt;&gt;Client: A: 10.2.20.53
+
+    Client-&gt;&gt;TS: Connect to 10.2.20.53:443
+    note over TS: UDM Pro static route&lt;br/&gt;10.2.0.0/16 → Tailscale subnet router
+    TS-&gt;&gt;Caddy: Route via WireGuard tunnel
+    note over Caddy: TLS termination&lt;br/&gt;Match @plex host matcher
+    Caddy-&gt;&gt;Plex: Reverse proxy to 10.2.0.5:32400
+    Plex--&gt;&gt;Caddy: Response
+    Caddy--&gt;&gt;TS: Encrypted response
+    TS--&gt;&gt;Client: Response</code></pre>
+<p>Key points:</p>
+<ul>
+<li><strong>No live DNS forwarding</strong> — LDN BIND9 answers from its local secondary copy of the <code>5am.video</code> zone, so the query resolves instantly without crossing the VPN</li>
+<li><strong>Zone data reflects WIL's <code>reverse_proxy_ip</code></strong> — the replicated A record points to <code>10.2.20.53</code> (WIL Caddy), not <code>10.3.20.53</code> (LDN Caddy)</li>
+<li><strong>Traffic routing</strong> — the <a href="../unifi/#static-routes">UDM Pro static route</a> sends <code>10.2.0.0/16</code> traffic to the Tailscale subnet router, which tunnels it to WIL</li>
+<li><strong>Full TLS chain</strong> — Caddy terminates TLS on the WIL side using the wildcard certificate for <code>*.5am.video</code></li>
+</ul>
 <h2 id="reverse-dns-ptr-records"><a class="toclink" href="#reverse-dns-ptr-records">Reverse DNS (PTR Records)</a></h2>
 <p>Reverse DNS maps IP addresses back to hostnames. Each environment defines a reverse zone for its services subnet and a list of PTR records.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">dns_reverse_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;20.2.10.in-addr.arpa&quot;</span>
@@ -2514,7 +2606,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Networking">
+          <a href="../unifi/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Gateway (UniFi)">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2524,7 +2616,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Networking
+                Gateway (UniFi)
               </div>
             </div>
           </a>

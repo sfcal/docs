@@ -1083,6 +1083,8 @@
       
         
       
+        
+      
     
     
     
@@ -1132,6 +1134,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unifi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gateway (UniFi)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -2414,6 +2444,7 @@
 <li>One wildcard cert covers all subdomains per domain (e.g., <code>*.5am.video</code>)</li>
 <li>Certificates auto-renew before expiry</li>
 </ul>
+<p>External traffic reaches Caddy via <a href="../unifi/#port-forwarding">port forwarding on the UDM Pro</a> (ports 80 and 443).</p>
 <p>The custom Docker image is built with <code>xcaddy</code> to include the <code>caddy-dns/cloudflare</code> plugin. Two environment variables authenticate with Cloudflare:</p>
 <table>
 <thead>

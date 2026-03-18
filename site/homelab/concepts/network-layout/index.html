@@ -1161,6 +1161,8 @@
       
         
       
+        
+      
     
     
     
@@ -1210,6 +1212,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/networking/unifi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gateway (UniFi)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1792,10 +1822,13 @@
 </ul>
 <h2 id="key-concepts"><a class="toclink" href="#key-concepts">Key Concepts</a></h2>
 <ul>
+<li><strong>VLANs</strong> — each site uses a UDM Pro gateway with VLANs for network segmentation (infrastructure, VMs, storage, clients, IoT). See <a href="../../infrastructure/networking/unifi/">Gateway (UniFi)</a>.</li>
 <li><strong>Split-Horizon DNS</strong> — internal and external clients get different answers for the same hostname. See <a href="../../infrastructure/networking/dns/#split-horizon-dns">DNS Services</a>.</li>
 <li><strong>Unified Service Definitions</strong> — a single YAML entry per service drives both DNS records and reverse proxy configuration. See <a href="../../infrastructure/networking/proxy/#service-definition-reference">Service Definition Reference</a>.</li>
 <li><strong>Zone Transfers</strong> — WIL and LDN replicate each other's DNS zones for cross-site resolution. See <a href="../../infrastructure/networking/dns/#cross-site-zone-transfers">Cross-Site Zone Transfers</a>.</li>
 <li><strong>Wildcard TLS</strong> — Caddy obtains one wildcard certificate per domain via Cloudflare DNS-01 challenge. See <a href="../../infrastructure/networking/proxy/#tls-certificate-management">TLS Certificate Management</a>.</li>
+<li><strong>Static Routes</strong> — UDM Pro routes cross-site traffic to the Tailscale subnet router VM. See <a href="../../infrastructure/networking/unifi/#static-routes">Static Routes</a>.</li>
+<li><strong>Port Forwarding</strong> — UDM Pro forwards ports 80/443 to Caddy for external access. See <a href="../../infrastructure/networking/unifi/#port-forwarding">Port Forwarding</a>.</li>
 </ul>
 
 

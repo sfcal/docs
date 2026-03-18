@@ -1083,6 +1083,8 @@
       
         
       
+        
+      
     
     
     
@@ -1132,6 +1134,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unifi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gateway (UniFi)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -2317,7 +2347,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">tailscale_force_reauth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <h2 id="cross-site-connectivity"><a class="toclink" href="#cross-site-connectivity">Cross-Site Connectivity</a></h2>
-<p>Tailscale subnet routers enable three critical cross-site functions:</p>
+<p>Tailscale subnet routers enable three critical cross-site functions. For non-Tailscale devices on the local network to use these routes, the <a href="../unifi/#static-routes">UDM Pro must have static routes</a> pointing remote subnets at the Tailscale subnet router VM.</p>
 <h3 id="dns-zone-transfers"><a class="toclink" href="#dns-zone-transfers">DNS Zone Transfers</a></h3>
 <p>WIL and LDN DNS servers replicate zones via AXFR. The BIND9 servers reach each other through Tailscale using their local IPs (e.g., WIL queries LDN at <code>10.3.20.53</code>), which the subnet routers make routable. See <a href="../dns/#cross-site-zone-transfers">DNS — Cross-Site Zone Transfers</a>.</p>
 <h3 id="service-access"><a class="toclink" href="#service-access">Service Access</a></h3>
@@ -2399,6 +2429,7 @@
 <ol>
 <li>Set up Tailscale on the new site's networking VM as a subnet router (see above)</li>
 <li>On existing sites, ensure <code>tailscale_accept_routes: true</code> so they accept the new site's routes</li>
+<li>Add <a href="../unifi/#adding-a-new-site-route">static routes on each site's UDM Pro</a> pointing the new subnet at the local Tailscale VM</li>
 <li>Add the new site's subnet to <code>dns_trusted_networks</code> on existing DNS servers</li>
 <li>Configure zone transfers between the new site and existing sites (see <a href="../dns/#configure-zone-transfer-to-a-new-secondary">DNS — Configure zone transfer to a new secondary</a>)</li>
 <li>Deploy all affected environments</li>
