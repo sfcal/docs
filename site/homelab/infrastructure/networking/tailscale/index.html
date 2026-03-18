@@ -10,31 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://docs.5am.cloud/homelab/plex/">
+        <link rel="canonical" href="https://docs.5am.cloud/homelab/infrastructure/networking/tailscale/">
       
       
-        <link rel="prev" href="../guides/">
+        <link rel="prev" href="../proxy/">
       
       
-        <link rel="next" href="getting-started/">
+        <link rel="next" href="../../docker/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
     
     
       
-        <title>Welcome to My Plex Server - Homelab Infrastructure as Code</title>
+        <title>VPN (Tailscale) - Homelab Infrastructure as Code</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,9 +53,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-my-plex-server" class="md-skip">
+        <a href="#vpn-tailscale" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +96,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Homelab Infrastructure as Code" class="md-header__button md-logo" aria-label="Homelab Infrastructure as Code" data-md-component="logo">
+    <a href="../../.." title="Homelab Infrastructure as Code" class="md-header__button md-logo" aria-label="Homelab Infrastructure as Code" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Welcome to My Plex Server
+              VPN (Tailscale)
             
           </span>
         </div>
@@ -247,7 +247,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Homelab Infrastructure as Code" class="md-nav__button md-logo" aria-label="Homelab Infrastructure as Code" data-md-component="logo">
+    <a href="../../.." title="Homelab Infrastructure as Code" class="md-nav__button md-logo" aria-label="Homelab Infrastructure as Code" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -277,7 +277,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -331,7 +331,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../getting-started/" class="md-nav__link ">
+            <a href="../../../getting-started/" class="md-nav__link ">
               
   
   
@@ -375,7 +375,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/quick-start/" class="md-nav__link">
+      <a href="../../../getting-started/quick-start/" class="md-nav__link">
         
   
   
@@ -403,7 +403,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/prerequisites/" class="md-nav__link">
+      <a href="../../../getting-started/prerequisites/" class="md-nav__link">
         
   
   
@@ -435,8 +435,6 @@
       
   
   
-    
-  
   
   
     
@@ -457,15 +455,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../guides/" class="md-nav__link ">
+            <a href="../../../guides/" class="md-nav__link ">
               
   
   
@@ -489,7 +487,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -506,8 +504,6 @@
                 
   
   
-    
-  
   
   
     
@@ -531,15 +527,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../../../plex/" class="md-nav__link ">
               
   
   
@@ -557,13 +553,13 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -583,7 +579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="getting-started/" class="md-nav__link">
+      <a href="../../../plex/getting-started/" class="md-nav__link">
         
   
   
@@ -611,7 +607,7 @@
   
   
     <li class="md-nav__item">
-      <a href="browsing-and-playing/" class="md-nav__link">
+      <a href="../../../plex/browsing-and-playing/" class="md-nav__link">
         
   
   
@@ -639,7 +635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="devices/" class="md-nav__link">
+      <a href="../../../plex/devices/" class="md-nav__link">
         
   
   
@@ -667,7 +663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requesting-content/" class="md-nav__link">
+      <a href="../../../plex/requesting-content/" class="md-nav__link">
         
   
   
@@ -741,7 +737,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../concepts/" class="md-nav__link ">
+            <a href="../../../concepts/" class="md-nav__link ">
               
   
   
@@ -785,7 +781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../concepts/architecture/" class="md-nav__link">
+      <a href="../../../concepts/architecture/" class="md-nav__link">
         
   
   
@@ -813,7 +809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../concepts/network-layout/" class="md-nav__link">
+      <a href="../../../concepts/network-layout/" class="md-nav__link">
         
   
   
@@ -841,7 +837,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../concepts/secrets/" class="md-nav__link">
+      <a href="../../../concepts/secrets/" class="md-nav__link">
         
   
   
@@ -869,7 +865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../concepts/environments/" class="md-nav__link">
+      <a href="../../../concepts/environments/" class="md-nav__link">
         
   
   
@@ -901,6 +897,8 @@
       
   
   
+    
+  
   
   
     
@@ -929,15 +927,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../infrastructure/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -961,7 +959,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -981,7 +979,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/packer/" class="md-nav__link">
+      <a href="../../packer/" class="md-nav__link">
         
   
   
@@ -1009,7 +1007,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/terraform/" class="md-nav__link">
+      <a href="../../terraform/" class="md-nav__link">
         
   
   
@@ -1037,7 +1035,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/ansible/" class="md-nav__link">
+      <a href="../../ansible/" class="md-nav__link">
         
   
   
@@ -1062,6 +1060,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1083,15 +1083,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../infrastructure/networking/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -1115,7 +1115,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1135,7 +1135,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/networking/dns/" class="md-nav__link">
+      <a href="../dns/" class="md-nav__link">
         
   
   
@@ -1163,7 +1163,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/networking/proxy/" class="md-nav__link">
+      <a href="../proxy/" class="md-nav__link">
         
   
   
@@ -1188,10 +1188,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../infrastructure/networking/tailscale/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPN (Tailscale)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1207,6 +1234,292 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#file-locations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Locations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment Modes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment Modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subnet-router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subnet Router
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_auth_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_auth_key
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_advertise_routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_advertise_routes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_accept_dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_accept_dns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_accept_routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_accept_routes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_hostname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_hostname
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_force_reauth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_force_reauth
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-site-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-Site Connectivity
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-Site Connectivity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-zone-transfers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS Zone Transfers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trusted-network-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trusted Network Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dns-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS Integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-up-a-new-subnet-router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set up a new subnet router
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-a-new-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add a new site
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#force-re-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Force re-authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1227,7 +1540,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/docker/" class="md-nav__link">
+      <a href="../../docker/" class="md-nav__link">
         
   
   
@@ -1291,7 +1604,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/" class="md-nav__link ">
+            <a href="../../../reference/" class="md-nav__link ">
               
   
   
@@ -1335,7 +1648,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/tasks/" class="md-nav__link">
+      <a href="../../../reference/tasks/" class="md-nav__link">
         
   
   
@@ -1363,7 +1676,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/tui/" class="md-nav__link">
+      <a href="../../../reference/tui/" class="md-nav__link">
         
   
   
@@ -1391,7 +1704,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/faq/" class="md-nav__link">
+      <a href="../../../reference/faq/" class="md-nav__link">
         
   
   
@@ -1446,10 +1759,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#where-to-start" class="md-nav__link">
+  <a href="#file-locations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to start
+        File Locations
       
     </span>
   </a>
@@ -1457,22 +1770,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-answers" class="md-nav__link">
+  <a href="#deployment-modes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quick answers
+        Deployment Modes
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Quick answers">
+    <nav class="md-nav" aria-label="Deployment Modes">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#is-this-really-free" class="md-nav__link">
+  <a href="#client" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Is this really free?
+        Client
       
     </span>
   </a>
@@ -1480,10 +1793,38 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#what-can-i-watch" class="md-nav__link">
+  <a href="#subnet-router" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What can I watch?
+        Subnet Router
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_mode
       
     </span>
   </a>
@@ -1491,10 +1832,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#do-i-need-to-download-anything" class="md-nav__link">
+  <a href="#tailscale_auth_key" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Do I need to download anything?
+        tailscale_auth_key
       
     </span>
   </a>
@@ -1502,10 +1843,176 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#who-do-i-ask-if-something-isnt-working" class="md-nav__link">
+  <a href="#tailscale_advertise_routes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Who do I ask if something isn't working?
+        tailscale_advertise_routes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_accept_dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_accept_dns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_accept_routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_accept_routes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_hostname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_hostname
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tailscale_force_reauth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tailscale_force_reauth
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-site-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-Site Connectivity
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-Site Connectivity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-zone-transfers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS Zone Transfers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trusted-network-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trusted Network Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dns-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS Integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-up-a-new-subnet-router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set up a new subnet router
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-a-new-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add a new site
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#force-re-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Force re-authentication
       
     </span>
   </a>
@@ -1542,7 +2049,7 @@
   
   
     <li class="md-path__item">
-      <a href=".." class="md-path__link">
+      <a href="../../.." class="md-path__link">
         
   <span class="md-ellipsis">
     Introduction
@@ -1560,10 +2067,10 @@
     
     
       <li class="md-path__item">
-        <a href="../guides/" class="md-path__link">
+        <a href="../../" class="md-path__link">
           
   <span class="md-ellipsis">
-    Guides
+    Infrastructure
   </span>
 
         </a>
@@ -1578,10 +2085,10 @@
     
     
       <li class="md-path__item">
-        <a href="./" class="md-path__link">
+        <a href="../" class="md-path__link">
           
   <span class="md-ellipsis">
-    Plex
+    Networking
   </span>
 
         </a>
@@ -1603,33 +2110,222 @@
   
 
 
-<h1 id="welcome-to-my-plex-server"><a class="toclink" href="#welcome-to-my-plex-server">Welcome to My Plex Server</a></h1>
-<p><img alt="Plex home screen" src="images/plex-home.png" width="600" /></p>
-<p>You've been invited to stream movies, TV shows, and more -- all for free.
-This short guide will help you get set up and watching in minutes.</p>
+<h1 id="vpn-tailscale"><a class="toclink" href="#vpn-tailscale">VPN (Tailscale)</a></h1>
+<p>Tailscale creates an encrypted WireGuard mesh network between geographically distributed environments. Subnet routers on each site's networking VM advertise local subnets, enabling cross-site communication over the CGNAT range (<code>100.64.0.0/10</code>).</p>
 <div class="admonition tip">
-<p class="admonition-title">Good to know</p>
-<p>Plex is like having your own personal Netflix. Everything on this server has been organized for
-you -- just sign in, pick something, and press play. No subscriptions or fees required.</p>
+<p class="admonition-title">Tip</p>
+<p>For an overview of the full networking stack, see <a href="../">Networking</a>.</p>
 </div>
-<h2 id="where-to-start"><a class="toclink" href="#where-to-start">Where to start</a></h2>
-<p>Pick the guide that matches where you are right now:</p>
+<h2 id="file-locations"><a class="toclink" href="#file-locations">File Locations</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>roles/tailscale/tasks/main.yml</code></td>
+<td>Installation, configuration, and authentication</td>
+</tr>
+<tr>
+<td><code>roles/tailscale/defaults/main.yml</code></td>
+<td>Default variable values</td>
+</tr>
+<tr>
+<td><code>roles/tailscale/handlers/main.yml</code></td>
+<td>Service restart handler</td>
+</tr>
+</tbody>
+</table>
+<h2 id="deployment-modes"><a class="toclink" href="#deployment-modes">Deployment Modes</a></h2>
+<p>Tailscale supports two modes, controlled by <code>tailscale_mode</code>:</p>
+<h3 id="client"><a class="toclink" href="#client">Client</a></h3>
+<p>Default mode. Joins the Tailscale mesh as a regular node. Accepts routes from subnet routers to reach other sites.</p>
+<h3 id="subnet-router"><a class="toclink" href="#subnet-router">Subnet Router</a></h3>
+<p>Advertises local network routes to the mesh. Used on networking VMs to make an entire site reachable from other sites. Enables:</p>
 <ul>
-<li><strong><a href="getting-started/">Getting Started</a></strong> -- Create your free Plex account, accept your invitation, and sign in for the first time. Takes about 5 minutes.</li>
-<li><strong><a href="browsing-and-playing/">Browsing &amp; Playing</a></strong> -- Learn how to find movies and shows, use search, manage your watchlist, and control playback.</li>
-<li><strong><a href="devices/">Setting Up Your Devices</a></strong> -- Step-by-step instructions for watching on your TV, phone, tablet, or computer.</li>
-<li><strong><a href="requesting-content/">Requesting Content</a></strong> -- How to request new movies and TV shows by adding them to your Plex watchlist.</li>
+<li><strong>IP forwarding</strong> — <code>net.ipv4.ip_forward=1</code> and <code>net.ipv6.conf.all.forwarding=1</code> via sysctl</li>
+<li><strong>NAT masquerade</strong> — iptables rule for <code>100.64.0.0/10</code> traffic so Tailscale clients can reach non-Tailscale hosts on the local network</li>
+<li><strong>Systemd override</strong> — ensures <code>tailscaled</code> starts after the network is online</li>
 </ul>
+<pre class="mermaid"><code>graph LR
+    subgraph WIL["WIL (10.2.0.0/16)"]
+        WIL_SR["Subnet Router\n10.2.20.53"]
+        WIL_VM["Local VMs"]
+    end
+
+    subgraph LDN["LDN (10.3.0.0/16)"]
+        LDN_SR["Subnet Router\n10.3.20.53"]
+        LDN_VM["Local VMs"]
+    end
+
+    WIL_SR &lt;--&gt;|"WireGuard Tunnel\n100.64.0.0/10"| LDN_SR
+    WIL_SR --- WIL_VM
+    LDN_SR --- LDN_VM
+    WIL_VM -.-&gt;|"via subnet router"| LDN_VM</code></pre>
+<h2 id="configuration-reference"><a class="toclink" href="#configuration-reference">Configuration Reference</a></h2>
+<p>All variables are set in the host or group vars for machines running Tailscale. Defaults are defined in <code>ansible/roles/tailscale/defaults/main.yml</code>.</p>
 <hr />
-<h2 id="quick-answers"><a class="toclink" href="#quick-answers">Quick answers</a></h2>
-<h3 id="is-this-really-free"><a class="toclink" href="#is-this-really-free">Is this really free?</a></h3>
-<p>Yes! You don't need to pay anything. When you create your Plex account, you may see ads for "Plex Pass" -- that's an optional upgrade you <strong>do not need.</strong> Just skip past it.</p>
-<h3 id="what-can-i-watch"><a class="toclink" href="#what-can-i-watch">What can I watch?</a></h3>
-<p>Everything the server owner has shared with you. This typically includes movies, TV shows, and sometimes music or photos. Browse the library to see what's available.</p>
-<h3 id="do-i-need-to-download-anything"><a class="toclink" href="#do-i-need-to-download-anything">Do I need to download anything?</a></h3>
-<p>Not necessarily. You can watch in any web browser at <a href="https://app.plex.tv">app.plex.tv</a>. For the best experience on a TV or mobile device, you'll want the free Plex app -- see the <a href="devices/">Devices</a> guide.</p>
-<h3 id="who-do-i-ask-if-something-isnt-working"><a class="toclink" href="#who-do-i-ask-if-something-isnt-working">Who do I ask if something isn't working?</a></h3>
-<p>Reach out to the person who invited you. They manage the server and can help troubleshoot.</p>
+<h3 id="tailscale_mode"><a class="toclink" href="#tailscale_mode"><code>tailscale_mode</code></a></h3>
+<p>Deployment mode. <code>"client"</code> joins the mesh as a regular node. <code>"subnet_router"</code> advertises local routes and enables IP forwarding.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Default:</strong> <code>"client"</code></p>
+<p><strong>Possible values:</strong> <code>"client"</code>, <code>"subnet_router"</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">tailscale_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;subnet_router&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="tailscale_auth_key"><a class="toclink" href="#tailscale_auth_key"><code>tailscale_auth_key</code></a></h3>
+<p>Authentication key from the Tailscale admin console. Generate under Settings → Keys → Generate auth key. Enable <strong>Reusable</strong> and <strong>Pre-approved</strong> for automated deployments.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Default:</strong> <code>""</code></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Store auth keys in SOPS-encrypted secrets files, never in plaintext group vars.</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">tailscale_auth_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">tailscale_auth_key_secret</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="tailscale_advertise_routes"><a class="toclink" href="#tailscale_advertise_routes"><code>tailscale_advertise_routes</code></a></h3>
+<p>CIDR ranges to advertise to the Tailscale mesh. Only used when <code>tailscale_mode</code> is <code>"subnet_router"</code>.</p>
+<p><strong>Type:</strong> <code>list[string]</code></p>
+<p><strong>Default:</strong> <code>[]</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">tailscale_advertise_routes</span><span class="p">:</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;10.2.0.0/16&quot;</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After deploying, routes must be approved in the Tailscale admin console before other nodes can use them.</p>
+</div>
+<hr />
+<h3 id="tailscale_accept_dns"><a class="toclink" href="#tailscale_accept_dns"><code>tailscale_accept_dns</code></a></h3>
+<p>Accept DNS configuration from Tailscale. Subnet routers running BIND9 should set this to <code>false</code> to avoid conflicts with the local DNS server.</p>
+<p><strong>Type:</strong> <code>boolean</code></p>
+<p><strong>Default:</strong> <code>true</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">tailscale_accept_dns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<hr />
+<h3 id="tailscale_accept_routes"><a class="toclink" href="#tailscale_accept_routes"><code>tailscale_accept_routes</code></a></h3>
+<p>Accept routes advertised by other Tailscale nodes. Client nodes that need to reach other sites should set this to <code>true</code>.</p>
+<p><strong>Type:</strong> <code>boolean</code></p>
+<p><strong>Default:</strong> <code>false</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">tailscale_accept_routes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<hr />
+<h3 id="tailscale_hostname"><a class="toclink" href="#tailscale_hostname"><code>tailscale_hostname</code></a></h3>
+<p>Hostname as it appears in the Tailscale admin console.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Default:</strong> <code>"{{ inventory_hostname }}"</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">tailscale_hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;wil-networking&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="tailscale_force_reauth"><a class="toclink" href="#tailscale_force_reauth"><code>tailscale_force_reauth</code></a></h3>
+<p>Force re-authentication on the next Ansible run. Use when the auth key has changed or the node needs to rejoin the mesh.</p>
+<p><strong>Type:</strong> <code>boolean</code></p>
+<p><strong>Default:</strong> <code>false</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">tailscale_force_reauth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<h2 id="cross-site-connectivity"><a class="toclink" href="#cross-site-connectivity">Cross-Site Connectivity</a></h2>
+<p>Tailscale subnet routers enable three critical cross-site functions:</p>
+<h3 id="dns-zone-transfers"><a class="toclink" href="#dns-zone-transfers">DNS Zone Transfers</a></h3>
+<p>WIL and LDN DNS servers replicate zones via AXFR. The BIND9 servers reach each other through Tailscale using their local IPs (e.g., WIL queries LDN at <code>10.3.20.53</code>), which the subnet routers make routable. See <a href="../dns/#cross-site-zone-transfers">DNS — Cross-Site Zone Transfers</a>.</p>
+<h3 id="service-access"><a class="toclink" href="#service-access">Service Access</a></h3>
+<p>Services on one site can be accessed from the other. For example, a client in LDN can reach <code>plex.5am.video</code> because:</p>
+<ol>
+<li>LDN BIND9 has <code>5am.video</code> as a secondary zone (replicated from WIL)</li>
+<li>The A record resolves to WIL's <code>reverse_proxy_ip</code> (<code>10.2.20.53</code>)</li>
+<li>Tailscale routes traffic to <code>10.2.20.53</code> through the WireGuard tunnel</li>
+</ol>
+<h3 id="trusted-network-configuration"><a class="toclink" href="#trusted-network-configuration">Trusted Network Configuration</a></h3>
+<p>Both sites include the Tailscale CGNAT range in their BIND9 trusted networks:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">dns_trusted_networks</span><span class="p">:</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.64.0.0/10</span><span class="w">  </span><span class="c1"># Tailscale CGNAT</span>
+</code></pre></div>
+<p>This allows DNS queries and zone transfers originating from Tailscale IPs.</p>
+<h2 id="dns-integration"><a class="toclink" href="#dns-integration">DNS Integration</a></h2>
+<p>Networking VMs run both BIND9 and Tailscale. To prevent Tailscale from overriding the local DNS configuration:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">tailscale_accept_dns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p>Without this, Tailscale would push its own DNS servers (MagicDNS), which would conflict with the locally running BIND9 instance.</p>
+<h2 id="security"><a class="toclink" href="#security">Security</a></h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Encryption</td>
+<td>All traffic uses WireGuard encryption (always on)</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>Auth keys stored as SOPS-encrypted secrets</td>
+</tr>
+<tr>
+<td>NAT traversal</td>
+<td>Coordinated by Tailscale control plane; no public ports needed</td>
+</tr>
+<tr>
+<td>IP forwarding</td>
+<td>Enabled only on subnet routers, not clients</td>
+</tr>
+<tr>
+<td>DNS isolation</td>
+<td>Subnet routers disable Tailscale DNS to avoid BIND9 conflicts</td>
+</tr>
+<tr>
+<td>Access control</td>
+<td>Tailscale ACLs control which nodes can communicate</td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
+<h3 id="set-up-a-new-subnet-router"><a class="toclink" href="#set-up-a-new-subnet-router">Set up a new subnet router</a></h3>
+<ol>
+<li>
+<p>Set the Tailscale variables in the host's group vars:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">tailscale_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;subnet_router&quot;</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">tailscale_auth_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">tailscale_auth_key_secret</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nt">tailscale_advertise_routes</span><span class="p">:</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;10.2.0.0/16&quot;</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nt">tailscale_accept_dns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nt">tailscale_accept_routes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+</li>
+<li>
+<p>Deploy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+</li>
+<li>
+<p>Approve the advertised routes in the <a href="https://login.tailscale.com/admin/machines">Tailscale admin console</a></p>
+</li>
+</ol>
+<h3 id="add-a-new-site"><a class="toclink" href="#add-a-new-site">Add a new site</a></h3>
+<ol>
+<li>Set up Tailscale on the new site's networking VM as a subnet router (see above)</li>
+<li>On existing sites, ensure <code>tailscale_accept_routes: true</code> so they accept the new site's routes</li>
+<li>Add the new site's subnet to <code>dns_trusted_networks</code> on existing DNS servers</li>
+<li>Configure zone transfers between the new site and existing sites (see <a href="../dns/#configure-zone-transfer-to-a-new-secondary">DNS — Configure zone transfer to a new secondary</a>)</li>
+<li>Deploy all affected environments</li>
+</ol>
+<h3 id="force-re-authentication"><a class="toclink" href="#force-re-authentication">Force re-authentication</a></h3>
+<p>If a node's auth key expires or the node needs to rejoin:</p>
+<ol>
+<li>Set <code>tailscale_force_reauth: true</code> in the host's vars</li>
+<li>
+<p>Deploy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+</li>
+<li>
+<p>Reset <code>tailscale_force_reauth: false</code> after successful authentication to avoid re-authing on every future run</p>
+</li>
+</ol>
 
 
 
@@ -1667,7 +2363,7 @@ you -- just sign in, pick something, and press play. No subscriptions or fees re
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../guides/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Guides">
+          <a href="../proxy/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Reverse Proxy (Caddy)">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1677,20 +2373,20 @@ you -- just sign in, pick something, and press play. No subscriptions or fees re
                 Previous
               </span>
               <div class="md-ellipsis">
-                Guides
+                Reverse Proxy (Caddy)
               </div>
             </div>
           </a>
         
         
           
-          <a href="getting-started/" class="md-footer__link md-footer__link--next" aria-label="Next: Getting Started">
+          <a href="../../docker/" class="md-footer__link md-footer__link--next" aria-label="Next: Docker Services">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Getting Started
+                Docker Services
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1749,10 +2445,10 @@ you -- just sign in, pick something, and press play. No subscriptions or fees re
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

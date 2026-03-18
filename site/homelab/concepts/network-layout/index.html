@@ -882,10 +882,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#split-horizon-dns" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Split-Horizon DNS
+        How It Works
       
     </span>
   </a>
@@ -893,10 +893,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reverse-proxy" class="md-nav__link">
+  <a href="#key-concepts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reverse Proxy
+        Key Concepts
       
     </span>
   </a>
@@ -986,6 +986,8 @@
       
         
           
+        
+      
         
       
         
@@ -1129,6 +1131,168 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../infrastructure/networking/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Networking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/networking/dns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS (BIND9)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/networking/proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reverse Proxy (Caddy)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/networking/tailscale/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPN (Tailscale)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1371,10 +1535,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#split-horizon-dns" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Split-Horizon DNS
+        How It Works
       
     </span>
   </a>
@@ -1382,10 +1546,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reverse-proxy" class="md-nav__link">
+  <a href="#key-concepts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reverse Proxy
+        Key Concepts
       
     </span>
   </a>
@@ -1461,45 +1625,88 @@
 
 
 <h1 id="network-layout"><a class="toclink" href="#network-layout">Network Layout</a></h1>
-<!-- TODO: expand with detailed network diagram -->
-
-<p>How DNS, routing, and domains are structured across the homelab.</p>
+<p>The homelab runs a unified networking stack across multiple sites: internal DNS, a reverse proxy with automatic TLS, dynamic DNS for external access, and a VPN mesh connecting everything together.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For detailed configuration and howto guides, see the <a href="../../infrastructure/networking/">Networking infrastructure docs</a>.</p>
+</div>
 <h2 id="domains"><a class="toclink" href="#domains">Domains</a></h2>
 <table>
 <thead>
 <tr>
 <th>Domain</th>
+<th>Environment</th>
 <th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>5am.video</code></td>
+<td>WIL (primary)</td>
 <td>Media services (Plex, *arr stack)</td>
 </tr>
 <tr>
+<td><code>5am.cloud</code></td>
+<td>WIL (primary)</td>
+<td>Top-level cloud services</td>
+</tr>
+<tr>
 <td><code>wil.5am.cloud</code></td>
-<td>Internal infrastructure (monitoring, dashboard)</td>
+<td>WIL (primary)</td>
+<td>WIL internal infrastructure (monitoring, apps)</td>
 </tr>
 <tr>
 <td><code>ext.5am.cloud</code></td>
+<td>WIL (primary)</td>
 <td>External-facing services</td>
 </tr>
 <tr>
 <td><code>sfc.al</code></td>
-<td>Personal projects (website, Birdle)</td>
+<td>WIL (primary)</td>
+<td>Personal projects</td>
+</tr>
+<tr>
+<td><code>ldn.5am.cloud</code></td>
+<td>LDN (primary)</td>
+<td>LDN internal infrastructure</td>
 </tr>
 </tbody>
 </table>
-<h2 id="split-horizon-dns"><a class="toclink" href="#split-horizon-dns">Split-Horizon DNS</a></h2>
-<p>The homelab uses BIND9 for internal DNS resolution:</p>
+<h2 id="how-it-works"><a class="toclink" href="#how-it-works">How It Works</a></h2>
+<pre class="mermaid"><code>graph TD
+    subgraph External
+        ExtClient[External Client]
+        Cloudflare[Cloudflare DNS]
+        DDNS[DDNS Updater]
+    end
+
+    subgraph Internal
+        IntClient[Internal Client]
+        BIND9[BIND9 DNS]
+        Caddy[Caddy Reverse Proxy]
+        Backend[Backend Service]
+    end
+
+    IntClient --&gt;|DNS query| BIND9
+    BIND9 --&gt;|"proxied service"| Caddy
+    BIND9 --&gt;|"direct service"| Backend
+    Caddy --&gt;|reverse proxy| Backend
+
+    ExtClient --&gt;|DNS query| Cloudflare
+    Cloudflare --&gt;|public IP| Caddy
+    DDNS --&gt;|updates IP| Cloudflare</code></pre>
 <ul>
-<li><strong>Internal clients</strong> resolve service domains to local IPs via BIND9</li>
-<li><strong>External clients</strong> resolve via Cloudflare DNS to public IPs</li>
-<li><strong>DDNS</strong> keeps dynamic records up to date</li>
+<li><strong>Internal clients</strong> query <a href="../../infrastructure/networking/dns/">BIND9</a> for service hostnames. Proxied services resolve to <a href="../../infrastructure/networking/proxy/">Caddy</a>, which terminates TLS and forwards to backends. Non-proxied services resolve directly to the backend.</li>
+<li><strong>External clients</strong> resolve via Cloudflare DNS and reach Caddy over the public IP, kept current by DDNS.</li>
+<li><strong>Cross-site</strong> communication runs over <a href="../../infrastructure/networking/tailscale/">Tailscale</a> WireGuard tunnels. DNS zone transfers replicate zones between sites so each site can resolve the other's services.</li>
 </ul>
-<h2 id="reverse-proxy"><a class="toclink" href="#reverse-proxy">Reverse Proxy</a></h2>
-<p>Caddy handles HTTPS termination and request routing for all services, with automatic certificate management.</p>
+<h2 id="key-concepts"><a class="toclink" href="#key-concepts">Key Concepts</a></h2>
+<ul>
+<li><strong>Split-Horizon DNS</strong> — internal and external clients get different answers for the same hostname. See <a href="../../infrastructure/networking/dns/#split-horizon-dns">DNS Services</a>.</li>
+<li><strong>Unified Service Definitions</strong> — a single YAML entry per service drives both DNS records and reverse proxy configuration. See <a href="../../infrastructure/networking/proxy/#service-definition-reference">Service Definition Reference</a>.</li>
+<li><strong>Zone Transfers</strong> — WIL and LDN replicate each other's DNS zones for cross-site resolution. See <a href="../../infrastructure/networking/dns/#cross-site-zone-transfers">Cross-Site Zone Transfers</a>.</li>
+<li><strong>Wildcard TLS</strong> — Caddy obtains one wildcard certificate per domain via Cloudflare DNS-01 challenge. See <a href="../../infrastructure/networking/proxy/#tls-certificate-management">TLS Certificate Management</a>.</li>
+</ul>
 
 
 
