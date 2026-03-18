@@ -918,6 +918,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1225,6 +1231,90 @@
   
   
     <li class="md-nav__item">
+      <a href="ca/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Certificate Authority
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ntp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Time Server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="docker/" class="md-nav__link">
         
   
@@ -1444,10 +1534,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#components" class="md-nav__link">
+  <a href="#pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Components
+        Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#infrastructure-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure Services
       
     </span>
   </a>
@@ -1524,13 +1625,21 @@
 
 <h1 id="infrastructure"><a class="toclink" href="#infrastructure">Infrastructure</a></h1>
 <p>Reference documentation for each layer of the infrastructure pipeline.</p>
-<h2 id="components"><a class="toclink" href="#components">Components</a></h2>
+<h2 id="pipeline"><a class="toclink" href="#pipeline">Pipeline</a></h2>
 <ul>
-<li><a href="packer/"><strong>Packer</strong></a> - VM template creation for Proxmox</li>
-<li><a href="terraform/"><strong>Terraform</strong></a> - VM provisioning and lifecycle management</li>
-<li><a href="ansible/"><strong>Ansible</strong></a> - Configuration management and service deployment</li>
-<li><a href="docker/"><strong>Docker Services</strong></a> - Container definitions and compose templates</li>
+<li><a href="packer/"><strong>Packer</strong></a> — VM template creation for Proxmox</li>
+<li><a href="terraform/"><strong>Terraform</strong></a> — VM provisioning and lifecycle management</li>
+<li><a href="ansible/"><strong>Ansible</strong></a> — Configuration management and service deployment</li>
+<li><a href="docker/"><strong>Docker Services</strong></a> — Container definitions and compose templates</li>
 </ul>
+<h2 id="infrastructure-services"><a class="toclink" href="#infrastructure-services">Infrastructure Services</a></h2>
+<p>Deployed by Ansible in dependency order:</p>
+<ol>
+<li><a href="networking/"><strong>Networking</strong></a> — DNS (BIND9), reverse proxy (Caddy), dynamic DNS, VPN (Tailscale)</li>
+<li><a href="ca/"><strong>Certificate Authority</strong></a> — Private CA (Step-CA) for internal TLS certificates</li>
+<li><a href="ntp/"><strong>Time Server</strong></a> — NTP synchronization (Chrony)</li>
+<li><a href="monitoring/"><strong>Monitoring</strong></a> — Metrics (Prometheus), dashboards (Grafana, Homepage), uptime (Uptime Kuma)</li>
+</ol>
 
 
 

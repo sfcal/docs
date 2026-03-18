@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.5am.cloud/homelab/plex/devices/">
+        <link rel="canonical" href="https://docs.5am.cloud/homelab/infrastructure/ca/">
       
       
-        <link rel="prev" href="../browsing-and-playing/">
+        <link rel="prev" href="../networking/tailscale/">
       
       
-        <link rel="next" href="../requesting-content/">
+        <link rel="next" href="../ntp/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Devices - Homelab Infrastructure as Code</title>
+        <title>Certificate Authority - Homelab Infrastructure as Code</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#setting-up-your-devices" class="md-skip">
+        <a href="#certificate-authority-step-ca" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Devices
+              Certificate Authority
             
           </span>
         </div>
@@ -435,8 +435,6 @@
       
   
   
-    
-  
   
   
     
@@ -457,11 +455,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -489,7 +487,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -506,8 +504,6 @@
                 
   
   
-    
-  
   
   
     
@@ -531,15 +527,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../plex/" class="md-nav__link ">
               
   
   
@@ -563,7 +559,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -583,7 +579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/" class="md-nav__link">
+      <a href="../../plex/getting-started/" class="md-nav__link">
         
   
   
@@ -611,7 +607,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../browsing-and-playing/" class="md-nav__link">
+      <a href="../../plex/browsing-and-playing/" class="md-nav__link">
         
   
   
@@ -636,37 +632,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Devices
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../plex/devices/" class="md-nav__link">
         
   
   
@@ -682,114 +651,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#computer-any-web-browser" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Computer (any web browser)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iphone-or-ipad" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        iPhone or iPad
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#android-phone-or-tablet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Android phone or tablet
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#roku" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Roku
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#amazon-fire-tv-fire-stick" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Amazon Fire TV / Fire Stick
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#apple-tv" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Apple TV
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#smart-tv-samsung-lg-vizio-etc" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Smart TV (Samsung, LG, Vizio, etc.)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#linking-any-device-the-universal-method" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Linking any device -- the universal method
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -802,7 +663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../requesting-content/" class="md-nav__link">
+      <a href="../../plex/requesting-content/" class="md-nav__link">
         
   
   
@@ -1036,6 +897,8 @@
       
   
   
+    
+  
   
   
     
@@ -1070,15 +933,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../infrastructure/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -1102,7 +965,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1122,7 +985,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/packer/" class="md-nav__link">
+      <a href="../packer/" class="md-nav__link">
         
   
   
@@ -1150,7 +1013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/terraform/" class="md-nav__link">
+      <a href="../terraform/" class="md-nav__link">
         
   
   
@@ -1178,7 +1041,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/ansible/" class="md-nav__link">
+      <a href="../ansible/" class="md-nav__link">
         
   
   
@@ -1232,7 +1095,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../infrastructure/networking/" class="md-nav__link ">
+            <a href="../networking/" class="md-nav__link ">
               
   
   
@@ -1276,7 +1139,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/networking/dns/" class="md-nav__link">
+      <a href="../networking/dns/" class="md-nav__link">
         
   
   
@@ -1304,7 +1167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/networking/proxy/" class="md-nav__link">
+      <a href="../networking/proxy/" class="md-nav__link">
         
   
   
@@ -1332,7 +1195,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/networking/tailscale/" class="md-nav__link">
+      <a href="../networking/tailscale/" class="md-nav__link">
         
   
   
@@ -1365,10 +1228,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../infrastructure/ca/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Certificate Authority
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1384,6 +1274,269 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-locations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Locations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hosts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hosts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker Compose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_port
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_name
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_dns_names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_dns_names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_provisioner_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_provisioner_name
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_init_ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_init_ssh
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_uid-step_ca_gid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_uid / step_ca_gid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_default_cert_duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_default_cert_duration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_max_cert_duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_max_cert_duration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_provisioner_password" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_provisioner_password
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verify-ca-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify CA health
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export-the-root-ca-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export the root CA certificate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-certificate-duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change certificate duration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restart-the-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restart the CA
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1396,7 +1549,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/ntp/" class="md-nav__link">
+      <a href="../ntp/" class="md-nav__link">
         
   
   
@@ -1424,7 +1577,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/monitoring/" class="md-nav__link">
+      <a href="../monitoring/" class="md-nav__link">
         
   
   
@@ -1452,7 +1605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/docker/" class="md-nav__link">
+      <a href="../docker/" class="md-nav__link">
         
   
   
@@ -1671,10 +1824,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#computer-any-web-browser" class="md-nav__link">
+  <a href="#architecture" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Computer (any web browser)
+        Architecture
       
     </span>
   </a>
@@ -1682,10 +1835,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#iphone-or-ipad" class="md-nav__link">
+  <a href="#file-locations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iPhone or iPad
+        File Locations
       
     </span>
   </a>
@@ -1693,10 +1846,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#android-phone-or-tablet" class="md-nav__link">
+  <a href="#hosts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Android phone or tablet
+        Hosts
       
     </span>
   </a>
@@ -1704,10 +1857,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#roku" class="md-nav__link">
+  <a href="#deployment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Roku
+        Deployment
       
     </span>
   </a>
@@ -1715,10 +1868,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#amazon-fire-tv-fire-stick" class="md-nav__link">
+  <a href="#docker-compose" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Amazon Fire TV / Fire Stick
+        Docker Compose
       
     </span>
   </a>
@@ -1726,35 +1879,190 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#apple-tv" class="md-nav__link">
+  <a href="#configuration-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Apple TV
+        Configuration Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_version
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#smart-tv-samsung-lg-vizio-etc" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_port" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Smart TV (Samsung, LG, Vizio, etc.)
+        step_ca_port
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#linking-any-device-the-universal-method" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_name" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Linking any device -- the universal method
+        step_ca_name
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_dns_names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_dns_names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_provisioner_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_provisioner_name
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_init_ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_init_ssh
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_uid-step_ca_gid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_uid / step_ca_gid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_default_cert_duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_default_cert_duration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_max_cert_duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_max_cert_duration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step_ca_provisioner_password" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step_ca_provisioner_password
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verify-ca-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify CA health
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export-the-root-ca-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export the root CA certificate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-certificate-duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change certificate duration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restart-the-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restart the CA
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1801,28 +2109,10 @@
     
     
       <li class="md-path__item">
-        <a href="../../guides/" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    Guides
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
         <a href="../" class="md-path__link">
           
   <span class="md-ellipsis">
-    Plex
+    Infrastructure
   </span>
 
         </a>
@@ -1844,83 +2134,237 @@
   
 
 
-<h1 id="setting-up-your-devices"><a class="toclink" href="#setting-up-your-devices">Setting Up Your Devices</a></h1>
-<p>You can watch on almost anything -- your TV, phone, tablet, or computer. Find your device below and follow the steps.</p>
+<h1 id="certificate-authority-step-ca"><a class="toclink" href="#certificate-authority-step-ca">Certificate Authority (Step-CA)</a></h1>
+<p>Step-CA provides a private certificate authority for issuing internal TLS certificates. It runs as a Docker container on a dedicated VM in each environment, enabling services to communicate over HTTPS without relying on public CAs.</p>
 <div class="admonition note">
-<p class="admonition-title">Before you start</p>
-<p>Make sure you've already created your free Plex account and accepted the server invitation.
-If you haven't, head to <a href="../getting-started/">Getting Started</a> first.</p>
+<p class="admonition-title">Deployment order</p>
+<p>Step-CA deploys after <a href="../networking/">Networking</a> and before NTP, monitoring, and applications.</p>
 </div>
-<h2 id="computer-any-web-browser"><a class="toclink" href="#computer-any-web-browser">Computer (any web browser)</a></h2>
-<p>This is the easiest way to watch -- no app needed.</p>
+<h2 id="architecture"><a class="toclink" href="#architecture">Architecture</a></h2>
+<pre class="mermaid"><code>graph TD
+    StepCA[Step-CA Server]
+    Service1[Service A]
+    Service2[Service B]
+    RootCert[Root CA Certificate]
+
+    StepCA --&gt;|issues cert| Service1
+    StepCA --&gt;|issues cert| Service2
+    StepCA --&gt;|exports| RootCert
+    RootCert --&gt;|trusted by| Service1
+    RootCert --&gt;|trusted by| Service2</code></pre>
+<p>Step-CA initializes on first run with a root CA certificate and an admin provisioner. Services request certificates via the ACME protocol or the <code>step</code> CLI. The root CA certificate is exported and can be distributed to clients for trust.</p>
+<h2 id="file-locations"><a class="toclink" href="#file-locations">File Locations</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>playbooks/infrastructure/ca/deploy.yml</code></td>
+<td>Main playbook</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/ca/tasks/step-ca.yml</code></td>
+<td>Installation and configuration task</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/ca/templates/compose.yaml.j2</code></td>
+<td>Docker Compose service definition</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/ca/handlers/main.yml</code></td>
+<td>Container lifecycle handlers</td>
+</tr>
+<tr>
+<td><code>environments/&lt;env&gt;/group_vars/infra_ca/vars.yml</code></td>
+<td>Per-environment CA variables</td>
+</tr>
+<tr>
+<td><code>environments/&lt;env&gt;/group_vars/infra_ca/secrets.sops.yml</code></td>
+<td>Encrypted provisioner password</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hosts"><a class="toclink" href="#hosts">Hosts</a></h2>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>IP</th>
+<th>FQDN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WIL</td>
+<td><code>10.2.20.9</code></td>
+<td><code>ca.wil.5am.cloud</code></td>
+</tr>
+<tr>
+<td>LDN</td>
+<td><code>10.3.20.9</code></td>
+<td><code>ca.ldn.5am.cloud</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="deployment"><a class="toclink" href="#deployment">Deployment</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+<p>The task file performs these steps in order:</p>
 <ol>
-<li>Open your web browser (Chrome, Firefox, Safari, Edge -- any will work).</li>
-<li>Go to <strong><a href="https://app.plex.tv">app.plex.tv</a></strong></li>
-<li>Sign in with your Plex account. That's it -- browse and play.</li>
+<li>Creates directory structure at <code>/opt/step-ca/</code> and <code>/opt/step-ca/data/</code></li>
+<li>Deploys the provisioner password file (mode <code>0600</code>)</li>
+<li>Deploys <code>compose.yaml</code> from template</li>
+<li>Starts the Step-CA container</li>
+<li>Waits 10 seconds for initialization</li>
+<li>Runs a health check against <code>https://127.0.0.1:9000/health</code></li>
+<li>Configures certificate duration claims in <code>ca.json</code> via <code>jq</code></li>
+<li>Exports the root CA certificate to <code>/opt/step-ca/root_ca.crt</code></li>
+<li>Displays status output</li>
 </ol>
-<h2 id="iphone-or-ipad"><a class="toclink" href="#iphone-or-ipad">iPhone or iPad</a></h2>
-<ol>
-<li>Open the <strong>App Store</strong> on your device.</li>
-<li>Search for <strong>"Plex"</strong> and download the app (it's free -- look for the orange play-button icon).</li>
-<li>Open the app and sign in with your Plex account.</li>
-<li>The shared libraries will appear in the sidebar. Tap one to start browsing.</li>
-</ol>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Plex may ask you to "activate" the app by going to <strong>plex.tv/link</strong> on a computer and entering a code. Just follow the on-screen instructions -- it only takes a moment.</p>
+<h2 id="docker-compose"><a class="toclink" href="#docker-compose">Docker Compose</a></h2>
+<p>The container runs <code>smallstep/step-ca</code> with the following configuration:</p>
+<ul>
+<li><strong>Port:</strong> <code>9000</code> (HTTPS API)</li>
+<li><strong>Volumes:</strong> <code>./data</code> for CA state, <code>./password.txt</code> mounted read-only</li>
+<li><strong>Restart policy:</strong> <code>unless-stopped</code></li>
+<li><strong>Initialization:</strong> handled via <code>DOCKER_STEPCA_INIT_*</code> environment variables on first run</li>
+</ul>
+<h2 id="configuration-reference"><a class="toclink" href="#configuration-reference">Configuration Reference</a></h2>
+<p>All variables are set in <code>ansible/environments/&lt;env&gt;/group_vars/infra_ca/vars.yml</code>.</p>
+<hr />
+<h3 id="step_ca_version"><a class="toclink" href="#step_ca_version"><code>step_ca_version</code></a></h3>
+<p>Docker image tag for the Step-CA container.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">WIL</label><label for="__tabbed_1_2">LDN</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">step_ca_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0.27.5&quot;</span>
+</code></pre></div>
 </div>
-<h2 id="android-phone-or-tablet"><a class="toclink" href="#android-phone-or-tablet">Android phone or tablet</a></h2>
-<ol>
-<li>Open the <strong>Google Play Store</strong>.</li>
-<li>Search for <strong>"Plex"</strong> and install the app.</li>
-<li>Open the app and sign in with your Plex account.</li>
-<li>The shared server's libraries will appear automatically. Start browsing!</li>
-</ol>
-<h2 id="roku"><a class="toclink" href="#roku">Roku</a></h2>
-<ol>
-<li>From the Roku home screen, go to <strong>Streaming Channels</strong> (or <strong>Search</strong>).</li>
-<li>Search for <strong>"Plex"</strong> and select <strong>Add Channel</strong>.</li>
-<li>Open the Plex app. It will show a <strong>4-letter code</strong> on your TV screen.</li>
-<li>On your phone or computer, go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong>, sign in, and type in the code. Your Roku is now connected.</li>
-</ol>
-<h2 id="amazon-fire-tv-fire-stick"><a class="toclink" href="#amazon-fire-tv-fire-stick">Amazon Fire TV / Fire Stick</a></h2>
-<ol>
-<li>From the Fire TV home screen, go to <strong>Find &gt; Search</strong> (or use the Alexa voice remote).</li>
-<li>Search for <strong>"Plex"</strong> and select <strong>Download</strong>.</li>
-<li>Open the Plex app. You'll see a <strong>4-letter code</strong>.</li>
-<li>On your phone or computer, go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong>, sign in, and enter the code.</li>
-</ol>
-<h2 id="apple-tv"><a class="toclink" href="#apple-tv">Apple TV</a></h2>
-<ol>
-<li>Open the <strong>App Store</strong> on your Apple TV.</li>
-<li>Search for <strong>"Plex"</strong> and download the app.</li>
-<li>Open Plex. You'll see a code on your TV screen.</li>
-<li>Go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong> on another device, sign in, and enter the code.</li>
-</ol>
-<h2 id="smart-tv-samsung-lg-vizio-etc"><a class="toclink" href="#smart-tv-samsung-lg-vizio-etc">Smart TV (Samsung, LG, Vizio, etc.)</a></h2>
-<ol>
-<li>Open your TV's built-in <strong>app store</strong> (Samsung: Smart Hub, LG: LG Content Store, Vizio: SmartCast Apps).</li>
-<li>Search for <strong>"Plex"</strong> and install it.</li>
-<li>Open the app. You'll see a <strong>4-letter code</strong>.</li>
-<li>Go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong> on your phone or computer, sign in, and enter the code.</li>
-</ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Some older smart TVs may not have Plex available in their app store. If that's the case, a <strong>Roku</strong> or <strong>Fire Stick</strong> is an affordable way to add Plex to any TV with an HDMI port.</p>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">step_ca_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0.27.5&quot;</span>
+</code></pre></div>
+</div>
+</div>
 </div>
 <hr />
-<h2 id="linking-any-device-the-universal-method"><a class="toclink" href="#linking-any-device-the-universal-method">Linking any device -- the universal method</a></h2>
-<p><img alt="Plex device link code screen" src="images/plex-link-code.png" width="600" /></p>
-<p>Nearly every Plex app on a TV or streaming device uses the same linking process:</p>
-<ol>
-<li>Install and open the Plex app on your device. A <strong>4-letter code</strong> appears on screen.</li>
-<li>On any other device (your phone works great), open a browser and go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong>.</li>
-<li>Sign in to your Plex account and type in the code. Done -- your device is connected.</li>
-</ol>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>You only need to do this once per device. After linking, the app stays signed in.</p>
+<h3 id="step_ca_port"><a class="toclink" href="#step_ca_port"><code>step_ca_port</code></a></h3>
+<p>Port the Step-CA HTTPS API listens on.</p>
+<p><strong>Type:</strong> <code>integer</code></p>
+<p><strong>Default:</strong> <code>9000</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">step_ca_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9000</span>
+</code></pre></div>
+<hr />
+<h3 id="step_ca_name"><a class="toclink" href="#step_ca_name"><code>step_ca_name</code></a></h3>
+<p>Display name for the certificate authority. Used during initialization and appears in issued certificates.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">WIL</label><label for="__tabbed_2_2">LDN</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">step_ca_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;WIL</span><span class="nv"> </span><span class="s">Homelab</span><span class="nv"> </span><span class="s">CA&quot;</span>
+</code></pre></div>
 </div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">step_ca_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;LDN</span><span class="nv"> </span><span class="s">Homelab</span><span class="nv"> </span><span class="s">CA&quot;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<hr />
+<h3 id="step_ca_dns_names"><a class="toclink" href="#step_ca_dns_names"><code>step_ca_dns_names</code></a></h3>
+<p>Comma-separated list of DNS names and IPs the CA server responds to. Used to generate the CA's own TLS certificate.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">WIL</label><label for="__tabbed_3_2">LDN</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">step_ca_dns_names</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ca.wil.5am.cloud,10.2.20.9,127.0.0.1&quot;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">step_ca_dns_names</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ca.ldn.5am.cloud,10.3.0.9,127.0.0.1&quot;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<hr />
+<h3 id="step_ca_provisioner_name"><a class="toclink" href="#step_ca_provisioner_name"><code>step_ca_provisioner_name</code></a></h3>
+<p>Name of the admin provisioner used to issue certificates.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Default:</strong> <code>"admin"</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">step_ca_provisioner_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="step_ca_init_ssh"><a class="toclink" href="#step_ca_init_ssh"><code>step_ca_init_ssh</code></a></h3>
+<p>Whether to initialize SSH certificate support.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Default:</strong> <code>"false"</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">step_ca_init_ssh</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="step_ca_uid-step_ca_gid"><a class="toclink" href="#step_ca_uid-step_ca_gid"><code>step_ca_uid</code> / <code>step_ca_gid</code></a></h3>
+<p>UID and GID for the container's file ownership.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Default:</strong> <code>"1000"</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">step_ca_uid</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1000&quot;</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">step_ca_gid</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1000&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="step_ca_default_cert_duration"><a class="toclink" href="#step_ca_default_cert_duration"><code>step_ca_default_cert_duration</code></a></h3>
+<p>Default certificate validity period. Applied to <code>ca.json</code> claims after initialization.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Default:</strong> <code>"720h"</code> (30 days)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">step_ca_default_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;720h&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="step_ca_max_cert_duration"><a class="toclink" href="#step_ca_max_cert_duration"><code>step_ca_max_cert_duration</code></a></h3>
+<p>Maximum allowed certificate validity period.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Default:</strong> <code>"17520h"</code> (2 years)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">step_ca_max_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;17520h&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="step_ca_provisioner_password"><a class="toclink" href="#step_ca_provisioner_password"><code>step_ca_provisioner_password</code></a></h3>
+<p>Password for the admin provisioner. Used to authenticate certificate requests.</p>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Stored in SOPS-encrypted <code>secrets.sops.yml</code>, never in plaintext.</p>
+</div>
+<h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
+<h3 id="verify-ca-health"><a class="toclink" href="#verify-ca-health">Verify CA health</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>task<span class="w"> </span>ca:health<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+<p>Or manually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>https://ca.wil.5am.cloud:9000/health
+</code></pre></div>
+<h3 id="export-the-root-ca-certificate"><a class="toclink" href="#export-the-root-ca-certificate">Export the root CA certificate</a></h3>
+<p>The root certificate is automatically exported during deployment to <code>/opt/step-ca/root_ca.crt</code>. To retrieve it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>ssh<span class="w"> </span>sfcal@10.2.20.9<span class="w"> </span>cat<span class="w"> </span>/opt/step-ca/root_ca.crt
+</code></pre></div>
+<h3 id="change-certificate-duration"><a class="toclink" href="#change-certificate-duration">Change certificate duration</a></h3>
+<ol>
+<li>
+<p>Edit <code>ansible/environments/&lt;env&gt;/group_vars/infra_ca/vars.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">step_ca_default_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2160h&quot;</span><span class="w">   </span><span class="c1"># 90 days</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nt">step_ca_max_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;17520h&quot;</span><span class="w">      </span><span class="c1"># 2 years</span>
+</code></pre></div>
+</li>
+<li>
+<p>Deploy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+</li>
+</ol>
+<p>The task applies duration changes to <code>ca.json</code> via <code>jq</code> on each run.</p>
+<h3 id="restart-the-ca"><a class="toclink" href="#restart-the-ca">Restart the CA</a></h3>
+<p>The playbook handlers support lifecycle management:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Full redeploy (will restart automatically if config changes)</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
 
 
 
@@ -1958,7 +2402,7 @@ If you haven't, head to <a href="../getting-started/">Getting Started</a> first.
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../browsing-and-playing/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Browsing &amp; Playing">
+          <a href="../networking/tailscale/" class="md-footer__link md-footer__link--prev" aria-label="Previous: VPN (Tailscale)">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1968,20 +2412,20 @@ If you haven't, head to <a href="../getting-started/">Getting Started</a> first.
                 Previous
               </span>
               <div class="md-ellipsis">
-                Browsing & Playing
+                VPN (Tailscale)
               </div>
             </div>
           </a>
         
         
           
-          <a href="../requesting-content/" class="md-footer__link md-footer__link--next" aria-label="Next: Requesting Content">
+          <a href="../ntp/" class="md-footer__link md-footer__link--next" aria-label="Next: Time Server">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Requesting Content
+                Time Server
               </div>
             </div>
             <div class="md-footer__button md-icon">

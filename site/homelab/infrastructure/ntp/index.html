@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.5am.cloud/homelab/plex/devices/">
+        <link rel="canonical" href="https://docs.5am.cloud/homelab/infrastructure/ntp/">
       
       
-        <link rel="prev" href="../browsing-and-playing/">
+        <link rel="prev" href="../ca/">
       
       
-        <link rel="next" href="../requesting-content/">
+        <link rel="next" href="../monitoring/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Devices - Homelab Infrastructure as Code</title>
+        <title>Time Server - Homelab Infrastructure as Code</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#setting-up-your-devices" class="md-skip">
+        <a href="#time-server-chrony" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Devices
+              Time Server
             
           </span>
         </div>
@@ -435,8 +435,6 @@
       
   
   
-    
-  
   
   
     
@@ -457,11 +455,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -489,7 +487,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -506,8 +504,6 @@
                 
   
   
-    
-  
   
   
     
@@ -531,15 +527,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../plex/" class="md-nav__link ">
               
   
   
@@ -563,7 +559,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -583,7 +579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/" class="md-nav__link">
+      <a href="../../plex/getting-started/" class="md-nav__link">
         
   
   
@@ -611,7 +607,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../browsing-and-playing/" class="md-nav__link">
+      <a href="../../plex/browsing-and-playing/" class="md-nav__link">
         
   
   
@@ -636,37 +632,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Devices
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../plex/devices/" class="md-nav__link">
         
   
   
@@ -682,114 +651,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#computer-any-web-browser" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Computer (any web browser)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iphone-or-ipad" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        iPhone or iPad
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#android-phone-or-tablet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Android phone or tablet
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#roku" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Roku
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#amazon-fire-tv-fire-stick" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Amazon Fire TV / Fire Stick
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#apple-tv" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Apple TV
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#smart-tv-samsung-lg-vizio-etc" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Smart TV (Samsung, LG, Vizio, etc.)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#linking-any-device-the-universal-method" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Linking any device -- the universal method
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -802,7 +663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../requesting-content/" class="md-nav__link">
+      <a href="../../plex/requesting-content/" class="md-nav__link">
         
   
   
@@ -1036,6 +897,8 @@
       
   
   
+    
+  
   
   
     
@@ -1070,15 +933,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../infrastructure/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -1102,7 +965,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1122,7 +985,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/packer/" class="md-nav__link">
+      <a href="../packer/" class="md-nav__link">
         
   
   
@@ -1150,7 +1013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/terraform/" class="md-nav__link">
+      <a href="../terraform/" class="md-nav__link">
         
   
   
@@ -1178,7 +1041,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/ansible/" class="md-nav__link">
+      <a href="../ansible/" class="md-nav__link">
         
   
   
@@ -1232,7 +1095,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../infrastructure/networking/" class="md-nav__link ">
+            <a href="../networking/" class="md-nav__link ">
               
   
   
@@ -1276,7 +1139,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/networking/dns/" class="md-nav__link">
+      <a href="../networking/dns/" class="md-nav__link">
         
   
   
@@ -1304,7 +1167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/networking/proxy/" class="md-nav__link">
+      <a href="../networking/proxy/" class="md-nav__link">
         
   
   
@@ -1332,7 +1195,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/networking/tailscale/" class="md-nav__link">
+      <a href="../networking/tailscale/" class="md-nav__link">
         
   
   
@@ -1368,7 +1231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/ca/" class="md-nav__link">
+      <a href="../ca/" class="md-nav__link">
         
   
   
@@ -1393,10 +1256,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../infrastructure/ntp/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Time Server
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1412,6 +1302,187 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-locations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Locations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hosts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hosts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#server-mode-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server Mode Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chrony_ntp_servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chrony_ntp_servers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chrony_allow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chrony_allow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verify-time-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify time synchronization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-connected-clients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check connected clients
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-a-new-upstream-ntp-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add a new upstream NTP server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allow-a-new-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allow a new network
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1424,7 +1495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/monitoring/" class="md-nav__link">
+      <a href="../monitoring/" class="md-nav__link">
         
   
   
@@ -1452,7 +1523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/docker/" class="md-nav__link">
+      <a href="../docker/" class="md-nav__link">
         
   
   
@@ -1671,10 +1742,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#computer-any-web-browser" class="md-nav__link">
+  <a href="#architecture" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Computer (any web browser)
+        Architecture
       
     </span>
   </a>
@@ -1682,10 +1753,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#iphone-or-ipad" class="md-nav__link">
+  <a href="#file-locations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iPhone or iPad
+        File Locations
       
     </span>
   </a>
@@ -1693,10 +1764,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#android-phone-or-tablet" class="md-nav__link">
+  <a href="#hosts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Android phone or tablet
+        Hosts
       
     </span>
   </a>
@@ -1704,57 +1775,130 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#roku" class="md-nav__link">
+  <a href="#deployment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Roku
+        Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#server-mode-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server Mode Configuration
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#amazon-fire-tv-fire-stick" class="md-nav__link">
+  <a href="#configuration-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Amazon Fire TV / Fire Stick
+        Configuration Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chrony_ntp_servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chrony_ntp_servers
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#apple-tv" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#chrony_allow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Apple TV
+        chrony_allow
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#smart-tv-samsung-lg-vizio-etc" class="md-nav__link">
+  <a href="#common-tasks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Smart TV (Samsung, LG, Vizio, etc.)
+        Common Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verify-time-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify time synchronization
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#linking-any-device-the-universal-method" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#check-connected-clients" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Linking any device -- the universal method
+        Check connected clients
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-a-new-upstream-ntp-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add a new upstream NTP server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allow-a-new-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allow a new network
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1801,28 +1945,10 @@
     
     
       <li class="md-path__item">
-        <a href="../../guides/" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    Guides
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
         <a href="../" class="md-path__link">
           
   <span class="md-ellipsis">
-    Plex
+    Infrastructure
   </span>
 
         </a>
@@ -1844,83 +1970,200 @@
   
 
 
-<h1 id="setting-up-your-devices"><a class="toclink" href="#setting-up-your-devices">Setting Up Your Devices</a></h1>
-<p>You can watch on almost anything -- your TV, phone, tablet, or computer. Find your device below and follow the steps.</p>
+<h1 id="time-server-chrony"><a class="toclink" href="#time-server-chrony">Time Server (Chrony)</a></h1>
+<p>Chrony provides NTP time synchronization for all infrastructure nodes. It runs as a native systemd service on a dedicated VM in each environment, synchronizing from upstream NTP servers and serving time to the local network.</p>
 <div class="admonition note">
-<p class="admonition-title">Before you start</p>
-<p>Make sure you've already created your free Plex account and accepted the server invitation.
-If you haven't, head to <a href="../getting-started/">Getting Started</a> first.</p>
+<p class="admonition-title">Deployment order</p>
+<p>NTP deploys after <a href="../networking/">Networking</a> and <a href="../ca/">Step-CA</a>, and before monitoring and applications.</p>
 </div>
-<h2 id="computer-any-web-browser"><a class="toclink" href="#computer-any-web-browser">Computer (any web browser)</a></h2>
-<p>This is the easiest way to watch -- no app needed.</p>
+<h2 id="architecture"><a class="toclink" href="#architecture">Architecture</a></h2>
+<pre class="mermaid"><code>graph TD
+    Upstream["Upstream NTP Servers\n(NIST, Cloudflare, etc.)"]
+    Chrony["Chrony Server\n(.123)"]
+    VM1[Infrastructure VMs]
+    VM2[Application VMs]
+
+    Upstream --&gt;|sync| Chrony
+    Chrony --&gt;|serve time| VM1
+    Chrony --&gt;|serve time| VM2</code></pre>
+<p>The Chrony server synchronizes with multiple upstream NTP sources and acts as a stratum 10 local clock for the network. All VMs in the environment point to the local Chrony server instead of querying public NTP servers directly.</p>
+<h2 id="file-locations"><a class="toclink" href="#file-locations">File Locations</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>playbooks/infrastructure/ntp/deploy.yml</code></td>
+<td>Main playbook</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/ntp/tasks/chrony.yml</code></td>
+<td>Installation and configuration task</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/ntp/templates/servers.conf.j2</code></td>
+<td>Upstream NTP server list</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/ntp/templates/allow.conf.j2</code></td>
+<td>Client access allow list</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/ntp/templates/server.conf.j2</code></td>
+<td>Server mode settings</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/ntp/handlers/main.yml</code></td>
+<td>Service restart handler</td>
+</tr>
+<tr>
+<td><code>environments/&lt;env&gt;/group_vars/infra_ntp/chrony.yml</code></td>
+<td>Per-environment NTP variables</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hosts"><a class="toclink" href="#hosts">Hosts</a></h2>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>IP</th>
+<th>FQDN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WIL</td>
+<td><code>10.2.20.123</code></td>
+<td><code>time.wil.5am.cloud</code></td>
+</tr>
+<tr>
+<td>LDN</td>
+<td><code>10.3.20.123</code></td>
+<td><code>time.ldn.5am.cloud</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="deployment"><a class="toclink" href="#deployment">Deployment</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-ntp<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+<p>The task file:</p>
 <ol>
-<li>Open your web browser (Chrome, Firefox, Safari, Edge -- any will work).</li>
-<li>Go to <strong><a href="https://app.plex.tv">app.plex.tv</a></strong></li>
-<li>Sign in with your Plex account. That's it -- browse and play.</li>
+<li>Installs <code>chrony</code> via apt</li>
+<li>Deploys upstream server configuration to <code>/etc/chrony/conf.d/servers.conf</code></li>
+<li>Deploys client allow list to <code>/etc/chrony/conf.d/allow.conf</code></li>
+<li>Deploys server mode config to <code>/etc/chrony/conf.d/server.conf</code></li>
+<li>Enables and starts the <code>chrony</code> service</li>
+<li>Verifies synchronization with <code>chronyc tracking</code></li>
+<li>Displays status output</li>
 </ol>
-<h2 id="iphone-or-ipad"><a class="toclink" href="#iphone-or-ipad">iPhone or iPad</a></h2>
-<ol>
-<li>Open the <strong>App Store</strong> on your device.</li>
-<li>Search for <strong>"Plex"</strong> and download the app (it's free -- look for the orange play-button icon).</li>
-<li>Open the app and sign in with your Plex account.</li>
-<li>The shared libraries will appear in the sidebar. Tap one to start browsing.</li>
-</ol>
+<h3 id="server-mode-configuration"><a class="toclink" href="#server-mode-configuration">Server Mode Configuration</a></h3>
+<p>The <code>server.conf.j2</code> template configures Chrony to operate as a local time source:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>local stratum 10
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>rtcsync
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>hwtimestamp *
+</code></pre></div>
+<ul>
+<li><code>local stratum 10</code> — acts as a time source even if upstream servers are unreachable</li>
+<li><code>rtcsync</code> — synchronizes the system clock with the hardware clock</li>
+<li><code>hwtimestamp *</code> — enables hardware timestamping on all interfaces for precision</li>
+</ul>
+<h2 id="configuration-reference"><a class="toclink" href="#configuration-reference">Configuration Reference</a></h2>
+<p>All variables are set in <code>ansible/environments/&lt;env&gt;/group_vars/infra_ntp/chrony.yml</code>.</p>
+<hr />
+<h3 id="chrony_ntp_servers"><a class="toclink" href="#chrony_ntp_servers"><code>chrony_ntp_servers</code></a></h3>
+<p>List of upstream NTP servers to synchronize from. Each server is configured with the <code>iburst</code> flag for faster initial synchronization.</p>
+<p><strong>Type:</strong> <code>list[string]</code></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">WIL</label><label for="__tabbed_1_2">LDN</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">chrony_ntp_servers</span><span class="p">:</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clock.nyc.he.net</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tick.usno.navy.mil</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tock.usno.navy.mil</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time-a-g.nist.gov</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">chrony_ntp_servers</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ntp1.npl.co.uk</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ntp2.npl.co.uk</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time.cloudflare.com</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nts.netnod.se</span>
+</code></pre></div>
+</div>
+</div>
+</div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Plex may ask you to "activate" the app by going to <strong>plex.tv/link</strong> on a computer and entering a code. Just follow the on-screen instructions -- it only takes a moment.</p>
-</div>
-<h2 id="android-phone-or-tablet"><a class="toclink" href="#android-phone-or-tablet">Android phone or tablet</a></h2>
-<ol>
-<li>Open the <strong>Google Play Store</strong>.</li>
-<li>Search for <strong>"Plex"</strong> and install the app.</li>
-<li>Open the app and sign in with your Plex account.</li>
-<li>The shared server's libraries will appear automatically. Start browsing!</li>
-</ol>
-<h2 id="roku"><a class="toclink" href="#roku">Roku</a></h2>
-<ol>
-<li>From the Roku home screen, go to <strong>Streaming Channels</strong> (or <strong>Search</strong>).</li>
-<li>Search for <strong>"Plex"</strong> and select <strong>Add Channel</strong>.</li>
-<li>Open the Plex app. It will show a <strong>4-letter code</strong> on your TV screen.</li>
-<li>On your phone or computer, go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong>, sign in, and type in the code. Your Roku is now connected.</li>
-</ol>
-<h2 id="amazon-fire-tv-fire-stick"><a class="toclink" href="#amazon-fire-tv-fire-stick">Amazon Fire TV / Fire Stick</a></h2>
-<ol>
-<li>From the Fire TV home screen, go to <strong>Find &gt; Search</strong> (or use the Alexa voice remote).</li>
-<li>Search for <strong>"Plex"</strong> and select <strong>Download</strong>.</li>
-<li>Open the Plex app. You'll see a <strong>4-letter code</strong>.</li>
-<li>On your phone or computer, go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong>, sign in, and enter the code.</li>
-</ol>
-<h2 id="apple-tv"><a class="toclink" href="#apple-tv">Apple TV</a></h2>
-<ol>
-<li>Open the <strong>App Store</strong> on your Apple TV.</li>
-<li>Search for <strong>"Plex"</strong> and download the app.</li>
-<li>Open Plex. You'll see a code on your TV screen.</li>
-<li>Go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong> on another device, sign in, and enter the code.</li>
-</ol>
-<h2 id="smart-tv-samsung-lg-vizio-etc"><a class="toclink" href="#smart-tv-samsung-lg-vizio-etc">Smart TV (Samsung, LG, Vizio, etc.)</a></h2>
-<ol>
-<li>Open your TV's built-in <strong>app store</strong> (Samsung: Smart Hub, LG: LG Content Store, Vizio: SmartCast Apps).</li>
-<li>Search for <strong>"Plex"</strong> and install it.</li>
-<li>Open the app. You'll see a <strong>4-letter code</strong>.</li>
-<li>Go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong> on your phone or computer, sign in, and enter the code.</li>
-</ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Some older smart TVs may not have Plex available in their app store. If that's the case, a <strong>Roku</strong> or <strong>Fire Stick</strong> is an affordable way to add Plex to any TV with an HDMI port.</p>
+<p>Each environment uses geographically local NTP servers for lower latency. WIL uses US-based servers (NIST, USNO); LDN uses UK and European servers (NPL, Cloudflare, Netnod).</p>
 </div>
 <hr />
-<h2 id="linking-any-device-the-universal-method"><a class="toclink" href="#linking-any-device-the-universal-method">Linking any device -- the universal method</a></h2>
-<p><img alt="Plex device link code screen" src="images/plex-link-code.png" width="600" /></p>
-<p>Nearly every Plex app on a TV or streaming device uses the same linking process:</p>
-<ol>
-<li>Install and open the Plex app on your device. A <strong>4-letter code</strong> appears on screen.</li>
-<li>On any other device (your phone works great), open a browser and go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong>.</li>
-<li>Sign in to your Plex account and type in the code. Done -- your device is connected.</li>
-</ol>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>You only need to do this once per device. After linking, the app stays signed in.</p>
+<h3 id="chrony_allow"><a class="toclink" href="#chrony_allow"><code>chrony_allow</code></a></h3>
+<p>Networks allowed to query this NTP server. Controls which clients can synchronize time from this server.</p>
+<p><strong>Type:</strong> <code>list[string]</code></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">WIL</label><label for="__tabbed_2_2">LDN</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">chrony_allow</span><span class="p">:</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.0.0/16</span>
+</code></pre></div>
 </div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">chrony_allow</span><span class="p">:</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.3.0.0/24</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
+<h3 id="verify-time-synchronization"><a class="toclink" href="#verify-time-synchronization">Verify time synchronization</a></h3>
+<p>SSH to the NTP server and check the tracking status:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>chronyc<span class="w"> </span>tracking
+</code></pre></div>
+<p>Key fields to check:</p>
+<ul>
+<li><strong>Reference ID</strong> — upstream server currently in use</li>
+<li><strong>Stratum</strong> — should be 2-3 (one hop from the upstream stratum 1 server)</li>
+<li><strong>System time</strong> — offset from NTP time (should be sub-millisecond)</li>
+</ul>
+<h3 id="check-connected-clients"><a class="toclink" href="#check-connected-clients">Check connected clients</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>chronyc<span class="w"> </span>clients
+</code></pre></div>
+<h3 id="add-a-new-upstream-ntp-server"><a class="toclink" href="#add-a-new-upstream-ntp-server">Add a new upstream NTP server</a></h3>
+<ol>
+<li>
+<p>Edit <code>ansible/environments/&lt;env&gt;/group_vars/infra_ntp/chrony.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">chrony_ntp_servers</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="c1"># ... existing servers</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time.google.com</span>
+</code></pre></div>
+</li>
+<li>
+<p>Deploy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>task<span class="w"> </span>ansible:deploy-ntp<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+</li>
+</ol>
+<h3 id="allow-a-new-network"><a class="toclink" href="#allow-a-new-network">Allow a new network</a></h3>
+<ol>
+<li>
+<p>Add the network CIDR to <code>chrony_allow</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">chrony_allow</span><span class="p">:</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.0.0/16</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.4.0.0/16</span><span class="w">    </span><span class="c1"># new network</span>
+</code></pre></div>
+</li>
+<li>
+<p>Deploy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>task<span class="w"> </span>ansible:deploy-ntp<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+</li>
+</ol>
 
 
 
@@ -1958,7 +2201,7 @@ If you haven't, head to <a href="../getting-started/">Getting Started</a> first.
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../browsing-and-playing/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Browsing &amp; Playing">
+          <a href="../ca/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Certificate Authority">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1968,20 +2211,20 @@ If you haven't, head to <a href="../getting-started/">Getting Started</a> first.
                 Previous
               </span>
               <div class="md-ellipsis">
-                Browsing & Playing
+                Certificate Authority
               </div>
             </div>
           </a>
         
         
           
-          <a href="../requesting-content/" class="md-footer__link md-footer__link--next" aria-label="Next: Requesting Content">
+          <a href="../monitoring/" class="md-footer__link md-footer__link--next" aria-label="Next: Monitoring">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Requesting Content
+                Monitoring
               </div>
             </div>
             <div class="md-footer__button md-icon">
