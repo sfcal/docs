@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A complete infrastructure-as-code solution for managing a homelab on Proxmox with Packer, Terraform, Ansible, and Docker.">
+        <meta name="description" content="Infrastructure-as-code homelab on Proxmox with Packer, Terraform, Ansible, and Docker.">
       
       
       
-        <link rel="canonical" href="https://docs.5am.cloud/homelab/getting-started/prerequisites/">
+        <link rel="canonical" href="https://docs.5am.cloud/homelab/guides/certificates/">
       
       
-        <link rel="prev" href="../quick-start/">
+        <link rel="prev" href="../networking-changes/">
       
       
-        <link rel="next" href="../../guides/">
+        <link rel="next" href="../../reference/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Prerequisites - Homelab Infrastructure as Code</title>
+        <title>Certificates - Homelab Infrastructure as Code</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#prerequisites" class="md-skip">
+        <a href="#certificates" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Prerequisites
+              Certificates
             
           </span>
         </div>
@@ -284,7 +284,7 @@
   <span class="md-ellipsis">
     
   
-    Introduction
+    Home
   
 
     
@@ -301,8 +301,6 @@
       
   
   
-    
-  
   
   
     
@@ -314,8 +312,6 @@
       
         
       
-        
-      
     
     
     
@@ -325,15 +321,17 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../getting-started/" class="md-nav__link ">
               
   
   
@@ -357,7 +355,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -377,7 +375,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../quick-start/" class="md-nav__link">
+      <a href="../../getting-started/quick-start/" class="md-nav__link">
         
   
   
@@ -398,577 +396,6 @@
 
               
             
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Prerequisites
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Prerequisites
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#hardware-requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hardware Requirements
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Hardware Requirements">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#proxmox-hosts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Proxmox Host(s)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#resource-allocation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resource Allocation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#software-requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Software Requirements
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Software Requirements">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#on-your-local-machine" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        On Your Local Machine
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#on-proxmox" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        On Proxmox
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#network-requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Network Requirements
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Network Requirements">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ip-address-planning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        IP Address Planning
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#dns-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DNS Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#firewall-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Firewall Rules
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#proxmox-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Proxmox Configuration
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Proxmox Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#api-token-creation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        API Token Creation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#required-permissions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Required Permissions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#optional-but-recommended" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optional But Recommended
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Optional But Recommended">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#backup-solution" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Backup Solution
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#monitoring" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Monitoring
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Security
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#verification-checklist" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verification Checklist
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../guides/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Guides
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Guides
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../plex/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Plex
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Plex
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../plex/getting-started/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Getting Started
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../plex/browsing-and-playing/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Browsing & Playing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../plex/devices/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Devices
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../plex/requesting-content/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Requesting Content
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -1010,7 +437,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1032,14 +461,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1086,14 +515,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/network-layout/" class="md-nav__link">
+      <a href="../../concepts/environments/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Network Layout
+    Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/networking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
   
 
     
@@ -1121,7 +578,119 @@
   <span class="md-ellipsis">
     
   
-    Secrets Management
+    Secrets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploy-service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy a Service
   
 
     
@@ -1142,14 +711,426 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/environments/" class="md-nav__link">
+      <a href="../add-vm/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Multi-Environment
+    Add a New VM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../networking-changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking Changes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Certificates
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Certificates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#public-tls-caddy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public TLS (Caddy)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#private-ca-step-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Private CA (Step-CA)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Private CA (Step-CA)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-ca-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check CA Health
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fetch-the-root-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fetch the Root Certificate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sign-a-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sign a Certificate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-which" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use Which
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../reference/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/packer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config Reference
   
 
     
@@ -1193,12 +1174,6 @@
       
         
       
-        
-      
-        
-      
-        
-      
     
     
     
@@ -1212,7 +1187,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1234,14 +1211,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1251,90 +1228,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../infrastructure/packer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Packer
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../infrastructure/terraform/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Terraform
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../infrastructure/ansible/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Ansible
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -1368,7 +1261,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1390,14 +1285,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1407,34 +1302,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../infrastructure/networking/unifi/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Gateway (UniFi)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -1507,7 +1374,35 @@
   <span class="md-ellipsis">
     
   
-    VPN (Tailscale)
+    Tailscale
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/networking/unifi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UniFi Gateway
   
 
     
@@ -1648,170 +1543,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../reference/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Reference
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Reference
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/tasks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task Commands
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/tui/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    TUI
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/faq/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FAQ
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -1839,22 +1570,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#hardware-requirements" class="md-nav__link">
+  <a href="#public-tls-caddy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hardware Requirements
+        Public TLS (Caddy)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Hardware Requirements">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#private-ca-step-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Private CA (Step-CA)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Private CA (Step-CA)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#proxmox-hosts" class="md-nav__link">
+  <a href="#check-ca-health" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Proxmox Host(s)
+        Check CA Health
       
     </span>
   </a>
@@ -1862,10 +1604,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#resource-allocation" class="md-nav__link">
+  <a href="#fetch-the-root-certificate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Resource Allocation
+        Fetch the Root Certificate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sign-a-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sign a Certificate
       
     </span>
   </a>
@@ -1878,188 +1631,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#software-requirements" class="md-nav__link">
+  <a href="#when-to-use-which" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Software Requirements
+        When to Use Which
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Software Requirements">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#on-your-local-machine" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        On Your Local Machine
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#on-proxmox" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        On Proxmox
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#network-requirements" class="md-nav__link">
+  <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Network Requirements
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Network Requirements">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ip-address-planning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        IP Address Planning
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#dns-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DNS Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#firewall-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Firewall Rules
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#proxmox-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Proxmox Configuration
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Proxmox Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#api-token-creation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        API Token Creation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#required-permissions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Required Permissions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#optional-but-recommended" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optional But Recommended
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Optional But Recommended">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#backup-solution" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Backup Solution
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#monitoring" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Monitoring
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Security
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#verification-checklist" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verification Checklist
+        Troubleshooting
       
     </span>
   </a>
@@ -2094,7 +1680,7 @@
       <a href="../.." class="md-path__link">
         
   <span class="md-ellipsis">
-    Introduction
+    Home
   </span>
 
       </a>
@@ -2112,7 +1698,7 @@
         <a href="../" class="md-path__link">
           
   <span class="md-ellipsis">
-    Getting Started
+    Guides
   </span>
 
         </a>
@@ -2134,262 +1720,68 @@
   
 
 
-<h1 id="prerequisites"><a class="toclink" href="#prerequisites">Prerequisites</a></h1>
-<p>Before deploying the homelab infrastructure, ensure you have the following prerequisites in place.</p>
-<h2 id="hardware-requirements"><a class="toclink" href="#hardware-requirements">Hardware Requirements</a></h2>
-<h3 id="proxmox-hosts"><a class="toclink" href="#proxmox-hosts">Proxmox Host(s)</a></h3>
-<ul>
-<li><strong>Minimum</strong>: 1 Proxmox server</li>
-<li><strong>Recommended</strong>: 3+ Proxmox servers for HA</li>
-<li><strong>CPU</strong>: 8+ cores (16+ recommended)</li>
-<li><strong>RAM</strong>: 32GB minimum (64GB+ recommended)</li>
-<li><strong>Storage</strong>: 500GB+ SSD/NVMe</li>
-<li><strong>Network</strong>: 1Gbps+ network connection</li>
-</ul>
-<h3 id="resource-allocation"><a class="toclink" href="#resource-allocation">Resource Allocation</a></h3>
-<p>For a minimal dev environment, you'll need:</p>
+<h1 id="certificates"><a class="toclink" href="#certificates">Certificates</a></h1>
+<p>The homelab uses two certificate systems: Caddy for public wildcard TLS and Step-CA for private internal certificates.</p>
+<h2 id="public-tls-caddy"><a class="toclink" href="#public-tls-caddy">Public TLS (Caddy)</a></h2>
+<p>Caddy automatically obtains wildcard certificates for all configured domains using Cloudflare DNS-01 challenges. No manual intervention required.</p>
+<p>Any service with <code>proxied: true</code> in its <a href="../networking-changes/#service-definition-options">service definition</a> gets automatic HTTPS.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.60</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># Automatic TLS via Caddy</span>
+</code></pre></div>
+<p>Caddy handles certificate issuance, renewal, and OCSP stapling automatically.</p>
+<h2 id="private-ca-step-ca"><a class="toclink" href="#private-ca-step-ca">Private CA (Step-CA)</a></h2>
+<p><a href="../../infrastructure/ca/">Step-CA</a> provides a private certificate authority for internal services that need TLS but aren't behind Caddy.</p>
+<h3 id="check-ca-health"><a class="toclink" href="#check-ca-health">Check CA Health</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>task<span class="w"> </span>ca:health<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+<h3 id="fetch-the-root-certificate"><a class="toclink" href="#fetch-the-root-certificate">Fetch the Root Certificate</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>task<span class="w"> </span>ca:root<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+<h3 id="sign-a-certificate"><a class="toclink" href="#sign-a-certificate">Sign a Certificate</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>task<span class="w"> </span>ca:sign<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w"> </span><span class="nv">CSR</span><span class="o">=</span>path/to/request.csr
+</code></pre></div>
+<p>Optionally set a custom duration (default: 8760h / 1 year):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>task<span class="w"> </span>ca:sign<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w"> </span><span class="nv">CSR</span><span class="o">=</span>path/to/request.csr<span class="w"> </span><span class="nv">DURATION</span><span class="o">=</span>2160h
+</code></pre></div>
+<p>The <code>ca:sign</code> task uploads the CSR to the CA host, signs it with Step-CA, and downloads the signed certificate.</p>
+<h2 id="when-to-use-which"><a class="toclink" href="#when-to-use-which">When to Use Which</a></h2>
 <table>
 <thead>
 <tr>
-<th>Component</th>
-<th>VMs</th>
-<th>CPU per VM</th>
-<th>RAM per VM</th>
-<th>Storage per VM</th>
+<th>Scenario</th>
+<th>System</th>
+<th>Why</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>K3s Masters</td>
-<td>3</td>
-<td>2 cores</td>
-<td>4GB</td>
-<td>50GB</td>
+<td>Web app behind Caddy</td>
+<td>Caddy (automatic)</td>
+<td>Wildcard cert covers all subdomains</td>
 </tr>
 <tr>
-<td>K3s Workers</td>
-<td>2</td>
-<td>2 cores</td>
-<td>4GB</td>
-<td>50GB</td>
+<td>Service with self-signed TLS</td>
+<td>Step-CA</td>
+<td>Replace self-signed with trusted internal cert</td>
 </tr>
 <tr>
-<td><strong>Total</strong></td>
-<td><strong>5</strong></td>
-<td><strong>10 cores</strong></td>
-<td><strong>20GB</strong></td>
-<td><strong>250GB</strong></td>
+<td>Inter-service mTLS</td>
+<td>Step-CA</td>
+<td>Issue client and server certificates</td>
+</tr>
+<tr>
+<td>Backend that Caddy proxies over HTTPS</td>
+<td>Caddy + <code>tls_skip_verify</code></td>
+<td>Or replace backend cert with Step-CA</td>
 </tr>
 </tbody>
 </table>
-<h2 id="software-requirements"><a class="toclink" href="#software-requirements">Software Requirements</a></h2>
-<h3 id="on-your-local-machine"><a class="toclink" href="#on-your-local-machine">On Your Local Machine</a></h3>
-<ol>
-<li>
-<p><strong>Docker &amp; Docker Compose</strong>
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Check if installed</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docker<span class="w"> </span>--version
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>docker-compose<span class="w"> </span>--version
-</code></pre></div></p>
-</li>
-<li>
-<p><strong>Git</strong>
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Check if installed</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>git<span class="w"> </span>--version
-</code></pre></div></p>
-</li>
-<li>
-<p><strong>SSH Client</strong>
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Generate SSH key if needed</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w"> </span>-C<span class="w"> </span><span class="s2">&quot;your-email@example.com&quot;</span>
-</code></pre></div></p>
-</li>
-</ol>
-<h3 id="on-proxmox"><a class="toclink" href="#on-proxmox">On Proxmox</a></h3>
-<ol>
-<li><strong>Proxmox VE 8.0+</strong></li>
-<li>Latest updates installed</li>
-<li>
-<p>Valid subscription or configured no-subscription repository</p>
-</li>
-<li>
-<p><strong>ISO Images</strong></p>
-</li>
-<li>
-<p>Ubuntu Server 24.04 LTS ISO uploaded to Proxmox storage</p>
-</li>
-<li>
-<p><strong>Storage Configuration</strong></p>
-</li>
-<li>At least one storage pool configured (e.g., local-lvm)</li>
-<li>Sufficient free space for VMs</li>
-</ol>
-<h2 id="network-requirements"><a class="toclink" href="#network-requirements">Network Requirements</a></h2>
-<h3 id="ip-address-planning"><a class="toclink" href="#ip-address-planning">IP Address Planning</a></h3>
-<p>Reserve the following IP ranges for your environment:</p>
-<table>
-<thead>
-<tr>
-<th>Environment</th>
-<th>Network</th>
-<th>Purpose</th>
-<th>IP Range</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Dev</td>
-<td>10.1.20.0/24</td>
-<td>K3s Cluster</td>
-<td>10.1.20.40-60</td>
-</tr>
-<tr>
-<td>Dev</td>
-<td>10.1.20.0/24</td>
-<td>MetalLB Pool</td>
-<td>10.1.20.140-150</td>
-</tr>
-<tr>
-<td>Dev</td>
-<td>10.1.20.0/24</td>
-<td>Virtual IP</td>
-<td>10.1.20.222</td>
-</tr>
-<tr>
-<td>Prod</td>
-<td>10.2.20.0/24</td>
-<td>K3s Cluster</td>
-<td>10.2.20.40-60</td>
-</tr>
-<tr>
-<td>Prod</td>
-<td>10.2.20.0/24</td>
-<td>MetalLB Pool</td>
-<td>10.2.20.140-150</td>
-</tr>
-<tr>
-<td>Prod</td>
-<td>10.2.20.0/24</td>
-<td>Virtual IP</td>
-<td>10.2.20.222</td>
-</tr>
-</tbody>
-</table>
-<h3 id="dns-configuration"><a class="toclink" href="#dns-configuration">DNS Configuration</a></h3>
-<ul>
-<li>Configure local DNS to resolve <code>*.local.samuelcalvert.com</code> to your MetalLB IP range</li>
-<li>Or plan to use <code>/etc/hosts</code> entries for testing</li>
-</ul>
-<h3 id="firewall-rules"><a class="toclink" href="#firewall-rules">Firewall Rules</a></h3>
-<p>Ensure the following ports are open between nodes:</p>
-<table>
-<thead>
-<tr>
-<th>Port</th>
-<th>Protocol</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>6443</td>
-<td>TCP</td>
-<td>Kubernetes API</td>
-</tr>
-<tr>
-<td>10250</td>
-<td>TCP</td>
-<td>Kubelet API</td>
-</tr>
-<tr>
-<td>2379-2380</td>
-<td>TCP</td>
-<td>etcd</td>
-</tr>
-<tr>
-<td>8472</td>
-<td>UDP</td>
-<td>Flannel VXLAN</td>
-</tr>
-<tr>
-<td>51820-51821</td>
-<td>UDP</td>
-<td>WireGuard (if used)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="proxmox-configuration"><a class="toclink" href="#proxmox-configuration">Proxmox Configuration</a></h2>
-<h3 id="api-token-creation"><a class="toclink" href="#api-token-creation">API Token Creation</a></h3>
-<ol>
-<li>Log into Proxmox web UI</li>
-<li>Navigate to Datacenter → Permissions → API Tokens</li>
-<li>Create tokens for:</li>
-<li><strong>Packer</strong>: <code>packer@pve!packer</code> with VM creation permissions</li>
-<li><strong>Terraform</strong>: <code>terraform@pve!terraform</code> with full VM permissions</li>
-</ol>
-<h3 id="required-permissions"><a class="toclink" href="#required-permissions">Required Permissions</a></h3>
-<p>For the Packer token:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>VM.Allocate
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>VM.Clone
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>VM.Config.CDROM
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>VM.Config.CPU
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>VM.Config.Disk
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>VM.Config.HWType
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>VM.Config.Memory
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>VM.Config.Network
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>VM.Config.Options
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>VM.PowerMgmt
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>Datastore.AllocateSpace
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>Datastore.Audit
-</code></pre></div></p>
-<p>For the Terraform token:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>VM.Allocate
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>VM.Clone
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>VM.Config.CDROM
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>VM.Config.CPU
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>VM.Config.Disk
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>VM.Config.HWType
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>VM.Config.Memory
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>VM.Config.Network
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>VM.Config.Options
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>VM.PowerMgmt
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>VM.Audit
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>VM.Console
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>VM.Monitor
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>Datastore.AllocateSpace
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>Datastore.Audit
-</code></pre></div></p>
-<h2 id="optional-but-recommended"><a class="toclink" href="#optional-but-recommended">Optional But Recommended</a></h2>
-<h3 id="backup-solution"><a class="toclink" href="#backup-solution">Backup Solution</a></h3>
-<ul>
-<li>Configure Proxmox Backup Server or similar</li>
-<li>Plan backup strategy for VMs and persistent data</li>
-</ul>
-<h3 id="monitoring"><a class="toclink" href="#monitoring">Monitoring</a></h3>
-<ul>
-<li>Consider setting up external monitoring for Proxmox hosts</li>
-<li>Plan for log aggregation</li>
-</ul>
-<h3 id="security"><a class="toclink" href="#security">Security</a></h3>
-<ul>
-<li>Configure Proxmox firewall</li>
-<li>Set up fail2ban on Proxmox hosts</li>
-<li>Use strong passwords and API tokens</li>
-<li>Consider VPN access for management</li>
-</ul>
-<h2 id="verification-checklist"><a class="toclink" href="#verification-checklist">Verification Checklist</a></h2>
-<p>Before proceeding, verify:</p>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Proxmox is accessible and updated</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Sufficient resources available</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Network ranges are free and documented</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> API tokens are created with correct permissions</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Ubuntu ISO is uploaded to Proxmox storage</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> SSH keys are generated</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Docker is installed locally</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Git repository is cloned</li>
-</ul>
-<p>Once all prerequisites are met, proceed to the <a href="../quick-start/">Quick Start Guide</a>.</p>
+<h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
+<p><strong>Caddy certificate not renewing</strong> — Check Caddy logs: <code>ssh &lt;networking-ip&gt; docker logs caddy</code>. Common cause: Cloudflare API token expired or rate-limited by Let's Encrypt. Verify the token in the encrypted secrets file.</p>
+<p><strong>Browser shows "not secure" for internal service</strong> — The service isn't behind Caddy, or you haven't trusted the Step-CA root certificate. Install the root cert on your device: <code>task ca:root ENV=wil</code>.</p>
+<p><strong>Step-CA health check failing</strong> — SSH to the CA host and check the container: <code>docker ps</code>, <code>docker logs step-ca</code>. Common cause: the CA container restarted and needs its password file.</p>
 
 
 
@@ -2427,7 +1819,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../quick-start/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Quick Start">
+          <a href="../networking-changes/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Networking Changes">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2437,20 +1829,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Quick Start
+                Networking Changes
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../guides/" class="md-footer__link md-footer__link--next" aria-label="Next: Guides">
+          <a href="../../reference/" class="md-footer__link md-footer__link--next" aria-label="Next: Reference">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Guides
+                Reference
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2509,7 +1901,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

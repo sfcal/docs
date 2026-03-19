@@ -6,35 +6,35 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A complete infrastructure-as-code solution for managing a homelab on Proxmox with Packer, Terraform, Ansible, and Docker.">
+        <meta name="description" content="Infrastructure-as-code homelab on Proxmox with Packer, Terraform, Ansible, and Docker.">
       
       
       
-        <link rel="canonical" href="https://docs.5am.cloud/homelab/plex/">
+        <link rel="canonical" href="https://docs.5am.cloud/homelab/guides/networking-changes/">
       
       
-        <link rel="prev" href="../guides/">
+        <link rel="prev" href="../add-vm/">
       
       
-        <link rel="next" href="getting-started/">
+        <link rel="next" href="../certificates/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
     
     
       
-        <title>Welcome to My Plex Server - Homelab Infrastructure as Code</title>
+        <title>Networking Changes - Homelab Infrastructure as Code</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,9 +53,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-my-plex-server" class="md-skip">
+        <a href="#networking-changes" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +96,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Homelab Infrastructure as Code" class="md-header__button md-logo" aria-label="Homelab Infrastructure as Code" data-md-component="logo">
+    <a href="../.." title="Homelab Infrastructure as Code" class="md-header__button md-logo" aria-label="Homelab Infrastructure as Code" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Welcome to My Plex Server
+              Networking Changes
             
           </span>
         </div>
@@ -247,7 +247,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Homelab Infrastructure as Code" class="md-nav__button md-logo" aria-label="Homelab Infrastructure as Code" data-md-component="logo">
+    <a href="../.." title="Homelab Infrastructure as Code" class="md-nav__button md-logo" aria-label="Homelab Infrastructure as Code" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -277,14 +277,14 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Introduction
+    Home
   
 
     
@@ -312,8 +312,6 @@
       
         
       
-        
-      
     
     
     
@@ -327,11 +325,13 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../getting-started/" class="md-nav__link ">
+            <a href="../../getting-started/" class="md-nav__link ">
               
   
   
@@ -375,7 +375,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/quick-start/" class="md-nav__link">
+      <a href="../../getting-started/quick-start/" class="md-nav__link">
         
   
   
@@ -391,306 +391,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../getting-started/prerequisites/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Prerequisites
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../guides/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Guides
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Guides
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Plex
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link md-nav__link--active" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Plex
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="getting-started/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Getting Started
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="browsing-and-playing/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Browsing & Playing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="devices/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Devices
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="requesting-content/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Requesting Content
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -737,11 +437,13 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../concepts/" class="md-nav__link ">
+            <a href="../../concepts/" class="md-nav__link ">
               
   
   
@@ -759,14 +461,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -785,7 +487,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../concepts/architecture/" class="md-nav__link">
+      <a href="../../concepts/architecture/" class="md-nav__link">
         
   
   
@@ -813,14 +515,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../concepts/network-layout/" class="md-nav__link">
+      <a href="../../concepts/environments/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Network Layout
+    Environments
   
 
     
@@ -841,14 +543,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../concepts/secrets/" class="md-nav__link">
+      <a href="../../concepts/networking/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Secrets Management
+    Networking
   
 
     
@@ -869,14 +571,323 @@
   
   
     <li class="md-nav__item">
-      <a href="../concepts/environments/" class="md-nav__link">
+      <a href="../../concepts/secrets/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Multi-Environment
+    Secrets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploy-service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy a Service
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../add-vm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Add a New VM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking Changes
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking Changes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-service-to-dns-and-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add a Service to DNS and Proxy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-definition-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Definition Options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-new-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add a New Domain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-ptr-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add a PTR Record
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-up-cross-site-zone-transfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set Up Cross-Site Zone Transfer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../certificates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Certificates
   
 
     
@@ -920,12 +931,6 @@
       
         
       
-        
-      
-        
-      
-        
-      
     
     
     
@@ -939,18 +944,20 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../infrastructure/" class="md-nav__link ">
+            <a href="../../reference/" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
     
   
-    Infrastructure
+    Reference
   
 
     
@@ -972,7 +979,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Infrastructure
+    Reference
   
 
           </label>
@@ -987,35 +994,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/packer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Packer
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../infrastructure/terraform/" class="md-nav__link">
+      <a href="../../reference/terraform/" class="md-nav__link">
         
   
   
@@ -1043,7 +1022,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/ansible/" class="md-nav__link">
+      <a href="../../reference/ansible/" class="md-nav__link">
         
   
   
@@ -1062,6 +1041,176 @@
     </li>
   
 
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/packer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../infrastructure/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Infrastructure
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
             
               
@@ -1095,11 +1244,13 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../infrastructure/networking/" class="md-nav__link ">
+            <a href="../../infrastructure/networking/" class="md-nav__link ">
               
   
   
@@ -1117,14 +1268,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1143,35 +1294,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/networking/unifi/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Gateway (UniFi)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../infrastructure/networking/dns/" class="md-nav__link">
+      <a href="../../infrastructure/networking/dns/" class="md-nav__link">
         
   
   
@@ -1199,7 +1322,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/networking/proxy/" class="md-nav__link">
+      <a href="../../infrastructure/networking/proxy/" class="md-nav__link">
         
   
   
@@ -1227,14 +1350,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/networking/tailscale/" class="md-nav__link">
+      <a href="../../infrastructure/networking/tailscale/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    VPN (Tailscale)
+    Tailscale
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/networking/unifi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UniFi Gateway
   
 
     
@@ -1263,7 +1414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/ca/" class="md-nav__link">
+      <a href="../../infrastructure/ca/" class="md-nav__link">
         
   
   
@@ -1291,7 +1442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/ntp/" class="md-nav__link">
+      <a href="../../infrastructure/ntp/" class="md-nav__link">
         
   
   
@@ -1319,7 +1470,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/monitoring/" class="md-nav__link">
+      <a href="../../infrastructure/monitoring/" class="md-nav__link">
         
   
   
@@ -1347,7 +1498,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/docker/" class="md-nav__link">
+      <a href="../../infrastructure/docker/" class="md-nav__link">
         
   
   
@@ -1355,170 +1506,6 @@
     
   
     Docker Services
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../reference/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Reference
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Reference
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/tasks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task Commands
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/tui/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    TUI
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/faq/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FAQ
   
 
     
@@ -1566,10 +1553,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#where-to-start" class="md-nav__link">
+  <a href="#add-a-service-to-dns-and-proxy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to start
+        Add a Service to DNS and Proxy
       
     </span>
   </a>
@@ -1577,63 +1564,57 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-answers" class="md-nav__link">
+  <a href="#service-definition-options" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quick answers
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Quick answers">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#is-this-really-free" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Is this really free?
+        Service Definition Options
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#what-can-i-watch" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#add-a-new-domain" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What can I watch?
+        Add a New Domain
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#do-i-need-to-download-anything" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#add-a-ptr-record" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Do I need to download anything?
+        Add a PTR Record
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#who-do-i-ask-if-something-isnt-working" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#set-up-cross-site-zone-transfer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Who do I ask if something isn't working?
+        Set Up Cross-Site Zone Transfer
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1662,10 +1643,10 @@
   
   
     <li class="md-path__item">
-      <a href=".." class="md-path__link">
+      <a href="../.." class="md-path__link">
         
   <span class="md-ellipsis">
-    Introduction
+    Home
   </span>
 
       </a>
@@ -1680,28 +1661,10 @@
     
     
       <li class="md-path__item">
-        <a href="../guides/" class="md-path__link">
+        <a href="../" class="md-path__link">
           
   <span class="md-ellipsis">
     Guides
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
-        <a href="./" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    Plex
   </span>
 
         </a>
@@ -1723,33 +1686,152 @@
   
 
 
-<h1 id="welcome-to-my-plex-server"><a class="toclink" href="#welcome-to-my-plex-server">Welcome to My Plex Server</a></h1>
-<p><img alt="Plex home screen" src="images/plex-home.png" width="600" /></p>
-<p>You've been invited to stream movies, TV shows, and more -- all for free.
-This short guide will help you get set up and watching in minutes.</p>
+<h1 id="networking-changes"><a class="toclink" href="#networking-changes">Networking Changes</a></h1>
+<p>Common DNS, proxy, and routing operations.</p>
+<h2 id="add-a-service-to-dns-and-proxy"><a class="toclink" href="#add-a-service-to-dns-and-proxy">Add a Service to DNS and Proxy</a></h2>
+<p>Add an entry to the appropriate domain file in <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># wil.5am.cloud.yml</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.60</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Then redeploy networking:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+<p>This creates both a DNS A record (<code>myapp.wil.5am.cloud → Caddy</code>) and a Caddy reverse proxy entry.</p>
 <div class="admonition tip">
-<p class="admonition-title">Good to know</p>
-<p>Plex is like having your own personal Netflix. Everything on this server has been organized for
-you -- just sign in, pick something, and press play. No subscriptions or fees required.</p>
+<p class="admonition-title">Tip</p>
+<p>Set <code>proxied: false</code> if the service handles its own TLS or doesn't need a reverse proxy. The DNS record will point directly to <code>backend_host</code>.</p>
 </div>
-<h2 id="where-to-start"><a class="toclink" href="#where-to-start">Where to start</a></h2>
-<p>Pick the guide that matches where you are right now:</p>
-<ul>
-<li><strong><a href="getting-started/">Getting Started</a></strong> -- Create your free Plex account, accept your invitation, and sign in for the first time. Takes about 5 minutes.</li>
-<li><strong><a href="browsing-and-playing/">Browsing &amp; Playing</a></strong> -- Learn how to find movies and shows, use search, manage your watchlist, and control playback.</li>
-<li><strong><a href="devices/">Setting Up Your Devices</a></strong> -- Step-by-step instructions for watching on your TV, phone, tablet, or computer.</li>
-<li><strong><a href="requesting-content/">Requesting Content</a></strong> -- How to request new movies and TV shows by adding them to your Plex watchlist.</li>
-</ul>
-<hr />
-<h2 id="quick-answers"><a class="toclink" href="#quick-answers">Quick answers</a></h2>
-<h3 id="is-this-really-free"><a class="toclink" href="#is-this-really-free">Is this really free?</a></h3>
-<p>Yes! You don't need to pay anything. When you create your Plex account, you may see ads for "Plex Pass" -- that's an optional upgrade you <strong>do not need.</strong> Just skip past it.</p>
-<h3 id="what-can-i-watch"><a class="toclink" href="#what-can-i-watch">What can I watch?</a></h3>
-<p>Everything the server owner has shared with you. This typically includes movies, TV shows, and sometimes music or photos. Browse the library to see what's available.</p>
-<h3 id="do-i-need-to-download-anything"><a class="toclink" href="#do-i-need-to-download-anything">Do I need to download anything?</a></h3>
-<p>Not necessarily. You can watch in any web browser at <a href="https://app.plex.tv">app.plex.tv</a>. For the best experience on a TV or mobile device, you'll want the free Plex app -- see the <a href="devices/">Devices</a> guide.</p>
-<h3 id="who-do-i-ask-if-something-isnt-working"><a class="toclink" href="#who-do-i-ask-if-something-isnt-working">Who do I ask if something isn't working?</a></h3>
-<p>Reach out to the person who invited you. They manage the server and can help troubleshoot.</p>
+<h2 id="service-definition-options"><a class="toclink" href="#service-definition-options">Service Definition Options</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>yes</td>
+<td>—</td>
+<td>Subdomain (e.g., <code>myapp</code> → <code>myapp.wil.5am.cloud</code>)</td>
+</tr>
+<tr>
+<td><code>backend_host</code></td>
+<td>yes</td>
+<td>—</td>
+<td>Backend IP address</td>
+</tr>
+<tr>
+<td><code>backend_port</code></td>
+<td>yes</td>
+<td>—</td>
+<td>Backend port</td>
+</tr>
+<tr>
+<td><code>proxied</code></td>
+<td>yes</td>
+<td>—</td>
+<td><code>true</code> for Caddy proxy, <code>false</code> for direct DNS</td>
+</tr>
+<tr>
+<td><code>enabled</code></td>
+<td>no</td>
+<td><code>true</code></td>
+<td>Set <code>false</code> to disable both DNS and proxy</td>
+</tr>
+<tr>
+<td><code>dns</code></td>
+<td>no</td>
+<td>—</td>
+<td>Set <code>external</code> to skip internal A record</td>
+</tr>
+<tr>
+<td><code>tls_skip_verify</code></td>
+<td>no</td>
+<td><code>false</code></td>
+<td>Backend uses self-signed HTTPS</td>
+</tr>
+<tr>
+<td><code>forward_headers</code></td>
+<td>no</td>
+<td><code>false</code></td>
+<td>Adds <code>X-Real-IP</code>, <code>X-Forwarded-For</code></td>
+</tr>
+<tr>
+<td><code>host_header</code></td>
+<td>no</td>
+<td>—</td>
+<td>Overrides <code>Host</code> header to upstream</td>
+</tr>
+<tr>
+<td><code>encode</code></td>
+<td>no</td>
+<td>—</td>
+<td>Response encoding (e.g., <code>gzip</code>)</td>
+</tr>
+<tr>
+<td><code>read_buffer</code></td>
+<td>no</td>
+<td>—</td>
+<td>Read buffer size</td>
+</tr>
+</tbody>
+</table>
+<h2 id="add-a-new-domain"><a class="toclink" href="#add-a-new-domain">Add a New Domain</a></h2>
+<ol>
+<li>
+<p>Create a domain file in <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># mydomain.com.yml</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">mydomain_services</span><span class="p">:</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app1</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.60</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+</li>
+<li>
+<p>Add the domain to <code>group_vars/all/vars.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">domains</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5am.video</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5am.cloud</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="c1"># ... existing domains ...</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mydomain.com</span>
+</code></pre></div>
+</li>
+<li>
+<p>Add the list to <code>_services.yml</code> aggregation:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="no">{{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="no">...</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="no">(mydomain_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;mydomain.com&#39;}) | list)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="no">}}</span>
+</code></pre></div>
+</li>
+<li>
+<p>Redeploy networking: <code>task ansible:deploy-networking ENV=wil</code></p>
+</li>
+</ol>
+<h2 id="add-a-ptr-record"><a class="toclink" href="#add-a-ptr-record">Add a PTR Record</a></h2>
+<p>PTR records (reverse DNS) are generated automatically from the service definitions for non-proxied services. For infrastructure hosts, PTR records are defined in the BIND9 reverse zone template.</p>
+<p>See <a href="../../infrastructure/networking/dns/#reverse-dns-ptr-records">DNS — Reverse DNS</a> for details.</p>
+<h2 id="set-up-cross-site-zone-transfer"><a class="toclink" href="#set-up-cross-site-zone-transfer">Set Up Cross-Site Zone Transfer</a></h2>
+<p>To replicate DNS zones between sites (e.g., WIL ↔ LDN):</p>
+<ol>
+<li>Configure BIND9 on the primary site as zone master with <code>allow-transfer</code></li>
+<li>Configure BIND9 on the secondary site as a slave zone</li>
+<li>Ensure Tailscale connectivity between sites</li>
+</ol>
+<p>See <a href="../../infrastructure/networking/dns/#cross-site-zone-transfers">DNS — Cross-Site Zone Transfers</a> for the full configuration.</p>
+<h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
+<p><strong>DNS not resolving after change</strong> — Redeploy networking: <code>task ansible:deploy-networking ENV=wil</code>. Check BIND9 logs: <code>ssh &lt;networking-ip&gt; docker logs bind9</code>.</p>
+<p><strong>Certificate not issued</strong> — Caddy uses DNS-01 via Cloudflare. Verify the Cloudflare API token is valid and the domain's nameservers point to Cloudflare. Check Caddy logs: <code>ssh &lt;networking-ip&gt; docker logs caddy</code>.</p>
+<p><strong>Zone transfer failing</strong> — Verify Tailscale connectivity between sites. Check that <code>allow-transfer</code> includes the remote site's DNS server IP. Test with <code>dig AXFR &lt;zone&gt; @&lt;primary-dns&gt;</code>.</p>
 
 
 
@@ -1787,7 +1869,7 @@ you -- just sign in, pick something, and press play. No subscriptions or fees re
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../guides/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Guides">
+          <a href="../add-vm/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Add a New VM">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1797,20 +1879,20 @@ you -- just sign in, pick something, and press play. No subscriptions or fees re
                 Previous
               </span>
               <div class="md-ellipsis">
-                Guides
+                Add a New VM
               </div>
             </div>
           </a>
         
         
           
-          <a href="getting-started/" class="md-footer__link md-footer__link--next" aria-label="Next: Getting Started">
+          <a href="../certificates/" class="md-footer__link md-footer__link--next" aria-label="Next: Certificates">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Getting Started
+                Certificates
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1869,10 +1951,10 @@ you -- just sign in, pick something, and press play. No subscriptions or fees re
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

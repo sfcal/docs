@@ -2,130 +2,118 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.5am.cloud/homelab/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/concepts/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/concepts/architecture/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/concepts/environments/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
-         <loc>https://docs.5am.cloud/homelab/concepts/network-layout/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <loc>https://docs.5am.cloud/homelab/concepts/networking/</loc>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/concepts/secrets/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/getting-started/</loc>
-         <lastmod>2026-03-18</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.5am.cloud/homelab/getting-started/prerequisites/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/getting-started/quick-start/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/guides/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.5am.cloud/homelab/guides/add-vm/</loc>
+         <lastmod>2026-03-19</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.5am.cloud/homelab/guides/certificates/</loc>
+         <lastmod>2026-03-19</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.5am.cloud/homelab/guides/deploy-service/</loc>
+         <lastmod>2026-03-19</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.5am.cloud/homelab/guides/networking-changes/</loc>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/infrastructure/</loc>
-         <lastmod>2026-03-18</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.5am.cloud/homelab/infrastructure/ansible/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/infrastructure/docker/</loc>
-         <lastmod>2026-03-18</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.5am.cloud/homelab/infrastructure/packer/</loc>
-         <lastmod>2026-03-18</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.5am.cloud/homelab/infrastructure/terraform/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/infrastructure/ca/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/infrastructure/monitoring/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/infrastructure/networking/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/infrastructure/networking/dns/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/infrastructure/networking/proxy/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/infrastructure/networking/tailscale/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/infrastructure/networking/unifi/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/infrastructure/ntp/</loc>
-         <lastmod>2026-03-18</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.5am.cloud/homelab/plex/</loc>
-         <lastmod>2026-03-18</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.5am.cloud/homelab/plex/browsing-and-playing/</loc>
-         <lastmod>2026-03-18</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.5am.cloud/homelab/plex/devices/</loc>
-         <lastmod>2026-03-18</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.5am.cloud/homelab/plex/getting-started/</loc>
-         <lastmod>2026-03-18</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.5am.cloud/homelab/plex/requesting-content/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/reference/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
-         <loc>https://docs.5am.cloud/homelab/reference/faq/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <loc>https://docs.5am.cloud/homelab/reference/ansible/</loc>
+         <lastmod>2026-03-19</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.5am.cloud/homelab/reference/config/</loc>
+         <lastmod>2026-03-19</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.5am.cloud/homelab/reference/packer/</loc>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
          <loc>https://docs.5am.cloud/homelab/reference/tasks/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <lastmod>2026-03-19</lastmod>
     </url>
     <url>
-         <loc>https://docs.5am.cloud/homelab/reference/tui/</loc>
-         <lastmod>2026-03-18</lastmod>
+         <loc>https://docs.5am.cloud/homelab/reference/terraform/</loc>
+         <lastmod>2026-03-19</lastmod>
     </url>
 </urlset>

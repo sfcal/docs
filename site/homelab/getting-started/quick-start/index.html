@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A complete infrastructure-as-code solution for managing a homelab on Proxmox with Packer, Terraform, Ansible, and Docker.">
+        <meta name="description" content="Infrastructure-as-code homelab on Proxmox with Packer, Terraform, Ansible, and Docker.">
       
       
       
@@ -16,7 +16,7 @@
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../prerequisites/">
+        <link rel="next" href="../../concepts/">
       
       
         
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#quick-start-guide" class="md-skip">
+        <a href="#quick-start" class="md-skip">
           Skip to content
         </a>
       
@@ -284,7 +284,7 @@
   <span class="md-ellipsis">
     
   
-    Introduction
+    Home
   
 
     
@@ -310,8 +310,6 @@
       
         
           
-        
-      
         
       
         
@@ -437,10 +435,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#1-clone-and-configure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        1. Clone and Configure
       
     </span>
   </a>
@@ -448,49 +446,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-0-prerequisites" class="md-nav__link">
+  <a href="#2-build-vm-templates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 0: Prerequisites
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Step 0: Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#clone-the-repository" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Clone the Repository
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generate-ssh-keys-if-needed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generate SSH Keys (if needed)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-1-build-execution-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 1: Build Execution Environment
+        2. Build VM Templates
       
     </span>
   </a>
@@ -498,188 +457,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-create-vm-templates-with-packer" class="md-nav__link">
+  <a href="#3-provision-vms" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2: Create VM Templates with Packer
+        3. Provision VMs
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Step 2: Create VM Templates with Packer">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configure-packer-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configure Packer Variables
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#build-the-template" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build the Template
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-provision-vms-with-terraform" class="md-nav__link">
+  <a href="#4-deploy-services" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: Provision VMs with Terraform
+        4. Deploy Services
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Step 3: Provision VMs with Terraform">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configure-terraform-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configure Terraform Variables
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deploy-infrastructure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deploy Infrastructure
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-deploy-k3s-with-ansible" class="md-nav__link">
+  <a href="#5-verify" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4: Deploy K3s with Ansible
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Step 4: Deploy K3s with Ansible">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configure-ansible" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configure Ansible
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deploy-k3s" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deploy K3s
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#verify-installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verify Installation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-5-bootstrap-flux-gitops" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 5: Bootstrap Flux GitOps
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Step 5: Bootstrap Flux GitOps">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#install-flux-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install Flux CLI
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bootstrap-flux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Bootstrap Flux
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#monitor-deployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Monitor Deployment
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-6-access-services" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 6: Access Services
+        5. Verify
       
     </span>
   </a>
@@ -706,23 +509,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Troubleshooting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#common-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Issues
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
     </ul>
@@ -734,302 +520,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../prerequisites/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Prerequisites
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../guides/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Guides
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Guides
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../plex/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Plex
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Plex
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../plex/getting-started/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Getting Started
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../plex/browsing-and-playing/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Browsing & Playing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../plex/devices/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Devices
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../plex/requesting-content/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Requesting Content
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -1071,7 +561,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1093,14 +585,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1147,14 +639,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/network-layout/" class="md-nav__link">
+      <a href="../../concepts/environments/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Network Layout
+    Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/networking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
   
 
     
@@ -1182,7 +702,119 @@
   <span class="md-ellipsis">
     
   
-    Secrets Management
+    Secrets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../guides/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/deploy-service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy a Service
   
 
     
@@ -1203,14 +835,70 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/environments/" class="md-nav__link">
+      <a href="../../guides/add-vm/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Multi-Environment
+    Add a New VM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/networking-changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking Changes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/certificates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Certificates
   
 
     
@@ -1254,12 +942,6 @@
       
         
       
-        
-      
-        
-      
-        
-      
     
     
     
@@ -1273,18 +955,20 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../infrastructure/" class="md-nav__link ">
+            <a href="../../reference/" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
     
   
-    Infrastructure
+    Reference
   
 
     
@@ -1306,7 +990,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Infrastructure
+    Reference
   
 
           </label>
@@ -1321,35 +1005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/packer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Packer
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../infrastructure/terraform/" class="md-nav__link">
+      <a href="../../reference/terraform/" class="md-nav__link">
         
   
   
@@ -1377,7 +1033,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infrastructure/ansible/" class="md-nav__link">
+      <a href="../../reference/ansible/" class="md-nav__link">
         
   
   
@@ -1396,6 +1052,176 @@
     </li>
   
 
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/packer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../infrastructure/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Infrastructure
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
             
               
@@ -1429,7 +1255,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1451,14 +1279,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1468,34 +1296,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../infrastructure/networking/unifi/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Gateway (UniFi)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -1568,7 +1368,35 @@
   <span class="md-ellipsis">
     
   
-    VPN (Tailscale)
+    Tailscale
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/networking/unifi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UniFi Gateway
   
 
     
@@ -1709,170 +1537,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../reference/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Reference
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Reference
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/tasks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task Commands
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/tui/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    TUI
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/faq/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FAQ
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -1900,10 +1564,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#1-clone-and-configure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        1. Clone and Configure
       
     </span>
   </a>
@@ -1911,49 +1575,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-0-prerequisites" class="md-nav__link">
+  <a href="#2-build-vm-templates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 0: Prerequisites
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Step 0: Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#clone-the-repository" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Clone the Repository
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generate-ssh-keys-if-needed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generate SSH Keys (if needed)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-1-build-execution-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 1: Build Execution Environment
+        2. Build VM Templates
       
     </span>
   </a>
@@ -1961,188 +1586,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-create-vm-templates-with-packer" class="md-nav__link">
+  <a href="#3-provision-vms" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2: Create VM Templates with Packer
+        3. Provision VMs
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Step 2: Create VM Templates with Packer">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configure-packer-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configure Packer Variables
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#build-the-template" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build the Template
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-provision-vms-with-terraform" class="md-nav__link">
+  <a href="#4-deploy-services" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: Provision VMs with Terraform
+        4. Deploy Services
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Step 3: Provision VMs with Terraform">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configure-terraform-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configure Terraform Variables
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deploy-infrastructure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deploy Infrastructure
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-deploy-k3s-with-ansible" class="md-nav__link">
+  <a href="#5-verify" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4: Deploy K3s with Ansible
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Step 4: Deploy K3s with Ansible">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configure-ansible" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configure Ansible
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deploy-k3s" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deploy K3s
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#verify-installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verify Installation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-5-bootstrap-flux-gitops" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 5: Bootstrap Flux GitOps
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Step 5: Bootstrap Flux GitOps">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#install-flux-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install Flux CLI
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bootstrap-flux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Bootstrap Flux
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#monitor-deployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Monitor Deployment
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-6-access-services" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 6: Access Services
+        5. Verify
       
     </span>
   </a>
@@ -2168,23 +1637,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Troubleshooting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#common-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Issues
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2216,7 +1668,7 @@
       <a href="../.." class="md-path__link">
         
   <span class="md-ellipsis">
-    Introduction
+    Home
   </span>
 
       </a>
@@ -2256,149 +1708,68 @@
   
 
 
-<h1 id="quick-start-guide"><a class="toclink" href="#quick-start-guide">Quick Start Guide</a></h1>
-<p>This guide will help you deploy the homelab infrastructure from scratch. Follow these steps in order to set up your complete Kubernetes cluster.</p>
-<h2 id="overview"><a class="toclink" href="#overview">Overview</a></h2>
-<p>The deployment process consists of 6 main steps:</p>
-<ol>
-<li><strong>Prerequisites</strong> - Set up your environment</li>
-<li><strong>Build Execution Environment</strong> - Create the tools container</li>
-<li><strong>Create VM Templates</strong> - Build base images with Packer</li>
-<li><strong>Provision VMs</strong> - Deploy infrastructure with Terraform</li>
-<li><strong>Deploy K3s</strong> - Install Kubernetes with Ansible</li>
-<li><strong>Bootstrap GitOps</strong> - Set up Flux for application management</li>
-</ol>
-<h2 id="step-0-prerequisites"><a class="toclink" href="#step-0-prerequisites">Step 0: Prerequisites</a></h2>
-<p>Before starting, ensure you have:</p>
-<ul>
-<li>A Proxmox server (or cluster) running</li>
-<li>Docker and Docker Compose installed locally</li>
-<li>Git installed</li>
-<li>SSH key pair generated</li>
-<li>At least 16GB RAM and 200GB storage available</li>
-</ul>
-<h3 id="clone-the-repository"><a class="toclink" href="#clone-the-repository">Clone the Repository</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sfcal/homelab.git
+<h1 id="quick-start"><a class="toclink" href="#quick-start">Quick Start</a></h1>
+<p>Deploy the homelab from scratch in four steps.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Complete the <a href="../">Prerequisites</a> first. You need Proxmox API tokens, an SSH key, and an Age key before proceeding.</p>
+</div>
+<h2 id="1-clone-and-configure"><a class="toclink" href="#1-clone-and-configure">1. Clone and Configure</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:sfcal/homelab.git
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>homelab
 </code></pre></div>
-<h3 id="generate-ssh-keys-if-needed"><a class="toclink" href="#generate-ssh-keys-if-needed">Generate SSH Keys (if needed)</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w"> </span>-C<span class="w"> </span><span class="s2">&quot;your-email@example.com&quot;</span>
+<p>Set your environment (defaults to <code>dev</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
-<h2 id="step-1-build-execution-environment"><a class="toclink" href="#step-1-build-execution-environment">Step 1: Build Execution Environment</a></h2>
-<p>Create a containerized environment with all necessary tools:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Build the container</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">cd</span><span class="w"> </span>docker/exe
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>homelab-exe<span class="w"> </span>.
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># Create an alias for convenience</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">homelab</span><span class="o">=</span><span class="s1">&#39;docker run -it --rm \</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s1">  -v &quot;$HOME/.ssh:/home/devops/.ssh&quot; \</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s1">  -v &quot;$HOME/.kube:/home/devops/.kube&quot; \</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="s1">  -v &quot;$PWD:/workspace&quot; \</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="s1">  -e ENV=dev \</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="s1">  homelab-exe&#39;</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="c1"># Test the environment</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>homelab<span class="w"> </span>terraform<span class="w"> </span>version
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>homelab<span class="w"> </span>ansible<span class="w"> </span>--version
+<h2 id="2-build-vm-templates"><a class="toclink" href="#2-build-vm-templates">2. Build VM Templates</a></h2>
+<p>Build the base Ubuntu template on Proxmox:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>task<span class="w"> </span>packer:build-ubuntu<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
-<h2 id="step-2-create-vm-templates-with-packer"><a class="toclink" href="#step-2-create-vm-templates-with-packer">Step 2: Create VM Templates with Packer</a></h2>
-<h3 id="configure-packer-variables"><a class="toclink" href="#configure-packer-variables">Configure Packer Variables</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span>packer/environments/dev
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>cp<span class="w"> </span>credentials.prod.pkrvars.hcl.example<span class="w"> </span>credentials.dev.pkrvars.hcl
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Edit with your Proxmox details</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>vim<span class="w"> </span>credentials.dev.pkrvars.hcl
+<p>This creates a cloud-init-enabled Ubuntu Server template with Docker, Node Exporter, and Lazydocker pre-installed.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Debian templates are also available: <code>task packer:build-debian ENV=wil</code></p>
+</div>
+<h2 id="3-provision-vms"><a class="toclink" href="#3-provision-vms">3. Provision VMs</a></h2>
+<p>Deploy all VMs defined in <code>terraform/environments/wil/vms.auto.tfvars</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>task<span class="w"> </span>terraform:deploy<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
-<p>Example configuration:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="na">proxmox_api_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://your-proxmox:8006/api2/json&quot;</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="na">proxmox_api_token_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;root@pam!packer&quot;</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="na">proxmox_api_token_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;your-secret-token&quot;</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="na">ssh_password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;temporary-password&quot;</span>
-</code></pre></div></p>
-<h3 id="build-the-template"><a class="toclink" href="#build-the-template">Build the Template</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">cd</span><span class="w"> </span>packer
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>make<span class="w"> </span>build<span class="w"> </span><span class="nv">TEMPLATE</span><span class="o">=</span>base<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>dev
+<p>To provision a single VM:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>task<span class="w"> </span>terraform:deploy-vm<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w"> </span><span class="nv">VM</span><span class="o">=</span>networking
 </code></pre></div>
-<h2 id="step-3-provision-vms-with-terraform"><a class="toclink" href="#step-3-provision-vms-with-terraform">Step 3: Provision VMs with Terraform</a></h2>
-<h3 id="configure-terraform-variables"><a class="toclink" href="#configure-terraform-variables">Configure Terraform Variables</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>terraform/environments/dev
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cp<span class="w"> </span>terraform.tfvars.example<span class="w"> </span>terraform.tfvars
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Edit with your configuration</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>vim<span class="w"> </span>terraform.tfvars
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <strong>networking</strong> VM must be provisioned first — it provides DNS for all other VMs.</p>
+</div>
+<h2 id="4-deploy-services"><a class="toclink" href="#4-deploy-services">4. Deploy Services</a></h2>
+<p>Deploy the full infrastructure stack:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>task<span class="w"> </span>ansible:deploy-all<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
-<h3 id="deploy-infrastructure"><a class="toclink" href="#deploy-infrastructure">Deploy Infrastructure</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>deploy<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>dev
+<p>Or deploy services individually, in dependency order:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">     </span><span class="c1"># DNS, Caddy, Tailscale</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">             </span><span class="c1"># Step-CA certificate authority</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>task<span class="w"> </span>ansible:deploy-ntp<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">            </span><span class="c1"># Chrony time server</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">     </span><span class="c1"># Prometheus, Grafana, Homepage</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>task<span class="w"> </span>ansible:deploy-media<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">          </span><span class="c1"># Plex, *arr stack</span>
 </code></pre></div>
-<p>This creates:
-- 3 Master nodes: <code>10.1.20.51-53</code>
-- 2 Worker nodes: <code>10.1.20.41-42</code></p>
-<h2 id="step-4-deploy-k3s-with-ansible"><a class="toclink" href="#step-4-deploy-k3s-with-ansible">Step 4: Deploy K3s with Ansible</a></h2>
-<h3 id="configure-ansible"><a class="toclink" href="#configure-ansible">Configure Ansible</a></h3>
-<p>Review the inventory and configuration:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">cd</span><span class="w"> </span>ansible
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>cat<span class="w"> </span>environments/dev/hosts.ini
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>vim<span class="w"> </span>environments/dev/group_vars/all.yml
+<h2 id="5-verify"><a class="toclink" href="#5-verify">5. Verify</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Test connectivity to all hosts</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>task<span class="w"> </span>ansible:ping<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Check a specific service</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>curl<span class="w"> </span>-k<span class="w"> </span>https://wil.5am.cloud
 </code></pre></div>
-<p>Key settings to verify:
-- <code>apiserver_endpoint</code>: Virtual IP for the cluster
-- <code>k3s_token</code>: Change from default!
-- <code>metal_lb_ip_range</code>: LoadBalancer IP range</p>
-<h3 id="deploy-k3s"><a class="toclink" href="#deploy-k3s">Deploy K3s</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>make<span class="w"> </span>deploy-k3s<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>dev
-</code></pre></div>
-<h3 id="verify-installation"><a class="toclink" href="#verify-installation">Verify Installation</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Copy kubeconfig</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>cp<span class="w"> </span>kubeconfig<span class="w"> </span>~/.kube/config
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Check cluster</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-A
-</code></pre></div>
-<h2 id="step-5-bootstrap-flux-gitops"><a class="toclink" href="#step-5-bootstrap-flux-gitops">Step 5: Bootstrap Flux GitOps</a></h2>
-<h3 id="install-flux-cli"><a class="toclink" href="#install-flux-cli">Install Flux CLI</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>https://fluxcd.io/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>bash
-</code></pre></div>
-<h3 id="bootstrap-flux"><a class="toclink" href="#bootstrap-flux">Bootstrap Flux</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>flux<span class="w"> </span>bootstrap<span class="w"> </span>github<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>--owner<span class="o">=</span>sfcal<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span>--repository<span class="o">=</span>homelab<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span>--branch<span class="o">=</span>main<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span>--path<span class="o">=</span>./kubernetes/cluster/dev<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">  </span>--personal
-</code></pre></div>
-<h3 id="monitor-deployment"><a class="toclink" href="#monitor-deployment">Monitor Deployment</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Watch Flux sync</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>flux<span class="w"> </span>get<span class="w"> </span>kustomizations
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># Check core services</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>traefik
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>cert-manager
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>longhorn-system
-</code></pre></div>
-<h2 id="step-6-access-services"><a class="toclink" href="#step-6-access-services">Step 6: Access Services</a></h2>
-<p>Once deployed, access your services:</p>
-<ul>
-<li><strong>Traefik</strong>: https://traefik.local.samuelcalvert.com</li>
-<li><strong>Grafana</strong>: https://grafana.local.samuelcalvert.com</li>
-<li><strong>Longhorn</strong>: https://longhorn.local.samuelcalvert.com</li>
-</ul>
 <h2 id="next-steps"><a class="toclink" href="#next-steps">Next Steps</a></h2>
 <ul>
-<li><a href="../how-to-guides/deploy-apps.md">Deploy applications</a></li>
-<li><a href="../how-to-guides/monitoring.md">Configure monitoring</a></li>
-<li><a href="../how-to-guides/backups.md">Set up backups</a></li>
+<li><a href="../../concepts/architecture/">Architecture</a> — understand the pipeline</li>
+<li><a href="../../guides/deploy-service/">Deploy a Service</a> — add a new application</li>
+<li><a href="../../reference/tasks/">Task Commands</a> — full command reference</li>
 </ul>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<h3 id="common-issues"><a class="toclink" href="#common-issues">Common Issues</a></h3>
-<ol>
-<li><strong>Packer build fails</strong>: Check Proxmox API credentials and network connectivity</li>
-<li><strong>Terraform timeout</strong>: Ensure Proxmox has sufficient resources</li>
-<li><strong>K3s won't start</strong>: Verify network configuration and firewall rules</li>
-<li><strong>Flux sync errors</strong>: Check GitHub token permissions</li>
-</ol>
-<p>For more help, see the <a href="../../reference/faq/">FAQ</a> or open an issue on GitHub.</p>
+<p><strong>Packer build fails with 401</strong> — Check Proxmox API token credentials in <code>packer/environments/wil/credentials.wil.pkrvars.hcl</code>. Ensure the token has <code>VM.Allocate</code> and <code>Datastore.AllocateSpace</code> permissions.</p>
+<p><strong>Terraform can't find template</strong> — The template name must match what Packer created. Check with <code>qm list</code> on the Proxmox host. Template names follow the pattern <code>ubuntu-server-&lt;env&gt;-base</code>.</p>
+<p><strong>Ansible can't connect</strong> — Verify the VM is running (<code>qm status &lt;vmid&gt;</code>), the IP is correct in <code>hosts.ini</code>, and your SSH key is authorized.</p>
+<p><strong>DNS not resolving</strong> — The networking VM must be deployed first. Other VMs use it as their nameserver (<code>10.2.20.53</code> in WIL).</p>
 
 
 
@@ -2436,7 +1807,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Getting Started">
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Prerequisites">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2446,20 +1817,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Getting Started
+                Prerequisites
               </div>
             </div>
           </a>
         
         
           
-          <a href="../prerequisites/" class="md-footer__link md-footer__link--next" aria-label="Next: Prerequisites">
+          <a href="../../concepts/" class="md-footer__link md-footer__link--next" aria-label="Next: Concepts">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Prerequisites
+                Concepts
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2518,7 +1889,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

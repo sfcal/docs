@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A complete infrastructure-as-code solution for managing a homelab on Proxmox with Packer, Terraform, Ansible, and Docker.">
+        <meta name="description" content="Infrastructure-as-code homelab on Proxmox with Packer, Terraform, Ansible, and Docker.">
       
       
       
-        <link rel="canonical" href="https://docs.5am.cloud/homelab/plex/devices/">
+        <link rel="canonical" href="https://docs.5am.cloud/homelab/reference/terraform/">
       
       
-        <link rel="prev" href="../browsing-and-playing/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../requesting-content/">
+        <link rel="next" href="../ansible/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Devices - Homelab Infrastructure as Code</title>
+        <title>Terraform - Homelab Infrastructure as Code</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#setting-up-your-devices" class="md-skip">
+        <a href="#terraform" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Devices
+              Terraform
             
           </span>
         </div>
@@ -284,7 +284,7 @@
   <span class="md-ellipsis">
     
   
-    Introduction
+    Home
   
 
     
@@ -312,8 +312,6 @@
       
         
       
-        
-      
     
     
     
@@ -327,7 +325,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -396,441 +396,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/prerequisites/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Prerequisites
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../guides/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Guides
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Guides
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Plex
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Plex
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../getting-started/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Getting Started
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../browsing-and-playing/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Browsing & Playing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Devices
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Devices
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#computer-any-web-browser" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Computer (any web browser)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iphone-or-ipad" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        iPhone or iPad
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#android-phone-or-tablet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Android phone or tablet
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#roku" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Roku
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#amazon-fire-tv-fire-stick" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Amazon Fire TV / Fire Stick
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#apple-tv" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Apple TV
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#smart-tv-samsung-lg-vizio-etc" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Smart TV (Samsung, LG, Vizio, etc.)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#linking-any-device-the-universal-method" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Linking any device -- the universal method
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../requesting-content/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Requesting Content
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -872,7 +437,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -894,14 +461,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -948,14 +515,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/network-layout/" class="md-nav__link">
+      <a href="../../concepts/environments/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Network Layout
+    Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/networking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
   
 
     
@@ -983,7 +578,119 @@
   <span class="md-ellipsis">
     
   
-    Secrets Management
+    Secrets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../guides/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/deploy-service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy a Service
   
 
     
@@ -1004,14 +711,420 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/environments/" class="md-nav__link">
+      <a href="../../guides/add-vm/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Multi-Environment
+    Add a New VM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/networking-changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking Changes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/certificates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Certificates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terraform
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vm-definition-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VM Definition Format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vm-module-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VM Module Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wil-environment-vms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WIL Environment VMs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Details
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../packer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config Reference
   
 
     
@@ -1055,12 +1168,6 @@
       
         
       
-        
-      
-        
-      
-        
-      
     
     
     
@@ -1074,7 +1181,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1096,14 +1205,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1113,90 +1222,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../infrastructure/packer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Packer
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../infrastructure/terraform/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Terraform
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../infrastructure/ansible/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Ansible
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -1230,7 +1255,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1252,14 +1279,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1269,34 +1296,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../infrastructure/networking/unifi/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Gateway (UniFi)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -1369,7 +1368,35 @@
   <span class="md-ellipsis">
     
   
-    VPN (Tailscale)
+    Tailscale
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/networking/unifi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UniFi Gateway
   
 
     
@@ -1510,170 +1537,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../reference/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Reference
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Reference
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/tasks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task Commands
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/tui/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    TUI
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/faq/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FAQ
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -1701,10 +1564,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#computer-any-web-browser" class="md-nav__link">
+  <a href="#quick-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Computer (any web browser)
+        Quick Start
       
     </span>
   </a>
@@ -1712,10 +1575,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#iphone-or-ipad" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iPhone or iPad
+        How It Works
       
     </span>
   </a>
@@ -1723,10 +1586,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#android-phone-or-tablet" class="md-nav__link">
+  <a href="#vm-definition-format" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Android phone or tablet
+        VM Definition Format
       
     </span>
   </a>
@@ -1734,10 +1597,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#roku" class="md-nav__link">
+  <a href="#vm-module-variables" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Roku
+        VM Module Variables
       
     </span>
   </a>
@@ -1745,10 +1608,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#amazon-fire-tv-fire-stick" class="md-nav__link">
+  <a href="#wil-environment-vms" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Amazon Fire TV / Fire Stick
+        WIL Environment VMs
       
     </span>
   </a>
@@ -1756,10 +1619,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#apple-tv" class="md-nav__link">
+  <a href="#implementation-details" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Apple TV
+        Implementation Details
       
     </span>
   </a>
@@ -1767,21 +1630,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#smart-tv-samsung-lg-vizio-etc" class="md-nav__link">
+  <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Smart TV (Samsung, LG, Vizio, etc.)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#linking-any-device-the-universal-method" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Linking any device -- the universal method
+        Troubleshooting
       
     </span>
   </a>
@@ -1816,7 +1668,7 @@
       <a href="../.." class="md-path__link">
         
   <span class="md-ellipsis">
-    Introduction
+    Home
   </span>
 
       </a>
@@ -1831,28 +1683,10 @@
     
     
       <li class="md-path__item">
-        <a href="../../guides/" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    Guides
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
         <a href="../" class="md-path__link">
           
   <span class="md-ellipsis">
-    Plex
+    Reference
   </span>
 
         </a>
@@ -1874,83 +1708,301 @@
   
 
 
-<h1 id="setting-up-your-devices"><a class="toclink" href="#setting-up-your-devices">Setting Up Your Devices</a></h1>
-<p>You can watch on almost anything -- your TV, phone, tablet, or computer. Find your device below and follow the steps.</p>
-<div class="admonition note">
-<p class="admonition-title">Before you start</p>
-<p>Make sure you've already created your free Plex account and accepted the server invitation.
-If you haven't, head to <a href="../getting-started/">Getting Started</a> first.</p>
-</div>
-<h2 id="computer-any-web-browser"><a class="toclink" href="#computer-any-web-browser">Computer (any web browser)</a></h2>
-<p>This is the easiest way to watch -- no app needed.</p>
-<ol>
-<li>Open your web browser (Chrome, Firefox, Safari, Edge -- any will work).</li>
-<li>Go to <strong><a href="https://app.plex.tv">app.plex.tv</a></strong></li>
-<li>Sign in with your Plex account. That's it -- browse and play.</li>
-</ol>
-<h2 id="iphone-or-ipad"><a class="toclink" href="#iphone-or-ipad">iPhone or iPad</a></h2>
-<ol>
-<li>Open the <strong>App Store</strong> on your device.</li>
-<li>Search for <strong>"Plex"</strong> and download the app (it's free -- look for the orange play-button icon).</li>
-<li>Open the app and sign in with your Plex account.</li>
-<li>The shared libraries will appear in the sidebar. Tap one to start browsing.</li>
-</ol>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Plex may ask you to "activate" the app by going to <strong>plex.tv/link</strong> on a computer and entering a code. Just follow the on-screen instructions -- it only takes a moment.</p>
-</div>
-<h2 id="android-phone-or-tablet"><a class="toclink" href="#android-phone-or-tablet">Android phone or tablet</a></h2>
-<ol>
-<li>Open the <strong>Google Play Store</strong>.</li>
-<li>Search for <strong>"Plex"</strong> and install the app.</li>
-<li>Open the app and sign in with your Plex account.</li>
-<li>The shared server's libraries will appear automatically. Start browsing!</li>
-</ol>
-<h2 id="roku"><a class="toclink" href="#roku">Roku</a></h2>
-<ol>
-<li>From the Roku home screen, go to <strong>Streaming Channels</strong> (or <strong>Search</strong>).</li>
-<li>Search for <strong>"Plex"</strong> and select <strong>Add Channel</strong>.</li>
-<li>Open the Plex app. It will show a <strong>4-letter code</strong> on your TV screen.</li>
-<li>On your phone or computer, go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong>, sign in, and type in the code. Your Roku is now connected.</li>
-</ol>
-<h2 id="amazon-fire-tv-fire-stick"><a class="toclink" href="#amazon-fire-tv-fire-stick">Amazon Fire TV / Fire Stick</a></h2>
-<ol>
-<li>From the Fire TV home screen, go to <strong>Find &gt; Search</strong> (or use the Alexa voice remote).</li>
-<li>Search for <strong>"Plex"</strong> and select <strong>Download</strong>.</li>
-<li>Open the Plex app. You'll see a <strong>4-letter code</strong>.</li>
-<li>On your phone or computer, go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong>, sign in, and enter the code.</li>
-</ol>
-<h2 id="apple-tv"><a class="toclink" href="#apple-tv">Apple TV</a></h2>
-<ol>
-<li>Open the <strong>App Store</strong> on your Apple TV.</li>
-<li>Search for <strong>"Plex"</strong> and download the app.</li>
-<li>Open Plex. You'll see a code on your TV screen.</li>
-<li>Go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong> on another device, sign in, and enter the code.</li>
-</ol>
-<h2 id="smart-tv-samsung-lg-vizio-etc"><a class="toclink" href="#smart-tv-samsung-lg-vizio-etc">Smart TV (Samsung, LG, Vizio, etc.)</a></h2>
-<ol>
-<li>Open your TV's built-in <strong>app store</strong> (Samsung: Smart Hub, LG: LG Content Store, Vizio: SmartCast Apps).</li>
-<li>Search for <strong>"Plex"</strong> and install it.</li>
-<li>Open the app. You'll see a <strong>4-letter code</strong>.</li>
-<li>Go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong> on your phone or computer, sign in, and enter the code.</li>
-</ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Some older smart TVs may not have Plex available in their app store. If that's the case, a <strong>Roku</strong> or <strong>Fire Stick</strong> is an affordable way to add Plex to any TV with an HDMI port.</p>
-</div>
-<hr />
-<h2 id="linking-any-device-the-universal-method"><a class="toclink" href="#linking-any-device-the-universal-method">Linking any device -- the universal method</a></h2>
-<p><img alt="Plex device link code screen" src="images/plex-link-code.png" width="600" /></p>
-<p>Nearly every Plex app on a TV or streaming device uses the same linking process:</p>
-<ol>
-<li>Install and open the Plex app on your device. A <strong>4-letter code</strong> appears on screen.</li>
-<li>On any other device (your phone works great), open a browser and go to <strong><a href="https://plex.tv/link">plex.tv/link</a></strong>.</li>
-<li>Sign in to your Plex account and type in the code. Done -- your device is connected.</li>
-</ol>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>You only need to do this once per device. After linking, the app stays signed in.</p>
-</div>
+<h1 id="terraform"><a class="toclink" href="#terraform">Terraform</a></h1>
+<p>Terraform provisions VMs on Proxmox by cloning Packer-built templates.</p>
+<h2 id="quick-start"><a class="toclink" href="#quick-start">Quick Start</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Deploy all VMs</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>terraform:deploy<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Deploy a single VM</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>task<span class="w"> </span>terraform:deploy-vm<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w"> </span><span class="nv">VM</span><span class="o">=</span>networking
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Destroy a single VM</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>task<span class="w"> </span>terraform:destroy-vm<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w"> </span><span class="nv">VM</span><span class="o">=</span>networking
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Clean up state files</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>task<span class="w"> </span>terraform:clean<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+<h2 id="how-it-works"><a class="toclink" href="#how-it-works">How It Works</a></h2>
+<p>VMs are defined as a map in <code>terraform/environments/&lt;env&gt;/vms.auto.tfvars</code>. The root module iterates over this map with <code>for_each</code> and calls the VM module for each entry.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>terraform/
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── main.tf                          # Root module (for_each over vms)
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>├── modules/vm/
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   ├── main.tf                      # proxmox_vm_qemu resource
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   └── variables.tf                 # VM variable definitions
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>└── environments/
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    ├── wil/
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    │   ├── main.tf                  # Calls root module
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    │   ├── variables.tf             # Variable declarations
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    │   ├── providers.tf             # Proxmox provider config
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    │   ├── vms.auto.tfvars          # VM definitions
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    │   └── terraform.tfstate        # State file
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    └── ldn/
+</code></pre></div>
+<h2 id="vm-definition-format"><a class="toclink" href="#vm-definition-format">VM Definition Format</a></h2>
+<p>Each VM is an entry in the <code>vms</code> map in <code>vms.auto.tfvars</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">vms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nb">networking</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="na">name</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;networking&quot;</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="na">description</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Networking VM&quot;</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="na">proxmox_node</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proxmox&quot;</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="na">vmid</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="na">template_name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ubuntu-server-wil-base&quot;</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="na">ip_address</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.53&quot;</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="na">gateway</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.1&quot;</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="na">nameserver</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.53&quot;</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="na">cores</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="m">2</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="na">memory</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="m">4096</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="na">disk_size</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;50G&quot;</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="na">storage_pool</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;local-lvm&quot;</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="na">network_bridge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;vmbr0&quot;</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="na">tags</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;infrastructure&quot;</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="na">ssh_user</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;sfcal&quot;</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">  </span><span class="nb">ca_server</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="na">name</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ca&quot;</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">    </span><span class="na">description</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Certificate Authority&quot;</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">    </span><span class="na">proxmox_node</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proxmox&quot;</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="na">vmid</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="m">1003</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">    </span><span class="na">template_name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ubuntu-server-wil-base&quot;</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">    </span><span class="na">ip_address</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.9&quot;</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">    </span><span class="na">gateway</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.1&quot;</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">    </span><span class="na">nameserver</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.53&quot;</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">    </span><span class="na">cores</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">    </span><span class="na">memory</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="m">4096</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">    </span><span class="na">disk_size</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;20G&quot;</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">    </span><span class="na">storage_pool</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;local-lvm&quot;</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">    </span><span class="na">network_bridge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;vmbr0&quot;</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">    </span><span class="na">tags</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;infrastructure&quot;</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">    </span><span class="na">ssh_user</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;sfcal&quot;</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="p">}</span>
+</code></pre></div>
+<h2 id="vm-module-variables"><a class="toclink" href="#vm-module-variables">VM Module Variables</a></h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>required</td>
+<td>VM hostname</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td><code>"Virtual Machine"</code></td>
+<td>Proxmox description</td>
+</tr>
+<tr>
+<td><code>proxmox_node</code></td>
+<td>string</td>
+<td>required</td>
+<td>Target Proxmox host</td>
+</tr>
+<tr>
+<td><code>vmid</code></td>
+<td>number</td>
+<td>required</td>
+<td>Unique VM ID</td>
+</tr>
+<tr>
+<td><code>template_name</code></td>
+<td>string</td>
+<td>required</td>
+<td>Packer template to clone</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string</td>
+<td><code>""</code></td>
+<td><code>"infrastructure"</code> or <code>"application"</code></td>
+</tr>
+<tr>
+<td><code>onboot</code></td>
+<td>bool</td>
+<td><code>true</code></td>
+<td>Auto-start on Proxmox boot</td>
+</tr>
+<tr>
+<td><code>cores</code></td>
+<td>number</td>
+<td><code>2</code></td>
+<td>CPU cores</td>
+</tr>
+<tr>
+<td><code>memory</code></td>
+<td>number</td>
+<td><code>2048</code></td>
+<td>RAM in MB</td>
+</tr>
+<tr>
+<td><code>disk_size</code></td>
+<td>string</td>
+<td><code>"20G"</code></td>
+<td>Root disk size</td>
+</tr>
+<tr>
+<td><code>storage_pool</code></td>
+<td>string</td>
+<td>required</td>
+<td>Proxmox storage pool</td>
+</tr>
+<tr>
+<td><code>network_bridge</code></td>
+<td>string</td>
+<td><code>"vmbr0"</code></td>
+<td>Network bridge</td>
+</tr>
+<tr>
+<td><code>ip_address</code></td>
+<td>string</td>
+<td>required</td>
+<td>Static IP (assumes /24)</td>
+</tr>
+<tr>
+<td><code>gateway</code></td>
+<td>string</td>
+<td>required</td>
+<td>Default gateway</td>
+</tr>
+<tr>
+<td><code>nameserver</code></td>
+<td>string</td>
+<td>required</td>
+<td>DNS server</td>
+</tr>
+<tr>
+<td><code>ssh_user</code></td>
+<td>string</td>
+<td>required</td>
+<td>SSH username</td>
+</tr>
+<tr>
+<td><code>ssh_public_key</code></td>
+<td>string</td>
+<td>required</td>
+<td>Passed from environment variables</td>
+</tr>
+</tbody>
+</table>
+<h2 id="wil-environment-vms"><a class="toclink" href="#wil-environment-vms">WIL Environment VMs</a></h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Name</th>
+<th>VMID</th>
+<th>IP</th>
+<th>Cores</th>
+<th>Memory</th>
+<th>Disk</th>
+<th>Tags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>networking</code></td>
+<td>networking</td>
+<td>1000</td>
+<td>10.2.20.53</td>
+<td>2</td>
+<td>4GB</td>
+<td>50G</td>
+<td>infrastructure</td>
+</tr>
+<tr>
+<td><code>ca_server</code></td>
+<td>ca</td>
+<td>1003</td>
+<td>10.2.20.9</td>
+<td>1</td>
+<td>4GB</td>
+<td>20G</td>
+<td>infrastructure</td>
+</tr>
+<tr>
+<td><code>ntp_server</code></td>
+<td>ntp</td>
+<td>1002</td>
+<td>10.2.20.123</td>
+<td>1</td>
+<td>1GB</td>
+<td>20G</td>
+<td>infrastructure</td>
+</tr>
+<tr>
+<td><code>monitoring_server</code></td>
+<td>monitoring</td>
+<td>1107</td>
+<td>10.2.20.30</td>
+<td>1</td>
+<td>8GB</td>
+<td>50G</td>
+<td>infrastructure</td>
+</tr>
+<tr>
+<td><code>web_server</code></td>
+<td>web</td>
+<td>1109</td>
+<td>10.2.20.45</td>
+<td>2</td>
+<td>4GB</td>
+<td>20G</td>
+<td>application</td>
+</tr>
+<tr>
+<td><code>games_server</code></td>
+<td>games</td>
+<td>1111</td>
+<td>10.2.20.50</td>
+<td>1</td>
+<td>8GB</td>
+<td>50G</td>
+<td>application</td>
+</tr>
+<tr>
+<td><code>work_server</code></td>
+<td>work</td>
+<td>1112</td>
+<td>10.2.20.60</td>
+<td>4</td>
+<td>8GB</td>
+<td>256G</td>
+<td>application</td>
+</tr>
+<tr>
+<td><code>seafile_server</code></td>
+<td>seafile</td>
+<td>1113</td>
+<td>10.2.20.70</td>
+<td>2</td>
+<td>8GB</td>
+<td>50G</td>
+<td>application</td>
+</tr>
+</tbody>
+</table>
+<h2 id="implementation-details"><a class="toclink" href="#implementation-details">Implementation Details</a></h2>
+<ul>
+<li><strong>Full clones</strong> — VMs are full clones, not linked. Independent of templates after creation.</li>
+<li><strong>Cloud-init</strong> — Static IP configured via <code>ipconfig0 = "ip=&lt;address&gt;/24,gw=&lt;gateway&gt;"</code>. Assumes /24 subnets.</li>
+<li><strong>State</strong> — Per-environment state files at <code>terraform/environments/&lt;env&gt;/terraform.tfstate</code>.</li>
+<li><strong>QEMU agent</strong> — Enabled on all VMs (installed in Packer templates).</li>
+</ul>
+<h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
+<p><strong>"template not found"</strong> — The <code>template_name</code> must match a Packer-built template. Check with <code>qm list</code> on the Proxmox host. Names follow <code>ubuntu-server-&lt;env&gt;-base</code>.</p>
+<p><strong>"VMID already exists"</strong> — Another VM uses that ID. Check <code>qm list</code> or the existing entries in <code>vms.auto.tfvars</code>.</p>
+<p><strong>State out of sync</strong> — If a VM was deleted outside Terraform, clean state with <code>task terraform:clean ENV=wil</code> and redeploy.</p>
+<p><strong>Provider authentication error</strong> — Verify Proxmox API credentials in the encrypted <code>terraform.tfvars</code> file. Decrypt with <code>sops terraform/environments/&lt;env&gt;/terraform.tfvars</code>.</p>
 
 
 
@@ -1988,7 +2040,7 @@ If you haven't, head to <a href="../getting-started/">Getting Started</a> first.
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../browsing-and-playing/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Browsing &amp; Playing">
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Reference">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1998,20 +2050,20 @@ If you haven't, head to <a href="../getting-started/">Getting Started</a> first.
                 Previous
               </span>
               <div class="md-ellipsis">
-                Browsing & Playing
+                Reference
               </div>
             </div>
           </a>
         
         
           
-          <a href="../requesting-content/" class="md-footer__link md-footer__link--next" aria-label="Next: Requesting Content">
+          <a href="../ansible/" class="md-footer__link md-footer__link--next" aria-label="Next: Ansible">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Requesting Content
+                Ansible
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2070,7 +2122,7 @@ If you haven't, head to <a href="../getting-started/">Getting Started</a> first.
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
