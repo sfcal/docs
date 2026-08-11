@@ -1122,6 +1122,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="App Registry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#image-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Image Keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-service-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Service Apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1661,6 +1689,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="App Registry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#image-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Image Keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-service-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Service Apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1767,13 +1823,17 @@
 <h1 id="config-reference"><a class="toclink" href="#config-reference">Config Reference</a></h1>
 <p>Consolidated reference for configuration formats used across the homelab.</p>
 <h2 id="service-definitions"><a class="toclink" href="#service-definitions">Service Definitions</a></h2>
-<p>Service definitions drive both DNS records and reverse proxy entries. Each domain has its own file in <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code>:</p>
+<p>Service definitions drive both DNS records and reverse proxy entries. They come from two sources:</p>
+<ol>
+<li><strong>App registry</strong> — apps in <code>group_vars/all/apps.yml</code> declare a <code>proxy:</code> block; <code>_services.yml</code> generates a <code>registry_services</code> entry for each one (see <a href="#app-registry">App Registry</a>)</li>
+<li><strong>Manual per-domain files</strong> — for services outside the catalog (third-party devices, media stack, monitoring, Frigate, cloud gaming), each domain has its own file in <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code>:</li>
+</ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>proxy/
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── _services.yml          # Aggregates all domain lists
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── _services.yml          # Generates registry entries, aggregates all lists
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── 5am.video.yml          # video_services
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── wil.5am.cloud.yml      # wil_services
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── ext.5am.cloud.yml      # ext_services
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└── sfc.al.yml             # sfc_services
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── 5am.cloud.yml          # cloud_services
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── wil.5am.cloud.yml      # wil_services
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└── ext.5am.cloud.yml      # ext_services
 </code></pre></div>
 <h3 id="service-entry-format"><a class="toclink" href="#service-entry-format">Service Entry Format</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span><span class="w">              </span><span class="c1"># Subdomain → myapp.wil.5am.cloud</span>
@@ -1860,31 +1920,65 @@
 </tr>
 </tbody>
 </table>
+<p>For registry-generated entries, <code>backend_host</code> is derived (first inventory host of the app's <code>host_group</code>) and <code>backend_port</code> defaults to the app's <code>port</code> — the <code>proxy:</code> block supplies <code>name</code>, <code>domain</code>, <code>proxied</code>, and any optional fields.</p>
 <h3 id="service-aggregation"><a class="toclink" href="#service-aggregation">Service Aggregation</a></h3>
-<p><code>_services.yml</code> combines all domain lists and injects the domain name:</p>
+<p><code>_services.yml</code> combines all manual domain lists (injecting the domain name) and appends the registry-generated entries:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="no">{{</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="no">(video_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;5am.video&#39;}) | list) +</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="no">(wil_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;wil.5am.cloud&#39;}) | list) +</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="no">(ext_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;ext.5am.cloud&#39;}) | list) +</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="no">(sfc_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;sfc.al&#39;}) | list)</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="no">}}</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="no">(cloud_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;5am.cloud&#39;}) | list) +</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="no">(wil_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;wil.5am.cloud&#39;}) | list) +</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="no">(ext_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;ext.5am.cloud&#39;}) | list) +</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="no">(sfc_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;sfc.al&#39;}) | list) +</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="no">registry_services</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="no">}}</span>
 </code></pre></div>
 <p>Both BIND9 and Caddy templates consume the unified <code>services</code> list.</p>
 <h2 id="vm-definitions"><a class="toclink" href="#vm-definitions">VM Definitions</a></h2>
 <p>VMs are defined in HCL maps in <code>terraform/environments/&lt;env&gt;/vms.auto.tfvars</code>. See <a href="../terraform/#vm-module-variables">Terraform — VM Module Variables</a> for the full field reference.</p>
 <h2 id="app-registry"><a class="toclink" href="#app-registry">App Registry</a></h2>
-<p>Data-driven apps are defined in <code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">myapp</span><span class="p">:</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_myapp</span><span class="w">      </span><span class="c1"># Ansible inventory group</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">images</span><span class="p">:</span><span class="w">                     </span><span class="c1"># Docker images to pull</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myimage:latest</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span><span class="w">                  </span><span class="c1"># Exposed port</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="c1"># Optional:</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="c1"># nfs: true                 # Mount NFS shares</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="c1"># user: &quot;1000&quot;              # Service user</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="c1"># group: &quot;1000&quot;             # Service group</span>
+<p>Data-driven apps are defined in <code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code> — the single service catalog for images, ports, and proxy/DNS metadata:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apps</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">myapp</span><span class="p">:</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_myapp</span><span class="w">      </span><span class="c1"># Ansible inventory group</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="c1"># renovate: datasource=docker</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myimage:latest&quot;</span><span class="w">     </span><span class="c1"># Primary container image</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span><span class="w">                  </span><span class="c1"># Exposed port; default proxy backend_port</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nt">proxy</span><span class="p">:</span><span class="w">                      </span><span class="c1"># Optional — omit for no DNS/proxy entry</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span><span class="w">               </span><span class="c1"># Subdomain</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wil.5am.cloud</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">      </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">             </span><span class="c1"># Required (no default in zone template)</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">      </span><span class="c1"># Optional: tls_skip_verify, forward_headers, host_header, encode,</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">      </span><span class="c1">#           read_buffer, dns, enabled, backend_port (overrides port)</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="c1"># Optional:</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="c1"># nfs: true                 # Mount NFS shares</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="c1"># user: &quot;1000&quot;              # Service user</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="c1"># group: &quot;1000&quot;             # Service group</span>
 </code></pre></div>
+<h3 id="image-keys"><a class="toclink" href="#image-keys">Image Keys</a></h3>
+<p>There is no <code>images:</code> list — <code>deploy-app.yml</code> derives the pre-pull list from every key ending in <code>image</code> (top level and one nesting level down). Renovate updates these automatically, so image keys must follow these rules:</p>
+<ul>
+<li><code># renovate: datasource=docker</code> comment directly above the image key</li>
+<li>Key ends in <code>image</code> (e.g., <code>image</code>, <code>db_image</code>, <code>redis_image</code>) with no hyphens in the key</li>
+<li>Value is double-quoted</li>
+</ul>
+<h3 id="multi-service-apps"><a class="toclink" href="#multi-service-apps">Multi-Service Apps</a></h3>
+<p>Apps that run several containers nest sub-services one level deep, each with its own image, port, and <code>proxy:</code> block (sub-keys must be hyphen-free):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apps</span><span class="p">:</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">work</span><span class="p">:</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_work</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">convertx</span><span class="p">:</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">      </span><span class="c1"># renovate: datasource=docker</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ghcr.io/c4illin/convertx:latest&quot;</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3100</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">      </span><span class="nt">proxy</span><span class="p">:</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">convert</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wil.5am.cloud</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">        </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="nt">cyberchef</span><span class="p">:</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">      </span><span class="c1"># ...</span>
+</code></pre></div>
+<p>Compose templates read these via <code>apps.work.&lt;svc&gt;.*</code>.</p>
 <h2 id="file-naming-conventions"><a class="toclink" href="#file-naming-conventions">File Naming Conventions</a></h2>
 <table>
 <thead>
@@ -1949,15 +2043,15 @@
 <p>Parent groups: <code>[infrastructure:children]</code> and <code>[apps:children]</code> aggregate all groups of each type.</p>
 <h2 id="global-variables"><a class="toclink" href="#global-variables">Global Variables</a></h2>
 <p>Defined in <code>ansible/environments/&lt;env&gt;/group_vars/all/vars.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">domains</span><span class="p">:</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5am.video</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5am.cloud</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wil.5am.cloud</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ext.5am.cloud</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sfc.al</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="nt">system_timezone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">America/New_York</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nt">deploy_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/opt</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">domains</span><span class="p">:</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5am.video</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5am.cloud</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wil.5am.cloud</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ext.5am.cloud</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sfc.al</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nt">system_timezone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">America/New_York</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="nt">deploy_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/opt</span>
 </code></pre></div>
 
 

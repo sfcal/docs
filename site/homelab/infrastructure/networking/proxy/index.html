@@ -1535,6 +1535,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#registry-generated-entries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registry-Generated Entries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#service-aggregation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2102,6 +2113,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#registry-generated-entries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registry-Generated Entries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#service-aggregation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2299,11 +2321,15 @@
 </tr>
 <tr>
 <td><code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/*.yml</code></td>
-<td>Per-domain service definitions</td>
+<td>Manual per-domain service definitions (non-catalog services)</td>
 </tr>
 <tr>
 <td><code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/_services.yml</code></td>
-<td>Service aggregation</td>
+<td>Registry entry generation and service aggregation</td>
+</tr>
+<tr>
+<td><code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code></td>
+<td>App registry — <code>proxy:</code> blocks generate service entries</td>
 </tr>
 </tbody>
 </table>
@@ -2361,7 +2387,12 @@
 </table>
 <p>The Caddy container exposes ports <code>80</code>, <code>443</code>, and <code>2019</code> (admin API), and mounts persistent volumes for certificate storage.</p>
 <h2 id="service-definition-reference"><a class="toclink" href="#service-definition-reference">Service Definition Reference</a></h2>
-<p>Services are defined in per-domain YAML files under <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code>. Each file defines a list variable (e.g., <code>wil_services</code>, <code>video_services</code>) that is aggregated by <code>_services.yml</code>.</p>
+<p>Service entries come from two sources:</p>
+<ol>
+<li><strong>App registry</strong> — apps in <code>group_vars/all/apps.yml</code> declare a <code>proxy:</code> block, and <code>_services.yml</code> generates their entries automatically. See <a href="#registry-generated-entries">Registry-Generated Entries</a>.</li>
+<li><strong>Manual per-domain files</strong> — YAML files under <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code> for services outside the app registry: third-party devices (Proxmox, NAS, KVM, Haivision), the media stack, monitoring, Frigate, and cloud gaming. Each file defines a list variable (e.g., <code>wil_services</code>, <code>video_services</code>) that is aggregated by <code>_services.yml</code>.</li>
+</ol>
+<p>The fields below apply to entries from both sources.</p>
 <h3 id="required-fields"><a class="toclink" href="#required-fields">Required Fields</a></h3>
 <hr />
 <h4 id="name"><a class="toclink" href="#name"><code>name</code></a></h4>
@@ -2475,30 +2506,54 @@
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
 <a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
+<h2 id="registry-generated-entries"><a class="toclink" href="#registry-generated-entries">Registry-Generated Entries</a></h2>
+<p>Apps in the app registry (<code>group_vars/all/apps.yml</code>) declare their DNS and proxy configuration inline via a <code>proxy:</code> block:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">kasm</span><span class="p">:</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_kasm</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="c1"># renovate: datasource=docker</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lscr.io/linuxserver/kasm:1.18.1&quot;</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4443</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">  </span><span class="nt">proxy</span><span class="p">:</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kasm</span><span class="w">             </span><span class="c1"># Subdomain → kasm.wil.5am.cloud</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">    </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wil.5am.cloud</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">    </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># Required — no default in the zone template</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="w">    </span><span class="nt">tls_skip_verify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p><code>_services.yml</code> builds a <code>registry_services</code> list from every <code>proxy:</code> block — on a top-level app or a one-level-nested sub-service (e.g., <code>apps.work.convertx.proxy</code>). For each block:</p>
+<ul>
+<li><strong><code>backend_host</code> is derived</strong> — the first inventory host of the app's <code>host_group</code>. If the group has no hosts in the environment's inventory, the render fails loudly rather than silently dropping the entry.</li>
+<li><strong><code>backend_port</code> defaults to the sibling <code>port</code></strong> — set <code>backend_port</code> inside the <code>proxy:</code> block to override it.</li>
+<li><strong><code>name</code>, <code>domain</code>, and <code>proxied</code> are required</strong> — <code>proxied</code> has no default in the zone template.</li>
+<li><strong>Optional fields pass through unchanged</strong> — <code>tls_skip_verify</code>, <code>forward_headers</code>, <code>host_header</code>, <code>encode</code>, <code>read_buffer</code>, <code>dns</code>, and <code>enabled</code> behave exactly as in manual entries.</li>
+</ul>
+<p>Apps without a <code>proxy:</code> block (e.g., openbooks, games-server) get no DNS record and no Caddy entry.</p>
 <h2 id="service-aggregation"><a class="toclink" href="#service-aggregation">Service Aggregation</a></h2>
-<p>The <code>_services.yml</code> file in each environment aggregates all per-domain service lists and injects the <code>domain</code> field:</p>
+<p>The <code>_services.yml</code> file in each environment aggregates the manual per-domain service lists (injecting the <code>domain</code> field) and appends the registry-generated entries, which already carry their <code>domain</code> from the <code>proxy:</code> block. Manual lists come first to keep zone and Caddyfile ordering stable:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">WIL</label><label for="__tabbed_1_2">LDN</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="no">{{</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="no">(video_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;5am.video&#39;}) | list) +</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">    </span><span class="no">(cloud_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;5am.cloud&#39;}) | list) +</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">    </span><span class="no">(wil_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;wil.5am.cloud&#39;}) | list) +</span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">    </span><span class="no">(ext_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;ext.5am.cloud&#39;}) | list) +</span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">    </span><span class="no">(sfc_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;sfc.al&#39;}) | list)</span>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">  </span><span class="no">}}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="no">{{</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span><span class="no">(video_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;5am.video&#39;}) | list) +</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span><span class="no">(cloud_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;5am.cloud&#39;}) | list) +</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">    </span><span class="no">(wil_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;wil.5am.cloud&#39;}) | list) +</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">    </span><span class="no">(ext_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;ext.5am.cloud&#39;}) | list) +</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">    </span><span class="no">(sfc_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;sfc.al&#39;}) | list) +</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="no">registry_services</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w">  </span><span class="no">}}</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="no">{{</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span><span class="no">(ldn_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;ldn.5am.cloud&#39;}) | list)</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span><span class="no">}}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="no">{{</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="no">(ldn_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;ldn.5am.cloud&#39;}) | list) +</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="no">registry_services</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span><span class="no">}}</span>
 </code></pre></div>
 </div>
 </div>
 </div>
+<p>A list may aggregate even when no domain file defines it — the <code>default([])</code> keeps unused lists (e.g., <code>sfc_services</code> in WIL, whose services all live in the registry) as extension points.</p>
 <p>Both BIND9 zone templates and the Caddyfile template consume the resulting <code>services</code> list.</p>
 <h2 id="best-practices"><a class="toclink" href="#best-practices">Best Practices</a></h2>
 <table>
@@ -2545,28 +2600,38 @@
 </table>
 <h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
 <h3 id="add-a-new-service-to-an-existing-domain"><a class="toclink" href="#add-a-new-service-to-an-existing-domain">Add a new service to an existing domain</a></h3>
-<ol>
-<li>Open the domain file, e.g., <code>ansible/environments/wil/group_vars/all/proxy/wil.5am.cloud.yml</code></li>
-<li>
-<p>Add a service entry:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.60</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<p><strong>Registry apps</strong> — add a <code>proxy:</code> block to the app's entry in <code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">myapp</span><span class="p">:</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_myapp</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="c1"># renovate: datasource=docker</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myimage:latest&quot;</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">  </span><span class="nt">proxy</span><span class="p">:</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">    </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wil.5am.cloud</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">    </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-</li>
+<p><code>backend_host</code> and <code>backend_port</code> are derived from the app's <code>host_group</code> and <code>port</code> — no manual entry is needed.</p>
+<p><strong>Non-catalog services</strong> (third-party devices, media stack, monitoring) — add an entry to the domain file, e.g., <code>ansible/environments/wil/group_vars/all/proxy/wil.5am.cloud.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.60</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Then, for either path:</p>
+<ol>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 </li>
 <li>
 <p>Verify:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Check DNS</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>dig<span class="w"> </span>myapp.wil.5am.cloud<span class="w"> </span>@10.2.20.53
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1"># Check HTTPS</span>
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>curl<span class="w"> </span>-I<span class="w"> </span>https://myapp.wil.5am.cloud
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Check DNS</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>dig<span class="w"> </span>myapp.wil.5am.cloud<span class="w"> </span>@10.2.20.53
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="c1"># Check HTTPS</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>curl<span class="w"> </span>-I<span class="w"> </span>https://myapp.wil.5am.cloud
 </code></pre></div>
 </li>
 </ol>
@@ -2574,28 +2639,28 @@
 <ol>
 <li>
 <p>Add the domain to <code>ansible/environments/&lt;env&gt;/group_vars/all/vars.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nt">domains</span><span class="p">:</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="c1"># ... existing domains</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;new.5am.cloud&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">domains</span><span class="p">:</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="c1"># ... existing domains</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;new.5am.cloud&quot;</span>
 </code></pre></div>
 </li>
 <li>
 <p>Create a service file at <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/new.5am.cloud.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nn">---</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="nt">new_services</span><span class="p">:</span>
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app</span>
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.60</span>
-<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
-<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">    </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nn">---</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="nt">new_services</span><span class="p">:</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">    </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.60</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">    </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">    </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 </li>
 <li>
 <p>Update <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/_services.yml</code> to include the new list:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="no">{{</span>
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="no">... +</span>
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span><span class="no">(new_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;new.5am.cloud&#39;}) | list)</span>
-<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span><span class="no">}}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span><span class="no">{{</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">    </span><span class="no">... +</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">    </span><span class="no">(new_services | default([]) | map(&#39;combine&#39;, {&#39;domain&#39;: &#39;new.5am.cloud&#39;}) | list)</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">  </span><span class="no">}}</span>
 </code></pre></div>
 </li>
 <li>
@@ -2603,22 +2668,22 @@
 </li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 </li>
 </ol>
 <h3 id="disable-a-service-temporarily"><a class="toclink" href="#disable-a-service-temporarily">Disable a service temporarily</a></h3>
-<p>Set <code>enabled: false</code> on the service entry. This removes both the DNS record and the Caddy proxy entry without deleting the configuration:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.60</span>
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<p>Set <code>enabled: false</code> on the service entry (for registry apps, inside the <code>proxy:</code> block in <code>apps.yml</code>). This removes both the DNS record and the Caddy proxy entry without deleting the configuration:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.60</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
 <p><strong>502 Bad Gateway</strong> — Caddy can reach the backend but it's not responding. Check the backend container is running: <code>ssh &lt;host&gt; docker ps</code>. Verify <code>backend_port</code> matches the container's exposed port.</p>
 <p><strong>Certificate not issuing</strong> — Check Caddy logs: <code>ssh &lt;networking-ip&gt; docker logs caddy</code>. Common causes: Cloudflare API token expired, domain not on Cloudflare, or Let's Encrypt rate limit hit.</p>
-<p><strong>Service accessible via IP but not hostname</strong> — The DNS record is missing or pointing to the wrong IP. Check with <code>dig &lt;service&gt;.&lt;domain&gt; @10.2.20.53</code> and verify the service entry in the domain file.</p>
+<p><strong>Service accessible via IP but not hostname</strong> — The DNS record is missing or pointing to the wrong IP. Check with <code>dig &lt;service&gt;.&lt;domain&gt; @10.2.20.53</code> and verify the service entry in the domain file (or the app's <code>proxy:</code> block in <code>apps.yml</code> for registry apps).</p>
 <p><strong>Headers not forwarded</strong> — Ensure <code>forward_headers: true</code> is set on the service entry and redeploy networking.</p>
 
 

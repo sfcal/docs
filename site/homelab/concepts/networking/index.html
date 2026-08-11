@@ -1729,7 +1729,7 @@
 <li><strong>Port Forwarding</strong> — UDM Pro forwards ports 80/443 to Caddy for external access. See <a href="../../infrastructure/networking/unifi/#port-forwarding">Port Forwarding</a>.</li>
 </ul>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>Service not resolving internally</strong> — Check that BIND9 is running on the networking VM and that the service has an entry in the appropriate domain file under <code>group_vars/all/proxy/</code>. Redeploy networking: <code>task ansible:deploy-networking ENV=wil</code>.</p>
+<p><strong>Service not resolving internally</strong> — Check that BIND9 is running on the networking VM and that the service has an entry in the appropriate domain file under <code>group_vars/all/proxy/</code> (or a <code>proxy:</code> block on the app's entry in <code>apps.yml</code>). Redeploy networking: <code>task ansible:deploy-networking ENV=wil</code>.</p>
 <p><strong>External access not working</strong> — Verify DDNS is updating Cloudflare with the correct public IP. Check that ports 80/443 are forwarded to Caddy on the UDM Pro.</p>
 <p><strong>Cross-site resolution failing</strong> — Ensure Tailscale is connected on both subnet routers and that zone transfers are configured. Check with <code>dig @10.2.20.53 &lt;hostname&gt;.ldn.5am.cloud</code>.</p>
 

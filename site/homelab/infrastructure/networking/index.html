@@ -1810,9 +1810,10 @@
 <p>A unified YAML service model drives both DNS records and Caddy reverse proxy configuration. Each service is defined once and consumed by both BIND9 zone templates and the Caddyfile template.</p>
 <pre class="mermaid"><code>graph LR
     A["Per-domain YAML\n(5am.video.yml, etc.)"] --&gt; B["_services.yml\naggregation"]
+    R["App registry\n(apps.yml proxy: blocks)"] --&gt; B
     B --&gt; C["domain.zone.j2\n(DNS A records)"]
     B --&gt; D["Caddyfile.j2\n(reverse proxy)"]</code></pre>
-<p>Service definitions live in <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code> with one file per domain. The <code>_services.yml</code> file aggregates all domain lists and injects the <code>domain</code> field automatically.</p>
+<p>Service definitions come from two sources. Apps in the registry (<code>group_vars/all/apps.yml</code>) declare a <code>proxy:</code> block, from which <code>_services.yml</code> generates entries automatically. Manual per-domain files in <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code> cover services outside the catalog (third-party devices, media stack, monitoring). The <code>_services.yml</code> file aggregates the domain lists (injecting the <code>domain</code> field) and appends the registry-generated entries.</p>
 <p>See <a href="proxy/#service-definition-reference">Reverse Proxy — Service Definition Reference</a> for the full field specification.</p>
 <h2 id="deployment"><a class="toclink" href="#deployment">Deployment</a></h2>
 <p>Deploy the full networking stack:</p>
@@ -1860,7 +1861,11 @@
 </tr>
 <tr>
 <td><code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code></td>
-<td>Service definitions</td>
+<td>Manual service definitions and aggregation</td>
+</tr>
+<tr>
+<td><code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code></td>
+<td>App registry (<code>proxy:</code> blocks)</td>
 </tr>
 </tbody>
 </table>

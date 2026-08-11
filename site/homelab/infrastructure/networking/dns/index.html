@@ -1939,7 +1939,7 @@
 <p>BIND9 generates zone files from two data sources:</p>
 <ol>
 <li><strong><code>domains</code></strong> — list in <code>group_vars/all/vars.yml</code> defines which zones this server is authoritative for</li>
-<li><strong><code>services</code></strong> — aggregated service list provides A records within each zone</li>
+<li><strong><code>services</code></strong> — aggregated service list provides A records within each zone. It is built from two sources: manual per-domain lists in <code>group_vars/all/proxy/&lt;domain&gt;.yml</code> (non-catalog services) plus registry-generated entries from <code>proxy:</code> blocks in <code>group_vars/all/apps.yml</code> (see <a href="../proxy/#registry-generated-entries">Reverse Proxy — Registry-Generated Entries</a>)</li>
 </ol>
 <p>For each domain, the <code>domain.zone.j2</code> template generates:</p>
 <ul>
@@ -2235,7 +2235,7 @@
 <a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>dig<span class="w"> </span>AXFR<span class="w"> </span>5am.video<span class="w"> </span>@10.2.20.53
 </code></pre></div>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>Service not resolving</strong> — Check BIND9 is running: <code>ssh &lt;networking-ip&gt; docker logs bind9</code>. Verify the service has an entry in the correct domain file under <code>group_vars/all/proxy/</code> and redeploy: <code>task ansible:deploy-networking ENV=wil</code>.</p>
+<p><strong>Service not resolving</strong> — Check BIND9 is running: <code>ssh &lt;networking-ip&gt; docker logs bind9</code>. Verify the service has an entry in the correct domain file under <code>group_vars/all/proxy/</code> (or a <code>proxy:</code> block on the app's entry in <code>group_vars/all/apps.yml</code>) and redeploy: <code>task ansible:deploy-networking ENV=wil</code>.</p>
 <p><strong>Wrong IP returned</strong> — If a proxied service resolves to <code>backend_host</code> instead of <code>reverse_proxy_ip</code>, check that <code>proxied: true</code> is set. If a non-proxied service resolves to the Caddy IP, check that <code>proxied: false</code> is set.</p>
 <p><strong>Zone transfer not working</strong> — Verify Tailscale connectivity between sites. Check that <code>dns_transfer_clients</code> includes the remote DNS server IP and the CGNAT range. Test with <code>dig AXFR &lt;zone&gt; @&lt;primary-dns&gt;</code>.</p>
 <p><strong>Serial number not incrementing</strong> — Zone serials use the current epoch. If BIND9 doesn't pick up changes, restart the container: <code>ssh &lt;networking-ip&gt; docker restart bind9</code>.</p>

@@ -1954,11 +1954,15 @@
 <p>Most applications use the shared <code>deploy-app.yml</code> playbook. Apps are defined in <code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">birdle</span><span class="p">:</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_birdle</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">images</span><span class="p">:</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/sfcal/new-birdle:latest</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="c1"># renovate: datasource=docker</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ghcr.io/sfcal/new-birdle:latest&quot;</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8091</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">proxy</span><span class="p">:</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">birdle</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sfc.al</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<p>The <code>deploy-app.yml</code> playbook reads the app config, includes the <code>docker_service</code> role, and deploys the Docker Compose template from <code>ansible/playbooks/apps/&lt;name&gt;/templates/compose.yaml.j2</code>.</p>
+<p>The <code>deploy-app.yml</code> playbook reads the app config, includes the <code>docker_service</code> role, and deploys the Docker Compose template from <code>ansible/playbooks/apps/&lt;name&gt;/templates/compose.yaml.j2</code>. The image pre-pull list is derived from every registry key ending in <code>image</code> (top level and one nesting level down) — there is no manual <code>images:</code> list. See <a href="../config/#app-registry">Config Reference — App Registry</a> for the full schema.</p>
 <h3 id="custom-app-playbooks"><a class="toclink" href="#custom-app-playbooks">Custom App Playbooks</a></h3>
 <p>Apps that need more than Docker Compose (e.g., media stack with backup/restore) have custom playbooks at <code>ansible/playbooks/apps/&lt;name&gt;/deploy.yml</code>.</p>
 <table>
