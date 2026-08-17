@@ -620,6 +620,8 @@
       
         
       
+        
+      
     
     
     
@@ -775,6 +777,34 @@
     
   
     Certificates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/reimage-time-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Re-image the Time Server
   
 
     
@@ -1425,6 +1455,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#network-boot-pxe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Boot (PXE)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Boot (PXE)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dhcp-reservation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DHCP Reservation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewall-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewall Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#inter-vlan-routing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1709,6 +1778,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#network-boot-pxe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Boot (PXE)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Boot (PXE)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dhcp-reservation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DHCP Reservation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewall-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewall Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#inter-vlan-routing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1901,12 +2009,18 @@
 <td><code>10.3.20.0/24</code></td>
 <td>All Ansible-managed VMs</td>
 </tr>
+<tr>
+<td>30</td>
+<td>Servers Misc</td>
+<td><code>10.3.30.0/24</code></td>
+<td>Bare-metal lab devices (PTP time server and clients)</td>
+</tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<p>All Ansible-managed infrastructure and application VMs live on <strong>VLAN 20</strong> (Virtual Machines). The networking VM at <code>.53</code>, CA at <code>.9</code>, NTP at <code>.123</code>, and monitoring at <code>.30</code> are all on this VLAN.</p>
+<p>All Ansible-managed infrastructure and application VMs live on <strong>VLAN 20</strong> (Virtual Machines). The networking VM at <code>.53</code>, CA at <code>.9</code>, NTP at <code>.123</code>, and monitoring at <code>.30</code> are all on this VLAN. In LDN, the PTP time server (LattePanda MU) is a physical host on VLAN 30 at <code>10.3.30.64</code>, managed by the separate <code>ptp-experiments</code> repo.</p>
 <h2 id="static-routes"><a class="toclink" href="#static-routes">Static Routes</a></h2>
 <p>Static routes on the UDM Pro direct traffic for remote site subnets through the local Tailscale subnet router. Without these routes, traffic destined for other sites would be sent to the default gateway (the ISP) instead of through the Tailscale tunnel.</p>
 <h3 id="why-static-routes-are-needed"><a class="toclink" href="#why-static-routes-are-needed">Why Static Routes Are Needed</a></h3>
@@ -2039,6 +2153,48 @@
 <li>UDM Pro receives traffic on port 443, forwards to <code>10.2.20.53:443</code></li>
 <li>Caddy terminates TLS, matches the hostname, and proxies to the backend</li>
 </ol>
+<h2 id="network-boot-pxe"><a class="toclink" href="#network-boot-pxe">Network Boot (PXE)</a></h2>
+<p>The LDN netboot VM (<code>10.3.20.60</code>) runs <a href="https://netboot.xyz">netboot.xyz</a> for PXE re-imaging of bare-metal devices — currently the PTP time server on VLAN 30. See the <a href="../../../guides/reimage-time-server/">Re-image the Time Server</a> runbook.</p>
+<p>In the UniFi controller: <strong>Settings → Networks → (VLAN 30 network) → DHCP Service Management → Show Options → Network Boot</strong></p>
+<table>
+<thead>
+<tr>
+<th>Network</th>
+<th>Server</th>
+<th>Filename</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LDN VLAN 30</td>
+<td><code>10.3.20.60</code></td>
+<td><code>netboot.xyz.efi</code></td>
+<td>UEFI x86_64 PXE boot → netboot.xyz menu</td>
+</tr>
+</tbody>
+</table>
+<p>Scoping the option to VLAN 30 keeps PXE away from every other network. If the controller version lacks a Network Boot toggle, set custom DHCP options 66 (TFTP server) and 67 (boot filename) instead.</p>
+<h3 id="dhcp-reservation"><a class="toclink" href="#dhcp-reservation">DHCP Reservation</a></h3>
+<p>The time server re-installs with DHCP networking; a fixed-IP reservation pins it to the address Ansible expects:</p>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Fixed IP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LattePanda MU (PTP grandmaster)</td>
+<td><code>10.3.30.64</code></td>
+<td>Reserve against the NIC MAC shown in the UniFi client list</td>
+</tr>
+</tbody>
+</table>
+<h3 id="firewall-requirements"><a class="toclink" href="#firewall-requirements">Firewall Requirements</a></h3>
+<p>PXE clients on VLAN 30 must reach the netboot VM on VLAN 20: <strong>UDP 69</strong> (TFTP) and <strong>TCP 8080</strong> (HTTP boot assets). Inter-VLAN routing is allowed by default; only restrictive custom LAN-to-LAN rules would break this (symptom: iPXE times out fetching the boot file).</p>
 <h2 id="inter-vlan-routing"><a class="toclink" href="#inter-vlan-routing">Inter-VLAN Routing</a></h2>
 <p>The UDM Pro routes traffic between VLANs by default. Key inter-VLAN traffic patterns:</p>
 <table>

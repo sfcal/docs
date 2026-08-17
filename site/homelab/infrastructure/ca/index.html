@@ -620,6 +620,8 @@
       
         
       
+        
+      
     
     
     
@@ -775,6 +777,34 @@
     
   
     Certificates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/reimage-time-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Re-image the Time Server
   
 
     
@@ -2005,8 +2035,8 @@
 <ol>
 <li>
 <p>Edit <code>ansible/environments/&lt;env&gt;/group_vars/infra_ca/vars.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">step_ca_default_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2160h&quot;</span><span class="w">   </span><span class="c1"># 90 days</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">step_ca_max_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;17520h&quot;</span><span class="w">      </span><span class="c1"># 2 years</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">step_ca_default_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">"2160h"</span><span class="w">   </span><span class="c1"># 90 days</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">step_ca_max_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">"17520h"</span><span class="w">      </span><span class="c1"># 2 years</span>
 </code></pre></div>
 </li>
 <li>

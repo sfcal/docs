@@ -620,6 +620,8 @@
       
         
       
+        
+      
     
     
     
@@ -775,6 +777,34 @@
     
   
     Certificates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/reimage-time-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Re-image the Time Server
   
 
     
@@ -1874,14 +1904,14 @@
 <h3 id="configuration"><a class="toclink" href="#configuration">Configuration</a></h3>
 <p>Edit <code>ansible/environments/&lt;env&gt;/group_vars/infra_networking/ddns.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">ddns_domains</span><span class="p">:</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;plex.5am.video&quot;</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;convert.wil.5am.cloud&quot;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"plex.5am.video"</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"convert.wil.5am.cloud"</span>
 </code></pre></div>
 <h3 id="ddns_domains"><a class="toclink" href="#ddns_domains"><code>ddns_domains</code></a></h3>
 <p>FQDNs to keep updated with the current public IP.</p>
 <p><strong>Type:</strong> <code>list[string]</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">ddns_domains</span><span class="p">:</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;plex.5am.video&quot;</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"plex.5am.video"</span>
 </code></pre></div>
 <p>The container runs with minimal privileges (all capabilities dropped, read-only filesystem, no new privileges) and uses the <code>CF_API_TOKEN</code> from SOPS-encrypted secrets for Cloudflare API access.</p>
 

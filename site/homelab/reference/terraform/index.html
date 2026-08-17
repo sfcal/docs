@@ -620,6 +620,8 @@
       
         
       
+        
+      
     
     
     
@@ -775,6 +777,34 @@
     
   
     Certificates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/reimage-time-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Re-image the Time Server
   
 
     
@@ -1743,39 +1773,39 @@
 <p>Each VM is an entry in the <code>vms</code> map in <code>vms.auto.tfvars</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">vms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nb">networking</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="na">name</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;networking&quot;</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="na">description</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Networking VM&quot;</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="na">proxmox_node</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proxmox&quot;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="na">name</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">"networking"</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="na">description</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">"Networking VM"</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="na">proxmox_node</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">"proxmox"</span>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="na">vmid</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="na">template_name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ubuntu-server-wil-base&quot;</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="na">ip_address</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.53&quot;</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="na">gateway</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.1&quot;</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="na">nameserver</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.53&quot;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="na">template_name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">"ubuntu-server-wil-base"</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="na">ip_address</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">"10.2.20.53"</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="na">gateway</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">"10.2.20.1"</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="na">nameserver</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">"10.2.20.53"</span>
 <a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="na">cores</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="m">2</span>
 <a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="na">memory</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="m">4096</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="na">disk_size</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;50G&quot;</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="na">storage_pool</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;local-lvm&quot;</span>
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="na">network_bridge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;vmbr0&quot;</span>
-<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="na">tags</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;infrastructure&quot;</span>
-<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="na">ssh_user</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;sfcal&quot;</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="na">disk_size</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">"50G"</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="na">storage_pool</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">"local-lvm"</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="na">network_bridge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"vmbr0"</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="na">tags</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">"infrastructure"</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="na">ssh_user</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">"sfcal"</span>
 <a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
 <a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">  </span><span class="nb">ca_server</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="na">name</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ca&quot;</span>
-<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">    </span><span class="na">description</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Certificate Authority&quot;</span>
-<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">    </span><span class="na">proxmox_node</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;proxmox&quot;</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="na">name</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">"ca"</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">    </span><span class="na">description</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">"Certificate Authority"</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">    </span><span class="na">proxmox_node</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">"proxmox"</span>
 <a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="na">vmid</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="m">1003</span>
-<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">    </span><span class="na">template_name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ubuntu-server-wil-base&quot;</span>
-<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">    </span><span class="na">ip_address</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.9&quot;</span>
-<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">    </span><span class="na">gateway</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.1&quot;</span>
-<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">    </span><span class="na">nameserver</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.2.20.53&quot;</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">    </span><span class="na">template_name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">"ubuntu-server-wil-base"</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">    </span><span class="na">ip_address</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">"10.2.20.9"</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">    </span><span class="na">gateway</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">"10.2.20.1"</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">    </span><span class="na">nameserver</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">"10.2.20.53"</span>
 <a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">    </span><span class="na">cores</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
 <a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">    </span><span class="na">memory</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="m">4096</span>
-<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">    </span><span class="na">disk_size</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;20G&quot;</span>
-<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">    </span><span class="na">storage_pool</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;local-lvm&quot;</span>
-<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">    </span><span class="na">network_bridge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;vmbr0&quot;</span>
-<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">    </span><span class="na">tags</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;infrastructure&quot;</span>
-<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">    </span><span class="na">ssh_user</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;sfcal&quot;</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">    </span><span class="na">disk_size</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">"20G"</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">    </span><span class="na">storage_pool</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">"local-lvm"</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">    </span><span class="na">network_bridge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"vmbr0"</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">    </span><span class="na">tags</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">"infrastructure"</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">    </span><span class="na">ssh_user</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">"sfcal"</span>
 <a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="p">}</span>
 </code></pre></div>

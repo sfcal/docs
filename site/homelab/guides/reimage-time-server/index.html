@@ -10,11 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.5am.cloud/homelab/infrastructure/docker/">
+        <link rel="canonical" href="https://docs.5am.cloud/homelab/guides/reimage-time-server/">
       
       
-        <link rel="prev" href="../monitoring/">
+        <link rel="prev" href="../certificates/">
       
+      
+        <link rel="next" href="../../reference/">
       
       
         
@@ -25,7 +27,7 @@
     
     
       
-        <title>Docker Services - Homelab Infrastructure as Code</title>
+        <title>Re-image the Time Server - Homelab Infrastructure as Code</title>
       
     
     
@@ -78,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#docker-services" class="md-skip">
+        <a href="#re-image-the-time-server" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Docker Services
+              Re-image the Time Server
             
           </span>
         </div>
@@ -601,6 +603,8 @@
       
   
   
+    
+  
   
   
     
@@ -629,17 +633,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../guides/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -663,7 +665,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -683,7 +685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/deploy-service/" class="md-nav__link">
+      <a href="../deploy-service/" class="md-nav__link">
         
   
   
@@ -711,7 +713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/add-vm/" class="md-nav__link">
+      <a href="../add-vm/" class="md-nav__link">
         
   
   
@@ -739,7 +741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/networking-changes/" class="md-nav__link">
+      <a href="../networking-changes/" class="md-nav__link">
         
   
   
@@ -767,7 +769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/certificates/" class="md-nav__link">
+      <a href="../certificates/" class="md-nav__link">
         
   
   
@@ -792,10 +794,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../guides/reimage-time-server/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Re-image the Time Server
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -811,6 +840,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-flight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-flight
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#re-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Re-image
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restore
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1053,8 +1157,6 @@
       
   
   
-    
-  
   
   
     
@@ -1083,15 +1185,17 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../infrastructure/" class="md-nav__link ">
               
   
   
@@ -1115,7 +1219,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1165,7 +1269,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../networking/" class="md-nav__link ">
+            <a href="../../infrastructure/networking/" class="md-nav__link ">
               
   
   
@@ -1209,7 +1313,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../networking/dns/" class="md-nav__link">
+      <a href="../../infrastructure/networking/dns/" class="md-nav__link">
         
   
   
@@ -1237,7 +1341,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../networking/proxy/" class="md-nav__link">
+      <a href="../../infrastructure/networking/proxy/" class="md-nav__link">
         
   
   
@@ -1265,7 +1369,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../networking/tailscale/" class="md-nav__link">
+      <a href="../../infrastructure/networking/tailscale/" class="md-nav__link">
         
   
   
@@ -1293,7 +1397,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../networking/unifi/" class="md-nav__link">
+      <a href="../../infrastructure/networking/unifi/" class="md-nav__link">
         
   
   
@@ -1329,7 +1433,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ca/" class="md-nav__link">
+      <a href="../../infrastructure/ca/" class="md-nav__link">
         
   
   
@@ -1357,7 +1461,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ntp/" class="md-nav__link">
+      <a href="../../infrastructure/ntp/" class="md-nav__link">
         
   
   
@@ -1385,7 +1489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../monitoring/" class="md-nav__link">
+      <a href="../../infrastructure/monitoring/" class="md-nav__link">
         
   
   
@@ -1410,37 +1514,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Docker Services
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../infrastructure/docker/" class="md-nav__link">
         
   
   
@@ -1456,81 +1533,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#media-stack" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Media Stack
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#data-driven-apps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data-Driven Apps
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#infrastructure-services" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Infrastructure Services
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How It Works
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1570,43 +1572,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#media-stack" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Media Stack
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#data-driven-apps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data-Driven Apps
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#infrastructure-services" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Infrastructure Services
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
         How It Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-flight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-flight
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#re-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Re-image
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restore
       
     </span>
   </a>
@@ -1670,7 +1672,7 @@
         <a href="../" class="md-path__link">
           
   <span class="md-ellipsis">
-    Infrastructure
+    Guides
   </span>
 
         </a>
@@ -1692,179 +1694,54 @@
   
 
 
-<h1 id="docker-services"><a class="toclink" href="#docker-services">Docker Services</a></h1>
-<p>All homelab services run as Docker Compose stacks deployed by Ansible. The <code>docker_service</code> role handles directory creation, compose template rendering, image pulling, and container lifecycle.</p>
-<h2 id="media-stack"><a class="toclink" href="#media-stack">Media Stack</a></h2>
-<p>The media stack provides automated media management and streaming on a dedicated host (<code>app_mediastack</code>):</p>
-<table>
-<thead>
-<tr>
-<th>Service</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Plex</td>
-<td>Media streaming server</td>
-</tr>
-<tr>
-<td>Sonarr</td>
-<td>TV show management</td>
-</tr>
-<tr>
-<td>Radarr</td>
-<td>Movie management</td>
-</tr>
-<tr>
-<td>Prowlarr</td>
-<td>Indexer management</td>
-</tr>
-<tr>
-<td>Sabnzbd</td>
-<td>Download client</td>
-</tr>
-<tr>
-<td>Bazarr</td>
-<td>Subtitle management</td>
-</tr>
-<tr>
-<td>Tdarr</td>
-<td>Media transcoding</td>
-</tr>
-<tr>
-<td>Pulsarr</td>
-<td>Request management</td>
-</tr>
-<tr>
-<td>Frigate</td>
-<td>Camera/NVR integration</td>
-</tr>
-</tbody>
-</table>
-<p>Deploy with <code>task ansible:deploy-media ENV=wil</code>. Supports backup and restore:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:backup-media<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:restore-media<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
-</code></pre></div>
-<h2 id="data-driven-apps"><a class="toclink" href="#data-driven-apps">Data-Driven Apps</a></h2>
-<p>Most applications use the shared <code>deploy-app.yml</code> playbook and are defined in <code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code>. See <a href="../../guides/deploy-service/">Deploy a Service</a> for the full workflow.</p>
-<table>
-<thead>
-<tr>
-<th>App</th>
-<th>Image</th>
-<th>Port</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Birdle</td>
-<td><code>ghcr.io/sfcal/new-birdle</code></td>
-<td>8091</td>
-</tr>
-<tr>
-<td>Bookstack</td>
-<td><code>lscr.io/linuxserver/bookstack</code></td>
-<td>8074</td>
-</tr>
-<tr>
-<td>ConvertX</td>
-<td><code>ghcr.io/c4illin/convertx</code></td>
-<td>3100</td>
-</tr>
-<tr>
-<td>CyberChef</td>
-<td><code>ghcr.io/gchq/cyberchef</code></td>
-<td>8071</td>
-</tr>
-<tr>
-<td>Games Server</td>
-<td>Terraria</td>
-<td>7777</td>
-</tr>
-<tr>
-<td>IT-Tools</td>
-<td><code>corentinth/it-tools</code></td>
-<td>8070</td>
-</tr>
-<tr>
-<td>Kasm</td>
-<td><code>lscr.io/linuxserver/kasm</code></td>
-<td>4443</td>
-</tr>
-<tr>
-<td>MicroBin</td>
-<td><code>danielszabo99/microbin</code></td>
-<td>8081</td>
-</tr>
-<tr>
-<td>OpenBooks</td>
-<td><code>evanbuss/openbooks</code></td>
-<td>8072</td>
-</tr>
-<tr>
-<td>Restreamer</td>
-<td><code>datarhei/restreamer</code></td>
-<td>8710</td>
-</tr>
-<tr>
-<td>RomM</td>
-<td><code>rommapp/romm</code></td>
-<td>8085</td>
-</tr>
-<tr>
-<td>Seafile</td>
-<td><code>seafileltd/seafile-mc</code></td>
-<td>8080</td>
-</tr>
-<tr>
-<td>Stirling PDF</td>
-<td><code>stirlingtools/stirling-pdf</code></td>
-<td>8073</td>
-</tr>
-<tr>
-<td>Website</td>
-<td><code>ghcr.io/sfcal/samuel.computer</code></td>
-<td>8090</td>
-</tr>
-</tbody>
-</table>
-<h2 id="infrastructure-services"><a class="toclink" href="#infrastructure-services">Infrastructure Services</a></h2>
-<p>Infrastructure services have dedicated playbooks rather than using the data-driven pattern:</p>
-<table>
-<thead>
-<tr>
-<th>Service</th>
-<th>Docs</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>BIND9, Caddy, DDNS, Tailscale</td>
-<td><a href="../networking/">Networking</a></td>
-</tr>
-<tr>
-<td>Prometheus, Grafana, Homepage</td>
-<td><a href="../monitoring/">Monitoring</a></td>
-</tr>
-<tr>
-<td>Step-CA</td>
-<td><a href="../ca/">Certificate Authority</a></td>
-</tr>
-</tbody>
-</table>
+<h1 id="re-image-the-time-server"><a class="toclink" href="#re-image-the-time-server">Re-image the Time Server</a></h1>
+<p>Reset the PTP time server (LattePanda MU, <code>10.3.30.64</code>, LDN VLAN 30) to a fresh Ubuntu install over the network. The loop is: PXE boot → pick the menu entry → confirm once at the console → wait for the unattended install → re-run the ptp-experiments Ansible.</p>
+<p>The MU is a physical UEFI x86 SBC managed by the separate <code>ptp-experiments</code> repo — the homelab provides only the netboot service that lays down the base OS.</p>
 <h2 id="how-it-works"><a class="toclink" href="#how-it-works">How It Works</a></h2>
+<pre class="mermaid"><code>graph LR
+    MU["LattePanda MU\n(VLAN 30)"] --&gt;|"DHCP + PXE"| UDM["UDM Pro\nNetwork Boot option"]
+    UDM --&gt;|"TFTP: netboot.xyz.efi"| NB["netboot VM\n10.3.20.60"]
+    MU --&gt;|"HTTP :8080\nkernel / initrd / ISO / seed"| NB</code></pre>
+<p>The UDM Pro's VLAN 30 DHCP scope points PXE clients at the netboot VM running <a href="https://netboot.xyz">netboot.xyz</a> (see <a href="../../infrastructure/networking/unifi/#network-boot-pxe">UniFi Gateway — Network Boot</a>). The custom menu entry boots the Ubuntu live-server kernel with a NoCloud autoinstall seed but <strong>without</strong> the <code>autoinstall</code> kernel argument, so the installer asks for exactly one confirmation before wiping the disk, then runs unattended.</p>
+<h2 id="pre-flight"><a class="toclink" href="#pre-flight">Pre-flight</a></h2>
 <ol>
-<li><strong>Compose templates</strong> — Jinja2 templates at <code>ansible/playbooks/apps/&lt;service&gt;/templates/compose.yaml.j2</code></li>
-<li><strong>Rendering</strong> — Ansible renders templates with environment-specific variables from <code>group_vars/</code></li>
-<li><strong>Deployment</strong> — The <code>docker_service</code> role creates the service directory, renders the compose file, pulls images, and starts containers</li>
-<li><strong>Restart policy</strong> — All containers use <code>unless-stopped</code></li>
-<li><strong>LinuxServer images</strong> — Use <code>PUID</code>, <code>PGID</code>, <code>UMASK</code> environment variables for file permissions</li>
+<li>
+<p><strong>Verify the Ubuntu release on the MU.</strong> The DKMS drivers in ptp-experiments (<code>igc-ppsfix</code>, <code>ptp-ocp-gnsspps</code>) are built against the MU's current kernel series, so the re-install must use the same release:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ssh<span class="w"> </span>sfcal@10.3.30.64<span class="w"> </span><span class="s1">'lsb_release -sr; uname -r'</span>
+</code></pre></div>
+<p>(Console fallback if SSH is down.)</p>
+</li>
+<li>
+<p><strong>Pin the release</strong> in <code>ansible/environments/ldn/group_vars/infra_netboot/vars.yml</code>: set <code>netboot_ubuntu_version</code> and <code>netboot_ubuntu_iso_sha256</code> (from <code>https://releases.ubuntu.com/&lt;version&gt;/SHA256SUMS</code>; superseded interim releases move to <code>old-releases.ubuntu.com</code> — update <code>netboot_ubuntu_iso_url</code> accordingly). Then redeploy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>task<span class="w"> </span>ansible:deploy-netboot<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn
+</code></pre></div>
+<p>The first run downloads the ~3 GB ISO onto the netboot VM.</p>
+</li>
+<li>
+<p><strong>Confirm the DHCP reservation</strong> mapping the MU's NIC MAC to <code>10.3.30.64</code> in the UniFi client list (see <a href="../../infrastructure/networking/unifi/#dhcp-reservation">UniFi Gateway — DHCP Reservation</a>).</p>
+</li>
+<li>
+<p><strong>Nothing to back up</strong> — the grandmaster's state is fully rebuilt by ptp-experiments. Note that Grafana/Prometheus history under <code>/opt/monitoring</code> on the MU is lost on re-image.</p>
+</li>
 </ol>
+<h2 id="re-image"><a class="toclink" href="#re-image">Re-image</a></h2>
+<ol>
+<li>Reboot the MU and enter the firmware boot menu; select <strong>UEFI PXE IPv4</strong> boot.</li>
+<li>The netboot.xyz menu loads → <strong>Custom user menu</strong> → <strong>Re-image PTP time server</strong>.</li>
+<li>The installer boots and asks a single confirmation before touching the disk — confirm at the console.</li>
+<li>Wait for the unattended install to finish. The MU reboots into fresh Ubuntu with user <code>sfcal</code>, SSH keys installed, and DHCP networking (landing on <code>10.3.30.64</code> via the reservation).</li>
+</ol>
+<h2 id="restore"><a class="toclink" href="#restore">Restore</a></h2>
+<p>From the <code>ptp-experiments</code> repo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>hosts.ini<span class="w"> </span>deploy.yml<span class="w"> </span>-l<span class="w"> </span>ptp_server
+</code></pre></div>
+<p>The two DKMS drivers only load after a reboot (the playbook flags <code>/run/reboot-required</code> rather than rebooting) — reboot when prompted and re-run if needed.</p>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>Container not starting</strong> — Check logs: <code>ssh &lt;host&gt; docker logs &lt;container&gt;</code>. Common issues: port conflicts, missing environment variables, image not found.</p>
-<p><strong>Image pull failed</strong> — Verify network connectivity on the host. For GHCR images, ensure no rate limiting. Retry with <code>ssh &lt;host&gt; docker pull &lt;image&gt;</code>.</p>
-<p><strong>Compose file not updating</strong> — Ansible only re-renders the template when variables change. Force a redeploy by modifying a variable or deleting the deployed compose file on the host.</p>
+<ul>
+<li><strong>iPXE times out fetching the boot file</strong> — check the VLAN 30 Network Boot option and that UDP 69 / TCP 8080 reach <code>10.3.20.60</code> (see the firewall notes in the <a href="../../infrastructure/networking/unifi/#network-boot-pxe">UniFi doc</a>).</li>
+<li><strong>Installer ignores the seed / runs fully interactive</strong> — verify <code>http://10.3.20.60:8080/timeserver/seed/user-data</code> and <code>meta-data</code> both return 200; on very new cloud-init, change <code>ds=nocloud-net</code> to <code>ds=nocloud</code> in <code>custom.ipxe.j2</code>.</li>
+<li><strong>Kernel boots then stalls loading the ISO</strong> — the <code>url=</code> boot loads the whole ISO into RAM; the client needs more RAM than the ISO size.</li>
+</ul>
 
 
 
@@ -1902,7 +1779,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../monitoring/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Monitoring">
+          <a href="../certificates/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Certificates">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1912,11 +1789,27 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Monitoring
+                Certificates
               </div>
             </div>
           </a>
         
+        
+          
+          <a href="../../reference/" class="md-footer__link md-footer__link--next" aria-label="Next: Reference">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Reference
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
         
       </nav>
     

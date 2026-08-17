@@ -622,6 +622,8 @@
       
         
       
+        
+      
     
     
     
@@ -949,6 +951,34 @@
     
   
     Certificates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reimage-time-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Re-image the Time Server
   
 
     
@@ -1817,7 +1847,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">myapp</span><span class="p">:</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_myapp</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="c1"># renovate: datasource=docker</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myimage:latest&quot;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">"myimage:latest"</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">proxy</span><span class="p">:</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
@@ -1833,10 +1863,10 @@
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">apps.myapp.port</span><span class="nv"> </span><span class="s">}}:8080&quot;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">apps.myapp.port</span><span class="nv"> </span><span class="s">}}:8080"</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="nt">PUID</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">puid</span><span class="nv"> </span><span class="s">}}&quot;</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="nt">PGID</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">pgid</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="nt">PUID</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">puid</span><span class="nv"> </span><span class="s">}}"</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="nt">PGID</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">pgid</span><span class="nv"> </span><span class="s">}}"</span>
 </code></pre></div>
 <h3 id="3-add-to-ansible-inventory"><a class="toclink" href="#3-add-to-ansible-inventory">3. Add to Ansible Inventory</a></h3>
 <p>Add a host group to <code>ansible/environments/&lt;env&gt;/hosts.ini</code>:</p>
@@ -1856,10 +1886,10 @@
 <h3 id="5-task-command"><a class="toclink" href="#5-task-command">5. Task Command</a></h3>
 <p>No new task is needed — the shared <code>deploy-app</code> task in <code>.taskfiles/ansible/Taskfile.yaml</code> deploys any registry app by name:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">deploy-app</span><span class="p">:</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">desc</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Deploy</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">app</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">name</span><span class="nv"> </span><span class="s">(APP=&lt;name&gt;)&quot;</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">desc</span><span class="p">:</span><span class="w"> </span><span class="s">"Deploy</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">app</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">name</span><span class="nv"> </span><span class="s">(APP=&lt;name&gt;)"</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">cmds</span><span class="p">:</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_deploy</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> PLAYBOOK_PATH</span><span class="p">:</span><span class="w"> </span><span class="nv">deploy-app.yml</span><span class="p p-Indicator">,</span><span class="nt"> EXTRA_ARGS</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-e</span><span class="nv"> </span><span class="s">app_name={{.APP}}</span><span class="nv"> </span><span class="s">-e</span><span class="nv"> </span><span class="s">@{{.APPS_FILE}}&#39;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> PLAYBOOK_PATH</span><span class="p">:</span><span class="w"> </span><span class="nv">deploy-app.yml</span><span class="p p-Indicator">,</span><span class="nt"> EXTRA_ARGS</span><span class="p">:</span><span class="w"> </span><span class="s">'-e</span><span class="nv"> </span><span class="s">app_name={{.APP}}</span><span class="nv"> </span><span class="s">-e</span><span class="nv"> </span><span class="s">@{{.APPS_FILE}}'</span><span class="w"> </span><span class="p p-Indicator">}</span>
 </code></pre></div>
 <p>Dedicated tasks (e.g., <code>deploy-media</code>) exist only for apps with custom playbooks.</p>
 <h3 id="6-dnsproxy-entry"><a class="toclink" href="#6-dnsproxy-entry">6. DNS/Proxy Entry</a></h3>
