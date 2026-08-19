@@ -622,6 +622,8 @@
       
         
       
+        
+      
     
     
     
@@ -805,6 +807,34 @@
     
   
     Re-image the Time Server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/provision-cm5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Provision a CM5
   
 
     
@@ -2176,7 +2206,7 @@
 </table>
 <p>Scoping the option to VLAN 30 keeps PXE away from every other network. If the controller version lacks a Network Boot toggle, set custom DHCP options 66 (TFTP server) and 67 (boot filename) instead.</p>
 <h3 id="dhcp-reservation"><a class="toclink" href="#dhcp-reservation">DHCP Reservation</a></h3>
-<p>The time server re-installs with DHCP networking; a fixed-IP reservation pins it to the address Ansible expects:</p>
+<p>The installed OS pins the time server's address statically by its PXE NIC's MAC (see the <code>timeserver_hosts</code> entry in the netboot vars); the installer itself uses DHCP only transiently to fetch the ISO. A fixed-IP reservation is kept purely as a backstop:</p>
 <table>
 <thead>
 <tr>
@@ -2195,6 +2225,7 @@
 </table>
 <h3 id="firewall-requirements"><a class="toclink" href="#firewall-requirements">Firewall Requirements</a></h3>
 <p>PXE clients on VLAN 30 must reach the netboot VM on VLAN 20: <strong>UDP 69</strong> (TFTP) and <strong>TCP 8080</strong> (HTTP boot assets). Inter-VLAN routing is allowed by default; only restrictive custom LAN-to-LAN rules would break this (symptom: iPXE times out fetching the boot file).</p>
+<p>Raspberry Pi CM5 clients on the same VLAN ignore the boot filename option (<code>netboot.xyz.efi</code> is x86-only and harmless to them) and pin the TFTP server via <code>TFTP_IP</code> in their EEPROM instead of relying on this DHCP option — no UniFi changes are needed for them. See <a href="../../../guides/provision-cm5/">Provision a CM5</a>.</p>
 <h2 id="inter-vlan-routing"><a class="toclink" href="#inter-vlan-routing">Inter-VLAN Routing</a></h2>
 <p>The UDM Pro routes traffic between VLANs by default. Key inter-VLAN traffic patterns:</p>
 <table>
