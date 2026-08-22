@@ -2050,7 +2050,7 @@
 </div>
 </div>
 </div>
-<p>All Ansible-managed infrastructure and application VMs live on <strong>VLAN 20</strong> (Virtual Machines). The networking VM at <code>.53</code>, CA at <code>.9</code>, NTP at <code>.123</code>, and monitoring at <code>.30</code> are all on this VLAN. In LDN, the PTP time server (LattePanda MU) is a physical host on VLAN 30 at <code>10.3.30.64</code>, managed by the separate <code>ptp-experiments</code> repo.</p>
+<p>All Ansible-managed infrastructure and application VMs live on <strong>VLAN 20</strong> (Virtual Machines). The networking VM at <code>.53</code>, CA at <code>.9</code>, NTP at <code>.123</code>, and monitoring at <code>.30</code> are all on this VLAN. In LDN, the PTP time server (LattePanda MU) is a physical host on VLAN 30 at <code>10.3.30.123</code>, managed by the separate <code>ptp-experiments</code> repo.</p>
 <h2 id="static-routes"><a class="toclink" href="#static-routes">Static Routes</a></h2>
 <p>Static routes on the UDM Pro direct traffic for remote site subnets through the local Tailscale subnet router. Without these routes, traffic destined for other sites would be sent to the default gateway (the ISP) instead of through the Tailscale tunnel.</p>
 <h3 id="why-static-routes-are-needed"><a class="toclink" href="#why-static-routes-are-needed">Why Static Routes Are Needed</a></h3>
@@ -2218,8 +2218,8 @@
 <tbody>
 <tr>
 <td>LattePanda MU (PTP grandmaster)</td>
-<td><code>10.3.30.64</code></td>
-<td>Reserve against the NIC MAC shown in the UniFi client list</td>
+<td><code>10.3.30.123</code></td>
+<td>Reserve against the PXE NIC MAC (<code>54:49:4d:45:00:22</code>), the same key as its <code>timeserver_hosts</code> entry</td>
 </tr>
 </tbody>
 </table>

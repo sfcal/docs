@@ -867,6 +867,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="How It Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-timecard-blacklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The timecard blacklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1610,6 +1627,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="How It Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-timecard-blacklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The timecard blacklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1725,7 +1759,7 @@
 
 
 <h1 id="re-image-the-time-server"><a class="toclink" href="#re-image-the-time-server">Re-image the Time Server</a></h1>
-<p>Reset the PTP time server (LattePanda MU, <code>10.3.30.64</code>, LDN VLAN 30) to a fresh Ubuntu install over the network. The loop is: PXE boot the MU → confirm once at the console → wait for the unattended install → the MU reboots into fresh Ubuntu → re-run the ptp-experiments Ansible.</p>
+<p>Reset the PTP time server (LattePanda MU, <code>timeserver</code>, <code>10.3.30.123</code>, LDN VLAN 30) to a fresh Ubuntu install over the network. The loop is: PXE boot the MU → wait for the unattended install → the MU reboots into fresh Ubuntu → re-run the ptp-experiments Ansible. There is no confirmation prompt anywhere in that loop.</p>
 <p>The MU is a physical UEFI x86 SBC managed by the separate <code>ptp-experiments</code> repo — the homelab provides only the netboot service that lays down the base OS. (The Raspberry Pi CM5 time-server nodes use a different mechanism on the same netboot VM — see <a href="../provision-cm5/">Provision a CM5</a>.)</p>
 <h2 id="how-it-works"><a class="toclink" href="#how-it-works">How It Works</a></h2>
 <pre class="mermaid"><code>graph LR
@@ -1733,19 +1767,21 @@
     UDM --&gt;|"TFTP: netboot.xyz.efi"| NB["netboot VM\n10.3.20.60"]
     MU --&gt;|"HTTP :8080\nkernel / initrd / ISO / seed"| NB</code></pre>
 <p>The UDM Pro's VLAN 30 DHCP scope points PXE clients at the netboot VM running <a href="https://netboot.xyz">netboot.xyz</a> (see <a href="../../infrastructure/networking/unifi/#network-boot-pxe">UniFi Gateway — Network Boot</a>).</p>
-<p>The netboot.xyz bootloader chains <code>MAC-${mac:hexhyp}.ipxe</code> from the TFTP root before falling back to <code>menu.ipxe</code>, so a per-MAC script scoped to the MU's PXE NIC boots it straight into the installer with no menu interaction — every other VLAN 30 client still gets the standard menu. That script omits the <code>autoinstall</code> kernel argument deliberately, so the installer asks for exactly one confirmation before wiping the disk, then runs unattended.</p>
-<p>The per-MAC script is <strong>always staged</strong> — there is no arm/disarm step, mirroring the CM5 flasher. A healthy node boots from its local disk and never reaches PXE; it lands in the installer only when local boot fails or PXE is deliberately chosen from the firmware boot menu. When the install finishes the node reboots straight into the fresh OS (a node that still cannot boot locally just returns to the installer's confirmation prompt).</p>
+<p>The netboot.xyz bootloader chains <code>MAC-${mac:hexhyp}.ipxe</code> from the TFTP root before falling back to <code>menu.ipxe</code>, so a per-MAC script scoped to the MU's PXE NIC boots it straight into the installer with no menu interaction — every other VLAN 30 client still gets the standard menu. That script passes <code>autoinstall</code> on the kernel line, so the install runs start to finish with no prompts — reaching it <em>is</em> the re-image.</p>
+<p>The per-MAC script is <strong>always staged</strong> — there is no arm/disarm step, mirroring the CM5 flasher. A healthy node boots from its local disk and never reaches PXE; it lands in the installer only when local boot fails or PXE is deliberately chosen from the firmware boot menu. When the install finishes the node reboots straight into the fresh OS (a node that still cannot boot locally just re-enters the unattended install — a re-image loop until local boot succeeds).</p>
 <div class="admonition warning">
-<p class="admonition-title">There is no in-iPXE abort</p>
-<p>A PXE boot of a listed MAC loads the installer <strong>immediately</strong> — there is no ESC/countdown abort. The only safety gate is subiquity's single disk-wipe confirmation at the console: to abort, decline that prompt or power the MU off before confirming. Every other VLAN 30 client still gets the standard netboot.xyz menu, which times out to local disk in ~10s.</p>
+<p class="admonition-title">A PXE boot of a listed MAC wipes the disk</p>
+<p>The installer loads <strong>immediately</strong> and runs <strong>unattended</strong> — no ESC/countdown, no disk-wipe confirmation. The only way to abort is to power the MU off before it partitions. Every other VLAN 30 client still gets the standard netboot.xyz menu, which times out to local disk in ~10s.</p>
 </div>
+<h3 id="the-timecard-blacklist"><a class="toclink" href="#the-timecard-blacklist">The timecard blacklist</a></h3>
+<p>The MU's timecard runs PTM-enabled firmware that hangs the box the moment the in-tree <code>ptp_ocp</code> binds, so <code>timeserver_blacklist_modules</code> blocks it in both places a hang can happen: <code>module_blacklist=</code> on the iPXE kernel line (installer environment) and <code>/etc/modprobe.d/blacklist-timecard.conf</code>, written by an autoinstall late-command and baked into the initramfs (installed system). The ptp-experiments driver playbook lifts the block once it has built a compatible module.</p>
 <h2 id="pre-flight"><a class="toclink" href="#pre-flight">Pre-flight</a></h2>
 <ol>
 <li>
 <p><strong>Verify the Ubuntu release on the MU.</strong> The DKMS drivers in ptp-experiments (<code>igc-ppsfix</code>, <code>ptp-ocp-gnsspps</code>) are built against the MU's current kernel series, so the re-install must use the same release:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ssh<span class="w"> </span>sfcal@10.3.30.64<span class="w"> </span><span class="s1">'lsb_release -sr; uname -r'</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ssh<span class="w"> </span>sfcal@10.3.30.123<span class="w"> </span><span class="s1">'lsb_release -sr; uname -r'</span>
 </code></pre></div>
-<p>(Console fallback if SSH is down.)</p>
+<p>(<code>10.3.30.123</code> is the address the entry pins on re-image; an MU that predates the pin answers on its older address. Console fallback if SSH is down.)</p>
 </li>
 <li>
 <p><strong>Pin the release</strong> in <code>ansible/environments/ldn/group_vars/infra_netboot/vars.yml</code>: set <code>netboot_ubuntu_iso_url</code> and <code>netboot_ubuntu_iso_sha256</code> (from the <code>SHA256SUMS</code> file next to the ISO; superseded interim releases move to <code>old-releases.ubuntu.com</code> — point the URL there for the exact base image). Then redeploy:</p>
@@ -1754,7 +1790,11 @@
 <p>The first run downloads the ~3 GB ISO onto the netboot VM.</p>
 </li>
 <li>
-<p><strong>Confirm the PXE MAC.</strong> Each time server is an entry in <code>timeserver_hosts</code> in the netboot vars, keyed by its PXE NIC's MAC (lowercase, <code>-</code>-separated). Check the MU's key matches the NIC that PXE-boots — on the MU, <code>ip a</code> shows the NIC holding <code>10.3.30.64</code> (currently <code>enp1s0</code>), converting <code>:</code> separators to <code>-</code>. The installed OS pins the entry's <code>ip</code> statically via this MAC, so the address is deterministic and no longer depends on the UniFi DHCP reservation — though keeping the reservation as a backstop does no harm.</p>
+<p><strong>Confirm the PXE MAC.</strong> Each time server is an entry in <code>timeserver_hosts</code> in the netboot vars, keyed by its PXE NIC's MAC (lowercase, <code>-</code>-separated). Check the MU's key matches the NIC that PXE-boots — on the MU, <code>ip -br addr</code> shows the NIC holding <code>10.3.30.123</code> (currently <code>enp1s0</code>, <code>54:49:4d:45:00:22</code>), converting <code>:</code> separators to <code>-</code>. The installed OS pins the entry's <code>ip</code> statically via this MAC, so the address is deterministic and no longer depends on the UniFi DHCP reservation — though keeping the reservation as a backstop does no harm.</p>
+<div class="admonition note">
+<p class="admonition-title">After a NIC swap</p>
+<p>The MAC keys three things: the <code>MAC-&lt;mac&gt;.ipxe</code> boot hook, the HTTP seed directory, and the installed system's netplan <code>match</code> (which is why a swapped NIC comes up with no network — collect the new MAC at the console, not over SSH). Update the <code>timeserver_hosts</code> key and redeploy; the play sweeps the old hook and seed dir on its own. Read the MAC with <code>sudo ethtool -P enp1s0</code> rather than <code>ip -br link</code> — iPXE presents the burned-in address, so a software MAC override would make the hook silently miss.</p>
+</div>
 </li>
 <li>
 <p><strong>Nothing to back up</strong> — the grandmaster's state is fully rebuilt by ptp-experiments. Note that Grafana/Prometheus history under <code>/opt/monitoring</code> on the MU is lost on re-image.</p>
@@ -1763,9 +1803,8 @@
 <h2 id="re-image"><a class="toclink" href="#re-image">Re-image</a></h2>
 <ol>
 <li>PXE boot the MU: reboot it and pick the network boot entry from the firmware boot menu. (A broken MU that cannot boot its disk lands there on its own — that is the self-provisioning path.)</li>
-<li>The installer loads <strong>immediately</strong> — there is no ESC/countdown. To abort, power off before the next step.</li>
-<li>The installer asks a single confirmation before touching the disk — confirm at the console. (This is the only safety gate.)</li>
-<li>Wait for the unattended install to finish. The MU reboots into the fresh install off local disk — coming up as <code>sfcal</code> with SSH keys installed and the static address <code>10.3.30.64</code>.</li>
+<li>The installer loads and starts <strong>immediately</strong> — no ESC/countdown, no confirmation. To abort, power off before it partitions the disk.</li>
+<li>Wait for the unattended install to finish. The MU reboots into the fresh install off local disk — coming up as <code>sfcal</code> with SSH keys installed and the static address <code>10.3.30.123</code>.</li>
 </ol>
 <h2 id="restore"><a class="toclink" href="#restore">Restore</a></h2>
 <p>From the <code>ptp-experiments</code> repo:</p>
@@ -1776,8 +1815,8 @@
 <ul>
 <li><strong>iPXE times out fetching the boot file</strong> — check the VLAN 30 Network Boot option and that UDP 69 / TCP 8080 reach <code>10.3.20.60</code> (see the firewall notes in the <a href="../../infrastructure/networking/unifi/#network-boot-pxe">UniFi doc</a>).</li>
 <li><strong>Installer ignores the seed / runs fully interactive</strong> — first check the nginx access log on the netboot VM for a second full-ISO fetch with user-agent <code>Cloud-Init</code>: cloud-init treats casper's <code>url=</code> kernel argument as a cloud-config URL and re-downloads the whole ISO into RAM before reading the seed. The <code>cloud-config-url=/dev/null</code> argument in <code>timeserver-reimage.ipxe.j2</code> suppresses this — if it's missing, that's the cause. Otherwise verify <code>http://10.3.20.60:8080/timeserver/&lt;mac&gt;/user-data</code>, <code>meta-data</code>, <code>network-config</code>, and <code>vendor-data</code> all return 200 (the <code>&lt;mac&gt;</code> directory is the host's <code>timeserver_hosts</code> key), and diagnose from the installer console: <code>Ctrl+Alt+F2</code>, then <code>cloud-init status --long</code>, <code>ls /autoinstall.yaml</code>, and <code>dmesg | grep -i oom</code>. Any edit to <code>timeserver-reimage.ipxe.j2</code> deploys on the next <code>task ansible:deploy-netboot ENV=ldn</code> run.</li>
-<li><strong>MU drops to the netboot.xyz menu instead of the installer</strong> — its <code>timeserver_hosts</code> key does not match the NIC that actually PXE-booted, or the netboot service has not been redeployed since the entry was added. Confirm the file exists as <code>MAC-&lt;mac&gt;.ipxe</code> in <code>/opt/netbootxyz/config/menus/</code> on the netboot VM.</li>
-<li><strong>Re-imaged MU comes up on the wrong IP</strong> — the installed OS pins the entry's <code>ip</code> (<code>10.3.30.64</code>) by the PXE NIC's MAC. If it lands elsewhere, the booting NIC's MAC does not match the host's <code>timeserver_hosts</code> key.</li>
+<li><strong>MU drops to the netboot.xyz menu instead of the installer</strong> — its <code>timeserver_hosts</code> key does not match the NIC that actually PXE-booted, or the netboot service has not been redeployed since the entry was added. Confirm the file exists as <code>MAC-&lt;mac&gt;.ipxe</code> in <code>/opt/netbootxyz/config/menus/</code> on the netboot VM. After a NIC swap, also check the firmware's network-boot entry still points at the NIC whose MAC is in <code>timeserver_hosts</code> — a second onboard NIC has no boot hook and falls through to the menu.</li>
+<li><strong>Re-imaged MU comes up on the wrong IP</strong> — the installed OS pins the entry's <code>ip</code> (<code>10.3.30.123</code>) by the PXE NIC's MAC. If it lands elsewhere, the booting NIC's MAC does not match the host's <code>timeserver_hosts</code> key.</li>
 <li><strong>Kernel boots then stalls loading the ISO</strong> — the <code>url=</code> boot loads the whole ISO into RAM; the client needs more RAM than the ISO size.</li>
 </ul>
 

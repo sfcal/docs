@@ -1725,14 +1725,14 @@
 
 
 <h1 id="provision-a-cm5-over-the-network"><a class="toclink" href="#provision-a-cm5-over-the-network">Provision a CM5 over the Network</a></h1>
-<p>Netboot-provision (or re-image) a Raspberry Pi Compute Module 5 time-server node to a fresh Ubuntu install on its eMMC. Covered nodes and their identities live in <code>cm5_hosts</code> in <code>ansible/environments/ldn/group_vars/infra_netboot/vars.yml</code> (currently <code>time2</code>, <code>10.3.30.11</code>).</p>
+<p>Netboot-provision (or re-image) a Raspberry Pi Compute Module 5 time-server node to a fresh Ubuntu install on its eMMC. Covered nodes and their identities live in <code>cm5_hosts</code> in <code>ansible/environments/ldn/group_vars/infra_netboot/vars.yml</code> (currently <code>CM1</code>, <code>10.3.30.11</code> and <code>CM2</code>, <code>10.3.30.12</code>).</p>
 <h2 id="how-it-works"><a class="toclink" href="#how-it-works">How It Works</a></h2>
 <p>The Pi EEPROM bootloader is not UEFI — it never runs netboot.xyz or iPXE, and Ubuntu for Pi ships as a preinstalled image, not an installer. The netboot VM (<code>10.3.20.60</code>) therefore serves a parallel Pi boot tree next to the existing x86 flow:</p>
 <pre class="mermaid"><code>graph LR
     CM5["CM5\n(VLAN 30)"] --&gt;|"TFTP: &lt;short-serial&gt;/config.txt\nkernel + initramfs + dtb"| NB["netboot VM\n10.3.20.60"]
     CM5 --&gt;|"HTTP :8080\nmodloop / apkovl / img.xz / seed"| NB</code></pre>
 <ol>
-<li>The bootloader TFTP-fetches boot files from a directory named after the <strong>last 8 hex digits</strong> of the module serial (<code>89c03c1a/</code> for time2). Other VLAN 30 clients are unaffected — the Pi ignores the UniFi boot filename option, and x86 clients never request Pi paths.</li>
+<li>The bootloader TFTP-fetches boot files from a directory named after the <strong>last 8 hex digits</strong> of the module serial (<code>89c03c1a/</code> for CM1). Other VLAN 30 clients are unaffected — the Pi ignores the UniFi boot filename option, and x86 clients never request Pi paths.</li>
 <li>It boots a tiny Alpine Linux flasher (kernel + initramfs over TFTP; module image and flash script over HTTP).</li>
 <li>The flasher streams <code>ubuntu-26.04-preinstalled-server-arm64+raspi.img.xz</code> from the netboot VM straight onto <code>/dev/mmcblk0</code>, then writes the node's cloud-init seed (hostname, static IP, SSH keys) onto the <code>system-boot</code> FAT partition, and reboots into the fresh OS.</li>
 </ol>
