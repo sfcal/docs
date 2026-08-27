@@ -1320,16 +1320,22 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#zone-configuration" class="md-nav__link">
+    <nav class="md-nav" aria-label="Split-Horizon DNS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-only-zones" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Zone Configuration
+        Local-Only Zones
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1721,16 +1727,22 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#zone-configuration" class="md-nav__link">
+    <nav class="md-nav" aria-label="Split-Horizon DNS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-only-zones" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Zone Configuration
+        Local-Only Zones
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1995,7 +2007,9 @@
 <p>This logic lives in the <code>domain.zone.j2</code> template:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>{{ service.name }} IN A {{ reverse_proxy_ip if service.proxied else service.backend_host }}
 </code></pre></div>
-<h2 id="zone-configuration"><a class="toclink" href="#zone-configuration">Zone Configuration</a></h2>
+<h3 id="local-only-zones"><a class="toclink" href="#local-only-zones">Local-Only Zones</a></h3>
+<p><code>wil.5am.cloud</code> and <code>ldn.5am.cloud</code> are <strong>local-only</strong>: they have no records in the public Cloudflare zone and only resolve through BIND9. Public DNS records are created exclusively for the hostnames listed in <code>ddns_domains</code> (<code>group_vars/infra_networking/ddns.yml</code>) — currently just <code>plex.5am.video</code>. Everything else must reach the internal BIND servers (directly on the LAN, or via Tailscale split DNS when roaming); a query that leaks to a public resolver returns NXDOMAIN rather than a wrong answer.</p>
+<p>This works from either site because each BIND server holds every zone — master for its own site's zones and slave (via zone transfer) for the other's — so both <code>10.2.20.53</code> and <code>10.3.20.53</code> answer all local names. For this to hold, client VLANs must hand out the BIND servers via DHCP (see <a href="../unifi/#dhcp-dns">Gateway — DHCP DNS</a>); never point clients at a public resolver.</p>
 <p>BIND9 generates zone files from two data sources:</p>
 <ol>
 <li><strong><code>domains</code></strong> — list in <code>group_vars/all/vars.yml</code> defines which zones this server is authoritative for</li>

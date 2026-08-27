@@ -1396,6 +1396,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dhcp-dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DHCP DNS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#static-routes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1712,6 +1723,17 @@
     <span class="md-ellipsis">
       
         VLANs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dhcp-dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DHCP DNS
       
     </span>
   </a>
@@ -2051,6 +2073,58 @@
 </div>
 </div>
 <p>All Ansible-managed infrastructure and application VMs live on <strong>VLAN 20</strong> (Virtual Machines). The networking VM at <code>.53</code>, CA at <code>.9</code>, NTP at <code>.123</code>, and monitoring at <code>.30</code> are all on this VLAN. In LDN, the PTP time server (LattePanda MU) is a physical host on VLAN 30 at <code>10.3.30.123</code>, managed by the separate <code>ptp-experiments</code> repo.</p>
+<h2 id="dhcp-dns"><a class="toclink" href="#dhcp-dns">DHCP DNS</a></h2>
+<p>Every client VLAN's DHCP must hand out the local BIND9 server as DNS — never Auto (which forwards to the WAN resolver) or a public resolver. <code>wil.5am.cloud</code> and <code>ldn.5am.cloud</code> are <a href="../dns/#local-only-zones">local-only zones</a> with no public records, so a client pointed at Cloudflare gets NXDOMAIN for them.</p>
+<p>In the UniFi controller: <strong>Settings → Networks → (network) → DHCP Service Management → DNS Server → Manual</strong></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">WIL</label><label for="__tabbed_2_2">LDN</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DNS Server 1</td>
+<td><code>10.2.20.53</code> (local BIND)</td>
+</tr>
+<tr>
+<td>DNS Server 2</td>
+<td><code>10.3.20.53</code> (LDN BIND, cross-site fallback)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DNS Server 1</td>
+<td><code>10.3.20.53</code> (local BIND)</td>
+</tr>
+<tr>
+<td>DNS Server 2</td>
+<td><code>10.2.20.53</code> (WIL BIND, cross-site fallback)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>The cross-site secondary is a valid fallback because each BIND server slaves the other site's zones (so it answers all local names) and the <a href="#static-routes">static routes</a> make it reachable through the Tailscale tunnel. Clients pick up the new servers on lease renewal or reconnect.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Devices with hardcoded DNS or browser DNS-over-HTTPS bypass DHCP entirely — those resolve local-only zones as NXDOMAIN regardless of this setting.</p>
+</div>
 <h2 id="static-routes"><a class="toclink" href="#static-routes">Static Routes</a></h2>
 <p>Static routes on the UDM Pro direct traffic for remote site subnets through the local Tailscale subnet router. Without these routes, traffic destined for other sites would be sent to the default gateway (the ISP) instead of through the Tailscale tunnel.</p>
 <h3 id="why-static-routes-are-needed"><a class="toclink" href="#why-static-routes-are-needed">Why Static Routes Are Needed</a></h3>
@@ -2062,7 +2136,7 @@
 <h3 id="configuration"><a class="toclink" href="#configuration">Configuration</a></h3>
 <p>In the UniFi controller: <strong>Settings → Routing → Static Routes</strong></p>
 <p><img alt="UniFi static route configuration" src="../../../assets/unifi-static-route.png" /></p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">WIL</label><label for="__tabbed_2_2">LDN</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">WIL</label><label for="__tabbed_3_2">LDN</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <table>
