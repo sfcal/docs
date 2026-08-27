@@ -1661,6 +1661,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#dashboard-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboard Provisioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#container-configuration_1" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2085,6 +2096,17 @@
     <span class="md-ellipsis">
       
         Datasource Provisioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashboard-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboard Provisioning
       
     </span>
   </a>
@@ -2559,6 +2581,7 @@
 <a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'10.2.0.5:9100'</span>
 <a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">          </span><span class="c1"># ... all node targets</span>
 </code></pre></div>
+<p>Three additional jobs — <code>chrony</code>, <code>gpsd</code>, and <code>node</code> — scrape the PTP grandmaster's exporters (deployed by the <code>ptp-experiments</code> repo's <code>monitoring</code> role). Each renders only when its per-environment target list is non-empty; currently only LDN defines them. The <code>node</code> job is kept separate from <code>node-exporter</code> because the Chrony dashboard's CPU-temperature panel selects <code>job="node"</code> unscoped.</p>
 <h3 id="container-configuration"><a class="toclink" href="#container-configuration">Container Configuration</a></h3>
 <ul>
 <li><strong>Memory:</strong> 2GB limit, 1GB reservation</li>
@@ -2597,6 +2620,24 @@
 <td>(per-env)</td>
 </tr>
 <tr>
+<td><code>prometheus_chrony_targets</code></td>
+<td><code>list[string]</code></td>
+<td>chrony_exporter endpoints (PTP grandmaster, <code>:9123</code>)</td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td><code>prometheus_gpsd_targets</code></td>
+<td><code>list[string]</code></td>
+<td>gpsd exporter endpoints (PTP grandmaster, <code>:9015</code>)</td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td><code>prometheus_ptp_node_targets</code></td>
+<td><code>list[string]</code></td>
+<td>PTP grandmaster node_exporter endpoints (job <code>node</code>, <code>:9100</code>)</td>
+<td><code>[]</code></td>
+</tr>
+<tr>
 <td><code>node_exporter_image</code></td>
 <td><code>string</code></td>
 <td>Docker image for Node Exporter sidecar</td>
@@ -2613,12 +2654,42 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">datasources</span><span class="p">:</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prometheus</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">access</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proxy</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://prometheus:9090</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">isDefault</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">editable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">uid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">access</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proxy</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://prometheus:9090</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">isDefault</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">editable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
+<p>The datasource carries the fixed uid <code>prometheus</code> because the provisioned dashboards bind to it.</p>
+<h3 id="dashboard-provisioning"><a class="toclink" href="#dashboard-provisioning">Dashboard Provisioning</a></h3>
+<p>Dashboards are provisioned from files — any JSON dropped into <code>playbooks/infrastructure/monitoring/files/dashboards/</code> is deployed and picked up automatically (the file provider rescans every 30 s; UI edits to provisioned dashboards do not persist):</p>
+<table>
+<thead>
+<tr>
+<th>Dashboard</th>
+<th>File</th>
+<th>Data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chrony Detail</td>
+<td><code>chrony_grafana_dashboard.json</code></td>
+<td><code>chrony</code> + <code>node</code> jobs (PTP grandmaster)</td>
+</tr>
+<tr>
+<td>GPSD</td>
+<td><code>gpsd_grafana_dashboard.json</code></td>
+<td><code>gpsd</code> job (PTP grandmaster)</td>
+</tr>
+<tr>
+<td>Node Exporter Full</td>
+<td><code>node_exporter_full.json</code></td>
+<td>All <code>node-exporter</code>/<code>node</code> targets (<a href="https://grafana.com/grafana/dashboards/1860">grafana.com 1860</a>)</td>
+</tr>
+</tbody>
+</table>
 <h3 id="container-configuration_1"><a class="toclink" href="#container-configuration_1">Container Configuration</a></h3>
 <ul>
 <li><strong>Memory:</strong> 2GB limit, 1GB reservation</li>
