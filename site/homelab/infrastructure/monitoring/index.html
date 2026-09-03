@@ -1532,17 +1532,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#external-monitoring" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        External Monitoring
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1565,17 +1554,6 @@
     <span class="md-ellipsis">
       
         Monitoring Stack Deployment
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#external-monitoring-deployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        External Monitoring Deployment
       
     </span>
   </a>
@@ -1737,45 +1715,6 @@
     <span class="md-ellipsis">
       
         Dashboard Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#external-monitoring-uptime-kuma" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        External Monitoring (Uptime Kuma)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="External Monitoring (Uptime Kuma)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configuration-reference_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tailscale-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tailscale Integration
       
     </span>
   </a>
@@ -1974,17 +1913,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#external-monitoring" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        External Monitoring
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -2007,17 +1935,6 @@
     <span class="md-ellipsis">
       
         Monitoring Stack Deployment
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#external-monitoring-deployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        External Monitoring Deployment
       
     </span>
   </a>
@@ -2191,45 +2108,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#external-monitoring-uptime-kuma" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        External Monitoring (Uptime Kuma)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="External Monitoring (Uptime Kuma)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configuration-reference_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tailscale-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tailscale Integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#shared-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2379,7 +2257,7 @@
         NE4[Node Exporter\nwebsite]
     end
 
-    subgraph External VPS
+    subgraph Monitoring VM
         UptimeKuma[Uptime Kuma]
     end
 
@@ -2390,7 +2268,7 @@
 <li><strong>Prometheus</strong> scrapes node exporters across all VMs for system metrics</li>
 <li><strong>Grafana</strong> visualizes metrics from Prometheus with dashboards</li>
 <li><strong>Homepage</strong> provides a service dashboard with status widgets and quick links</li>
-<li><strong>Uptime Kuma</strong> runs on an external VPS for independent uptime monitoring via <a href="../networking/tailscale/">Tailscale</a></li>
+<li><strong>Uptime Kuma</strong> provides uptime monitoring for internal services</li>
 </ul>
 <h2 id="components"><a class="toclink" href="#components">Components</a></h2>
 <table>
@@ -2425,7 +2303,7 @@
 <td>Uptime Kuma</td>
 <td><code>louislam/uptime-kuma</code></td>
 <td>3001</td>
-<td>External uptime monitoring</td>
+<td>Uptime monitoring</td>
 </tr>
 </tbody>
 </table>
@@ -2512,35 +2390,8 @@
 </tr>
 </tbody>
 </table>
-<h3 id="external-monitoring"><a class="toclink" href="#external-monitoring">External Monitoring</a></h3>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>playbooks/infrastructure/external-monitoring/deploy.yml</code></td>
-<td>Main playbook</td>
-</tr>
-<tr>
-<td><code>playbooks/infrastructure/external-monitoring/templates/compose.yaml.j2</code></td>
-<td>Docker Compose definition</td>
-</tr>
-<tr>
-<td><code>environments/external/group_vars/infra_externalmonitoring/vars.yml</code></td>
-<td>External monitoring variables</td>
-</tr>
-</tbody>
-</table>
 <h2 id="deployment"><a class="toclink" href="#deployment">Deployment</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Deploy internal monitoring stack</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Deploy external uptime monitoring</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>task<span class="w"> </span>ansible:deploy-external-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>external
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 <h3 id="monitoring-stack-deployment"><a class="toclink" href="#monitoring-stack-deployment">Monitoring Stack Deployment</a></h3>
 <p>The task file:</p>
@@ -2552,13 +2403,6 @@
 <li>Deploys Homepage configuration files (services, bookmarks, settings, widgets)</li>
 <li>Deploys Docker Compose file</li>
 <li>Starts all containers</li>
-</ol>
-<h3 id="external-monitoring-deployment"><a class="toclink" href="#external-monitoring-deployment">External Monitoring Deployment</a></h3>
-<p>The external monitoring playbook:</p>
-<ol>
-<li>Runs the <code>common</code> role (timezone, apt cache)</li>
-<li>Installs and configures <a href="../networking/tailscale/">Tailscale</a> as a client (to reach internal services)</li>
-<li>Deploys Uptime Kuma via the <code>docker_service</code> role</li>
 </ol>
 <hr />
 <h2 id="prometheus"><a class="toclink" href="#prometheus">Prometheus</a></h2>
@@ -2799,42 +2643,6 @@
 </table>
 <p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/containers.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/monitoring/templates/services.yaml.j2"><code>ansible/playbooks/infrastructure/monitoring/templates/services.yaml.j2</code></a></small></p>
 <hr />
-<h2 id="external-monitoring-uptime-kuma"><a class="toclink" href="#external-monitoring-uptime-kuma">External Monitoring (Uptime Kuma)</a></h2>
-<p>Uptime Kuma runs on an external VPS to provide independent uptime monitoring. It connects to the internal network via Tailscale to monitor services that are not publicly exposed.</p>
-<h3 id="configuration-reference_3"><a class="toclink" href="#configuration-reference_3">Configuration Reference</a></h3>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>uptime_kuma_image</code></td>
-<td><code>string</code></td>
-<td>Docker image for Uptime Kuma</td>
-<td>(per-env)</td>
-</tr>
-<tr>
-<td><code>external_monitoring_uptime_kuma_listen</code></td>
-<td><code>string</code></td>
-<td>Listen port for Uptime Kuma</td>
-<td><code>"3001"</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="tailscale-integration"><a class="toclink" href="#tailscale-integration">Tailscale Integration</a></h3>
-<p>The external VPS runs Tailscale as a client with route acceptance enabled:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">tailscale_mode</span><span class="p">:</span><span class="w"> </span><span class="s">"client"</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">tailscale_hostname</span><span class="p">:</span><span class="w"> </span><span class="s">"external-monitor"</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">tailscale_accept_routes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</code></pre></div>
-<p>This allows Uptime Kuma to reach internal services (e.g., <code>10.2.20.53</code>) through the Tailscale mesh without exposing them publicly. See <a href="../networking/tailscale/">VPN (Tailscale)</a> for details.</p>
-<p><small><strong>Sources:</strong> <a href="https://github.com/sfcal/homelab/blob/main/ansible/environments/external/group_vars/infra_externalmonitoring/vars.yml"><code>ansible/environments/external/group_vars/infra_externalmonitoring/vars.yml</code></a> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/external-monitoring/templates/compose.yaml.j2"><code>ansible/playbooks/infrastructure/external-monitoring/templates/compose.yaml.j2</code></a></small></p>
-<hr />
 <h2 id="shared-configuration"><a class="toclink" href="#shared-configuration">Shared Configuration</a></h2>
 <p>These variables apply to all monitoring containers:</p>
 <table>
@@ -2872,14 +2680,14 @@
 <ol>
 <li>
 <p>Edit <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/prometheus.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">prometheus_node_targets</span><span class="p">:</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="c1"># ... existing targets</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"10.2.20.60:9100"</span><span class="w">   </span><span class="c1"># new VM</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">prometheus_node_targets</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="c1"># ... existing targets</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"10.2.20.60:9100"</span><span class="w">   </span><span class="c1"># new VM</span>
 </code></pre></div>
 </li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 </li>
 </ol>
@@ -2887,12 +2695,12 @@
 <ol>
 <li>
 <p>Edit <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/prometheus.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">prometheus_retention</span><span class="p">:</span><span class="w"> </span><span class="s">"90d"</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">prometheus_retention</span><span class="p">:</span><span class="w"> </span><span class="s">"90d"</span>
 </code></pre></div>
 </li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 </li>
 </ol>
@@ -2903,7 +2711,7 @@
 <li>If the service requires an API key, add the key to <code>secrets.sops.yml</code> and pass it through <code>compose.yaml.j2</code></li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 </li>
 </ol>

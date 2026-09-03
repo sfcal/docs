@@ -2586,7 +2586,7 @@
 <li><strong><code>name</code>, <code>domain</code>, and <code>proxied</code> are required</strong> — <code>proxied</code> has no default in the zone template.</li>
 <li><strong>Optional fields pass through unchanged</strong> — <code>tls_skip_verify</code>, <code>forward_headers</code>, <code>host_header</code>, <code>encode</code>, <code>read_buffer</code>, <code>dns</code>, and <code>enabled</code> behave exactly as in manual entries.</li>
 </ul>
-<p>Apps without a <code>proxy:</code> block (e.g., openbooks, games-server) get no DNS record and no Caddy entry.</p>
+<p>Apps without a <code>proxy:</code> block (e.g., games-server) get no DNS record and no Caddy entry.</p>
 <h2 id="service-aggregation"><a class="toclink" href="#service-aggregation">Service Aggregation</a></h2>
 <p>The <code>_services.yml</code> file in each environment aggregates the manual per-domain service lists (injecting the <code>domain</code> field) and appends the registry-generated entries, which already carry their <code>domain</code> from the <code>proxy:</code> block. Manual lists come first to keep zone and Caddyfile ordering stable:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">WIL</label><label for="__tabbed_1_2">LDN</label></div>
