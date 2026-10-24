@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -1284,6 +1284,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1346,6 +1350,34 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../infrastructure/proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proxmox Hosts (SR-IOV GPU)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1373,7 +1405,7 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1395,14 +1427,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1633,6 +1665,34 @@
     
   
     Docker Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/cloud-gaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Gaming (Wolf, RomM)
   
 
     
@@ -1906,7 +1966,7 @@
 <tbody>
 <tr>
 <td><code>deploy-all</code></td>
-<td>Full infrastructure deployment (runs <code>site.yml</code>)</td>
+<td>Full infrastructure deployment (runs <code>site.yml</code>; on ldn the final Proxmox play needs root SSH to the PVE host)</td>
 </tr>
 <tr>
 <td><code>deploy-networking</code></td>
@@ -1925,12 +1985,28 @@
 <td>Prometheus, Grafana, Homepage</td>
 </tr>
 <tr>
+<td><code>deploy-netboot</code></td>
+<td>netboot.xyz PXE re-imaging</td>
+</tr>
+<tr>
+<td><code>deploy-proxmox</code></td>
+<td>Proxmox hosts: SR-IOV GPU VFs, PCI resource mappings</td>
+</tr>
+<tr>
 <td><code>deploy-media</code></td>
 <td>Plex and *arr stack</td>
 </tr>
 <tr>
 <td><code>deploy-homeassistant</code></td>
 <td>Home Assistant</td>
+</tr>
+<tr>
+<td><code>deploy-frigate</code></td>
+<td>Frigate NVR</td>
+</tr>
+<tr>
+<td><code>deploy-cloud-gaming</code></td>
+<td>Wolf (Moonlight streaming) and RomM</td>
 </tr>
 <tr>
 <td><code>deploy-app APP=&lt;name&gt;</code></td>
@@ -2004,6 +2080,16 @@
 <td><code>infra_monitoring</code></td>
 <td>Prometheus, Grafana, Homepage</td>
 </tr>
+<tr>
+<td><code>netboot/deploy.yml</code></td>
+<td><code>infra_netboot</code></td>
+<td>netboot.xyz</td>
+</tr>
+<tr>
+<td><code>proxmox/deploy.yml</code></td>
+<td><code>infra_proxmox</code></td>
+<td>SR-IOV GPU VFs and PCI mappings on the hypervisor (no <code>common</code> role: it is not an Ubuntu VM)</td>
+</tr>
 </tbody>
 </table>
 <h3 id="data-driven-apps"><a class="toclink" href="#data-driven-apps">Data-Driven Apps</a></h3>
@@ -2036,6 +2122,14 @@
 <tr>
 <td>Home Assistant</td>
 <td>Custom configuration management</td>
+</tr>
+<tr>
+<td>Frigate</td>
+<td>NFS mount, dedicated compose/config tasks</td>
+</tr>
+<tr>
+<td>Cloud Gaming</td>
+<td>Kernel modules and udev rules, GPU render-node check, Wolf config seeded once, separate RomM stack, optional NFS</td>
 </tr>
 </tbody>
 </table>
@@ -2117,20 +2211,22 @@
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>│   │   ├── networking/deploy.yml
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>│   │   ├── ca/deploy.yml
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>│   │   ├── ntp/deploy.yml
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>│   │   └── monitoring/deploy.yml
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>│   └── apps/
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>│       ├── birdle/templates/compose.yaml.j2
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>│       ├── media/deploy.yml
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>│       └── ... (one directory per app)
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>├── roles/
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>│   ├── common/
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>│   ├── docker_service/
-<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>│   ├── tailscale/
-<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>│   └── nfs_mount/
-<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>└── environments/
-<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>    └── &lt;env&gt;/
-<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>        ├── hosts.ini
-<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>        └── group_vars/
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>│   │   ├── monitoring/deploy.yml
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>│   │   ├── netboot/deploy.yml
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>│   │   └── proxmox/deploy.yml       # Hypervisor: SR-IOV GPU VFs, PCI mappings
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>│   └── apps/
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>│       ├── birdle/templates/compose.yaml.j2
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>│       ├── media/deploy.yml
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>│       └── ... (one directory per app)
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>├── roles/
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>│   ├── common/
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>│   ├── docker_service/
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>│   ├── tailscale/
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>│   └── nfs_mount/
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>└── environments/
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>    └── &lt;env&gt;/
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>        ├── hosts.ini
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>        └── group_vars/
 </code></pre></div>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
 <p><strong>Connection refused</strong> — Verify the VM is running and the IP in <code>hosts.ini</code> is correct. Test with <code>ssh sfcal@&lt;ip&gt;</code>.</p>
@@ -2256,10 +2352,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

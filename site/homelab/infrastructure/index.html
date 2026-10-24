@@ -16,14 +16,14 @@
         <link rel="prev" href="../reference/config/">
       
       
-        <link rel="next" href="networking/">
+        <link rel="next" href="proxmox/">
       
       
         
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -1106,6 +1106,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1166,6 +1170,34 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proxmox Hosts (SR-IOV GPU)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1193,7 +1225,7 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1215,14 +1247,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1466,6 +1498,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cloud-gaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Gaming (Wolf, RomM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1580,18 +1640,21 @@
 
 <h1 id="infrastructure"><a class="toclink" href="#infrastructure">Infrastructure</a></h1>
 <p>Deep operational reference for each infrastructure service. Deploy in dependency order.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">   </span><span class="c1"># 1. Must be first</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">           </span><span class="c1"># 2. Certificate authority</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>task<span class="w"> </span>ansible:deploy-ntp<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">          </span><span class="c1"># 3. Time server</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">   </span><span class="c1"># 4. Metrics and dashboards</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-proxmox<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn<span class="w">      </span><span class="c1"># 0. Hypervisor (SR-IOV GPU VFs), ldn only; needs root SSH to the PVE host</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">   </span><span class="c1"># 1. Must be first</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">           </span><span class="c1"># 2. Certificate authority</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>task<span class="w"> </span>ansible:deploy-ntp<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">          </span><span class="c1"># 3. Time server</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">   </span><span class="c1"># 4. Metrics and dashboards</span>
 </code></pre></div>
 <h2 id="services"><a class="toclink" href="#services">Services</a></h2>
 <ol>
+<li><a href="proxmox/"><strong>Proxmox Hosts</strong></a> — SR-IOV GPU virtual functions and PCI resource mappings on the hypervisor</li>
 <li><a href="networking/"><strong>Networking</strong></a> — DNS (BIND9), reverse proxy (Caddy), dynamic DNS, VPN (Tailscale)</li>
 <li><a href="ca/"><strong>Certificate Authority</strong></a> — Private CA (Step-CA) for internal TLS</li>
 <li><a href="ntp/"><strong>Time Server</strong></a> — NTP synchronization (Chrony)</li>
 <li><a href="monitoring/"><strong>Monitoring</strong></a> — Metrics (Prometheus), dashboards (Grafana, Homepage), uptime (Uptime Kuma)</li>
 <li><a href="docker/"><strong>Docker Services</strong></a> — Container definitions and compose templates</li>
+<li><a href="cloud-gaming/"><strong>Cloud Gaming</strong></a> — Wolf (Moonlight streaming) and RomM on the GPU VM</li>
 </ol>
 
 
@@ -1647,13 +1710,13 @@
         
         
           
-          <a href="networking/" class="md-footer__link md-footer__link--next" aria-label="Next: Networking">
+          <a href="proxmox/" class="md-footer__link md-footer__link--next" aria-label="Next: Proxmox Hosts (SR-IOV GPU)">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Networking
+                Proxmox Hosts (SR-IOV GPU)
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1712,10 +1775,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -1223,6 +1223,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1285,6 +1289,34 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../infrastructure/proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proxmox Hosts (SR-IOV GPU)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1312,7 +1344,7 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1334,14 +1366,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1585,6 +1617,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/cloud-gaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Gaming (Wolf, RomM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1790,7 +1850,7 @@
 <p>The first run downloads the ~3 GB ISO onto the netboot VM.</p>
 </li>
 <li>
-<p><strong>Confirm the PXE MAC.</strong> Each time server is an entry in <code>timeserver_hosts</code> in the netboot vars, keyed by its PXE NIC's MAC (lowercase, <code>-</code>-separated). Check the MU's key matches the NIC that PXE-boots — on the MU, <code>ip -br addr</code> shows the NIC holding <code>10.3.30.123</code> (currently <code>enp1s0</code>, <code>54:49:4d:45:00:22</code>), converting <code>:</code> separators to <code>-</code>. The installed OS pins the entry's <code>ip</code> statically via this MAC, so the address is deterministic and no longer depends on the UniFi DHCP reservation — though keeping the reservation as a backstop does no harm.</p>
+<p><strong>Confirm the PXE MAC.</strong> Each time server is an entry in <code>timeserver_hosts</code> in the netboot vars, keyed by its PXE NIC's MAC (lowercase, <code>-</code>-separated). Check the MU's key matches the NIC that PXE-boots — on the MU, <code>ip -br addr</code> shows the NIC holding <code>10.3.30.123</code> (currently <code>enp1s0</code>, <code>40:a6:b7:81:7c:51</code>: the address iPXE presented in the netboot VM's nginx log on 2026-08-28 and 2026-10-13, not the <code>ethtool -P</code> one), converting <code>:</code> separators to <code>-</code>. The installed OS pins the entry's <code>ip</code> statically via this MAC, so the address is deterministic and no longer depends on the UniFi DHCP reservation — though keeping the reservation as a backstop does no harm.</p>
 <div class="admonition note">
 <p class="admonition-title">After a NIC swap</p>
 <p>The MAC keys three things: the <code>MAC-&lt;mac&gt;.ipxe</code> boot hook, the HTTP seed directory, and the installed system's netplan <code>match</code> (which is why a swapped NIC comes up with no network — collect the new MAC at the console, not over SSH). Update the <code>timeserver_hosts</code> key and redeploy; the play sweeps the old hook and seed dir on its own. Read the MAC with <code>sudo ethtool -P enp1s0</code> rather than <code>ip -br link</code> — iPXE presents the burned-in address, so a software MAC override would make the hook silently miss.</p>
@@ -1817,7 +1877,7 @@
 <li><strong>Installer ignores the seed / runs fully interactive</strong> — first check the nginx access log on the netboot VM for a second full-ISO fetch with user-agent <code>Cloud-Init</code>: cloud-init treats casper's <code>url=</code> kernel argument as a cloud-config URL and re-downloads the whole ISO into RAM before reading the seed. The <code>cloud-config-url=/dev/null</code> argument in <code>timeserver-reimage.ipxe.j2</code> suppresses this — if it's missing, that's the cause. Otherwise verify <code>http://10.3.20.60:8080/timeserver/&lt;mac&gt;/user-data</code>, <code>meta-data</code>, <code>network-config</code>, and <code>vendor-data</code> all return 200 (the <code>&lt;mac&gt;</code> directory is the host's <code>timeserver_hosts</code> key), and diagnose from the installer console: <code>Ctrl+Alt+F2</code>, then <code>cloud-init status --long</code>, <code>ls /autoinstall.yaml</code>, and <code>dmesg | grep -i oom</code>. Any edit to <code>timeserver-reimage.ipxe.j2</code> deploys on the next <code>task ansible:deploy-netboot ENV=ldn</code> run.</li>
 <li><strong>MU drops to the netboot.xyz menu instead of the installer</strong> — its <code>timeserver_hosts</code> key does not match the NIC that actually PXE-booted, or the netboot service has not been redeployed since the entry was added. Confirm the file exists as <code>MAC-&lt;mac&gt;.ipxe</code> in <code>/opt/netbootxyz/config/menus/</code> on the netboot VM. After a NIC swap, also check the firmware's network-boot entry still points at the NIC whose MAC is in <code>timeserver_hosts</code> — a second onboard NIC has no boot hook and falls through to the menu.</li>
 <li><strong>Re-imaged MU comes up on the wrong IP</strong> — the installed OS pins the entry's <code>ip</code> (<code>10.3.30.123</code>) by the PXE NIC's MAC. If it lands elsewhere, the booting NIC's MAC does not match the host's <code>timeserver_hosts</code> key.</li>
-<li><strong>Kernel boots then stalls loading the ISO</strong> — the <code>url=</code> boot loads the whole ISO into RAM; the client needs more RAM than the ISO size.</li>
+<li><strong>Kernel boots then stalls loading the ISO</strong> — the <code>url=</code> boot loads the whole ISO into RAM; the client needs more RAM than the ISO size. <code>wget: short write: No space left on device</code> at ~96% (seen 2026-10-13) is the initramfs root tmpfs, capped at half of RAM; <code>rootfstype=ramfs</code> on the kernel line (in <code>timeserver-reimage.ipxe.j2</code>) lifts the cap so only total RAM limits it.</li>
 </ul>
 
 
@@ -1938,10 +1998,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>
