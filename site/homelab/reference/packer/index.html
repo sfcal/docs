@@ -1101,6 +1101,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#windows-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows Template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#key-variables" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1728,6 +1739,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#windows-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows Template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#key-variables" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1840,8 +1862,11 @@
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Build Netboot VM template</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>task<span class="w"> </span>packer:build-netboot<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Clean up logs and ISOs</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>task<span class="w"> </span>packer:clean
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Build Windows template (needs the Windows and virtio-win ISOs on Proxmox, see below)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>task<span class="w"> </span>packer:build-windows<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># Clean up logs and ISOs</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>task<span class="w"> </span>packer:clean
 </code></pre></div>
 <h2 id="templates"><a class="toclink" href="#templates">Templates</a></h2>
 <table>
@@ -1868,6 +1893,11 @@
 <td>—</td>
 <td>PXE boot template</td>
 </tr>
+<tr>
+<td>Windows</td>
+<td><code>windows-base.pkr.hcl</code></td>
+<td>Windows 11 (or Server) for one-off VMs: UEFI + TPM 2.0, unattended install, virtio-win guest tools (drivers, QEMU and SPICE agents), Remote Desktop on, console clipboard</td>
+</tr>
 </tbody>
 </table>
 <p>Templates produce images named <code>&lt;template&gt;-&lt;env&gt;-base</code> (e.g., <code>ubuntu-server-wil-base</code>).</p>
@@ -1885,14 +1915,49 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>packer/
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── templates/
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│   ├── ubuntu-server-base.pkr.hcl      # Ubuntu template definition
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   └── debian-bookworm-base.pkr.hcl    # Debian template definition
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>└── environments/
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    ├── wil/
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    │   ├── ubuntu-variables.pkrvars.hcl     # Ubuntu build variables
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    │   ├── debian-variables.pkrvars.hcl     # Debian build variables
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    │   └── credentials.wil.pkrvars.hcl      # Proxmox API tokens (encrypted)
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    └── ldn/
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   ├── debian-bookworm-base.pkr.hcl    # Debian template definition
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   └── windows-base.pkr.hcl            # Windows template definition
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>├── files/windows/
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│   ├── autounattend.xml.pkrtpl         # Windows answer file (rendered by the template)
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│   └── setup.ps1                       # First-logon bootstrap: WinRM, VirtIO drivers, guest agent
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>└── environments/
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    ├── wil/
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    │   ├── ubuntu-variables.pkrvars.hcl     # Ubuntu build variables
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    │   ├── debian-variables.pkrvars.hcl     # Debian build variables
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    │   ├── windows-variables.pkrvars.hcl    # Windows build variables
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    │   └── credentials.wil.pkrvars.hcl      # Proxmox API tokens (encrypted)
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    └── ldn/
 </code></pre></div>
+<h2 id="windows-template"><a class="toclink" href="#windows-template">Windows Template</a></h2>
+<p>For one-off Windows VMs: build the template once, then clone it from the Proxmox UI (right-click → Clone, full clone) or with <code>qm clone &lt;template-vmid&gt; &lt;new-vmid&gt; --name win-test --full 1</code>. Clones boot straight to the login screen, get an address by DHCP (shown on the VM's Summary page via the guest agent) and have Remote Desktop enabled. Log in with <code>ssh_username</code> / <code>ssh_password</code> from the environment and credentials var files. Copy and paste works over Remote Desktop and, via the clipboard panel, in the Proxmox noVNC console.</p>
+<p><strong>Before the first build</strong>, upload two ISOs to the node's ISO storage (<code>local</code> → ISO Images) and point <code>iso_file</code> / <code>virtio_iso_file</code> in <code>environments/&lt;env&gt;/windows-variables.pkrvars.hcl</code> at them:</p>
+<table>
+<thead>
+<tr>
+<th>ISO</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows installer</td>
+<td><a href="https://www.microsoft.com/software-download/windows11">Windows 11 x64 ISO</a> (the link expires, so download in a browser and upload); Windows Server evaluation ISOs work too</td>
+</tr>
+<tr>
+<td>virtio-win</td>
+<td><a href="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso">stable-virtio/virtio-win.iso</a> (disk/network drivers, QEMU guest agent)</td>
+</tr>
+</tbody>
+</table>
+<p>How the build works: Packer generates a small ISO with the answer file (<code>files/windows/autounattend.xml.pkrtpl</code>) and <code>files/windows/setup.ps1</code>, attaches it next to the two ISOs above and presses a key at "Press any key to boot from CD or DVD". Setup runs unattended (VirtIO drivers from the virtio-win ISO, GPT/UEFI layout, local admin account, OOBE skipped). At the first automatic logon <code>setup.ps1</code> enables WinRM, installs the virtio-win guest tools (drivers, QEMU guest agent, SPICE agent) and turns the autologon off again; Packer then connects over WinRM, runs a short check and converts the VM to <code>windows-&lt;env&gt;-base</code>. The generated ISO is deleted from Proxmox afterwards. Expect 10–15 minutes.</p>
+<p>Packer cannot set the display's clipboard option, so after a build enable it on the template by hand: Hardware → Display → Edit → Advanced → Clipboard: VNC (or <code>qm set &lt;vmid&gt; --vga std,clipboard=vnc</code> on the node). Clones inherit it, and together with the SPICE agent that <code>setup.ps1</code> installs it gives the noVNC console its clipboard panel.</p>
+<p>Things to know:</p>
+<ul>
+<li><code>windows_image_name</code> selects the edition inside the ISO (<code>Windows 11 Pro</code> by default; <code>Windows 11 Enterprise Evaluation</code>, <code>Windows Server 2025 SERVERSTANDARD</code>, …). Set <code>virtio_driver_os</code> to the matching driver folder (<code>w11</code>, <code>2k25</code>, …) and <code>windows_language</code> to the ISO's language.</li>
+<li>No sysprep: clones share hostname and SID. Fine for throwaway instances; the template is not meant for domain joins.</li>
+<li>No cloud-init: Windows ignores the Proxmox cloud-init drive, so clones are not managed by the Terraform VM module (which is cloud-init shaped). Clone by hand.</li>
+<li><code>setup.ps1</code> leaves its logs at <code>C:\Windows\Temp\packer-setup.log</code> and <code>C:\Windows\Temp\virtio-win-guest-tools.log</code> on the template.</li>
+</ul>
 <h2 id="key-variables"><a class="toclink" href="#key-variables">Key Variables</a></h2>
 <table>
 <thead>
@@ -1954,6 +2019,7 @@
 <p><strong>Template name conflict</strong> — A template with the same name already exists. Delete the old template from Proxmox first: <code>qm destroy &lt;vmid&gt;</code>.</p>
 <p><strong>ISO not found</strong> — The <code>iso_file</code> path must match an ISO uploaded to Proxmox storage. Check with <code>pvesm list &lt;storage&gt;</code> on the Proxmox host.</p>
 <p><strong>Build hangs at SSH</strong> — The VM can't reach the internet for package installation, or cloud-init hasn't configured networking. Check Proxmox network bridge and VLAN settings.</p>
+<p><strong>Windows build never connects over WinRM</strong> — Open the VM console in Proxmox. If it still shows the firmware or a boot menu, the "Press any key" prompt was missed: raise <code>boot_wait</code> or the number of <code>&lt;spacebar&gt;</code> presses in <code>windows-base.pkr.hcl</code>. If Setup is asking for a product key, set <code>windows_product_key</code> to the generic key for the edition. If Setup says it cannot find a disk, <code>virtio_driver_os</code> does not match the Windows version (folders on the virtio-win ISO). If Windows is at the desktop, read <code>C:\Windows\Temp\packer-setup.log</code> for the failing step in <code>setup.ps1</code>.</p>
 
 
 
