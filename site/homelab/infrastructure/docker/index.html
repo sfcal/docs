@@ -1856,10 +1856,7 @@
 </tr>
 </tbody>
 </table>
-<p>Deploy with <code>task ansible:deploy-media ENV=wil</code>. Supports backup and restore:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:backup-media<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:restore-media<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
-</code></pre></div>
+<p>Deploy with <code>task ansible:deploy-media ENV=wil</code>.</p>
 <h2 id="gaming"><a class="toclink" href="#gaming">Gaming</a></h2>
 <p>Terraria (wil) and Wolf with RomM (ldn) share one playbook on the <code>app_gaming</code> host; each environment gets the stacks its group_vars define. Deploy with <code>task ansible:deploy-gaming ENV=&lt;env&gt;</code>; see <a href="../gaming/">Gaming</a>.</p>
 <h2 id="data-driven-apps"><a class="toclink" href="#data-driven-apps">Data-Driven Apps</a></h2>

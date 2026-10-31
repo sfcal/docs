@@ -2016,14 +2016,6 @@
 <td><code>ping</code></td>
 <td>Test connectivity to all hosts</td>
 </tr>
-<tr>
-<td><code>backup-media</code></td>
-<td>Backup media stack configs</td>
-</tr>
-<tr>
-<td><code>restore-media</code></td>
-<td>Restore media stack from backup</td>
-</tr>
 </tbody>
 </table>
 <p>All commands require <code>ENV=&lt;env&gt;</code> and are prefixed with <code>task ansible:</code>.</p>
@@ -2106,7 +2098,7 @@
 </code></pre></div>
 <p>The <code>deploy-app.yml</code> playbook reads the app config, includes the <code>docker_service</code> role, and deploys the Docker Compose template from <code>ansible/playbooks/apps/&lt;name&gt;/templates/compose.yaml.j2</code>. The image pre-pull list is derived from every registry key ending in <code>image</code> (top level and one nesting level down) — there is no manual <code>images:</code> list. See <a href="../config/#app-registry">Config Reference — App Registry</a> for the full schema.</p>
 <h3 id="custom-app-playbooks"><a class="toclink" href="#custom-app-playbooks">Custom App Playbooks</a></h3>
-<p>Apps that need more than Docker Compose (e.g., media stack with backup/restore) have custom playbooks at <code>ansible/playbooks/apps/&lt;name&gt;/deploy.yml</code>.</p>
+<p>Apps that need more than Docker Compose (e.g., media stack with NFS mounts) have custom playbooks at <code>ansible/playbooks/apps/&lt;name&gt;/deploy.yml</code>.</p>
 <table>
 <thead>
 <tr>
@@ -2117,7 +2109,7 @@
 <tbody>
 <tr>
 <td>Media stack</td>
-<td>Backup/restore tasks, complex multi-container setup</td>
+<td>NFS mount, complex multi-container setup</td>
 </tr>
 <tr>
 <td>Home Assistant</td>
