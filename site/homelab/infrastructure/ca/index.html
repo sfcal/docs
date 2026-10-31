@@ -2009,7 +2009,7 @@
 </code></pre></div>
 <p>The task file performs these steps in order:</p>
 <ol>
-<li>Creates directory structure at <code>/opt/step-ca/</code> and <code>/opt/step-ca/data/</code></li>
+<li>Creates <code>/opt/step-ca/</code> (compose, password file) and <code>/var/lib/step-ca/data/</code> (CA state)</li>
 <li>Deploys the provisioner password file (mode <code>0600</code>)</li>
 <li>Deploys <code>compose.yaml</code> from template</li>
 <li>Starts the Step-CA container</li>

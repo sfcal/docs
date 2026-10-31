@@ -2639,7 +2639,7 @@
 <a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">    </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># Required — no default in the zone template</span>
 <a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="w">    </span><span class="nt">tls_skip_verify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<p><code>_services.yml</code> builds a <code>registry_services</code> list from every <code>proxy:</code> block — on a top-level app or a one-level-nested sub-service (e.g., <code>apps.work.convertx.proxy</code>). For each block:</p>
+<p><code>_services.yml</code> builds a <code>registry_services</code> list from every <code>proxy:</code> block — on a top-level app or a one-level-nested sub-service (e.g., <code>apps.work.microbin.proxy</code>). For each block:</p>
 <ul>
 <li><strong><code>backend_host</code> is derived</strong> — the first inventory host of the app's <code>host_group</code>. If the group has no hosts in the environment's inventory, the render fails loudly rather than silently dropping the entry.</li>
 <li><strong><code>backend_port</code> defaults to the sibling <code>port</code></strong> — set <code>backend_port</code> inside the <code>proxy:</code> block to override it.</li>

@@ -2456,7 +2456,7 @@
 <h3 id="monitoring-stack-deployment"><a class="toclink" href="#monitoring-stack-deployment">Monitoring Stack Deployment</a></h3>
 <p>The task file:</p>
 <ol>
-<li>Creates directory structure under <code>/opt/monitoring/</code></li>
+<li>Creates the directory structure: rendered config under <code>/opt/monitoring/</code>, Prometheus and Grafana state under <code>/var/lib/monitoring/</code></li>
 <li>Sets ownership to <code>monitoring_uid:monitoring_gid</code></li>
 <li>Deploys Prometheus configuration</li>
 <li>Deploys Grafana datasource provisioning</li>
@@ -2730,7 +2730,7 @@
 <tr>
 <td><code>backup_targets</code></td>
 <td><code>list[string]</code></td>
-<td>Service directories under <code>/opt/monitoring/</code> to back up</td>
+<td>Service directories under <code>/var/lib/monitoring/</code> to back up</td>
 <td>(per-env)</td>
 </tr>
 </tbody>

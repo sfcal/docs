@@ -1796,7 +1796,7 @@
 <li>It boots a tiny Alpine Linux flasher (kernel + initramfs over TFTP; module image and flash script over HTTP).</li>
 <li>The flasher streams <code>ubuntu-26.04-preinstalled-server-arm64+raspi.img.xz</code> from the netboot VM straight onto <code>/dev/mmcblk0</code>, then writes the node's cloud-init seed (hostname, static IP, SSH keys) onto the <code>system-boot</code> FAT partition, and reboots into the fresh OS.</li>
 </ol>
-<p><strong>Always armed, by design.</strong> The per-serial payload is permanently served, but <code>BOOT_ORDER=0xf2461</code> tries eMMC → NVMe → USB → network, so a healthy node never netboots. Only a blank or unbootable module falls through — and then it provisions itself, zero-touch. The trade-off is deliberate: an eMMC that stops booting gets <em>reflashed</em>, not debugged. To exempt one node without removing its payload, drop a file named <code>disabled</code> in <code>/opt/netbootxyz/assets/cm5/&lt;full-serial&gt;/</code> on the netboot VM.</p>
+<p><strong>Always armed, by design.</strong> The per-serial payload is permanently served, but <code>BOOT_ORDER=0xf2461</code> tries eMMC → NVMe → USB → network, so a healthy node never netboots. Only a blank or unbootable module falls through — and then it provisions itself, zero-touch. The trade-off is deliberate: an eMMC that stops booting gets <em>reflashed</em>, not debugged. To exempt one node without removing its payload, drop a file named <code>disabled</code> in <code>/srv/netbootxyz/assets/cm5/&lt;full-serial&gt;/</code> on the netboot VM.</p>
 <p><strong>Interrupted flashes are safe.</strong> The flasher zeroes the partition table first and writes it back <strong>last</strong>, so a power cut mid-flash always leaves the eMMC non-bootable — the boot loop re-enters the flasher and retries.</p>
 <h2 id="one-time-eeprom-prerequisites-per-cm5"><a class="toclink" href="#one-time-eeprom-prerequisites-per-cm5">One-time EEPROM prerequisites (per CM5)</a></h2>
 <p>The Pi bootloader is not reliably served by the UDM's DHCP boot option, so the TFTP server is pinned in EEPROM. On the node (or via the ptp-experiments EEPROM provisioning):</p>
@@ -1830,7 +1830,7 @@
 <li><strong>Alpine boots but nothing happens</strong> — check <code>http://10.3.20.60:8080/cm5/&lt;full-serial&gt;/apkovl.tar.gz</code> and <code>user-data</code> return 200, and that no <code>disabled</code> file exists for the serial. Console messages are prefixed <code>cm5-flash:</code>.</li>
 <li><strong>Flash is slow</strong> — TFTP (kernel+initramfs, ~28 MB) is lockstep and slow by protocol; the big transfers ride HTTP. Total ~5–10 min is normal.</li>
 <li><strong>Ubuntu image URL 404s</strong> — point releases displace the filename on cdimage.ubuntu.com (26.04.1 ~Aug 2026); bump <code>cm5_ubuntu_image_url</code>/<code>cm5_ubuntu_image_sha256</code>, or fetch the GA image from <code>old-releases.ubuntu.com</code>. The cached copy on the netboot VM keeps working regardless.</li>
-<li><strong>Never</strong> place a <code>config.txt</code> or <code>pieeprom.*</code> at the TFTP root (<code>/opt/netbootxyz/config/menus/</code>) — the former would hijack every Pi on the VLAN, the latter would trigger silent EEPROM self-update on netbooting Pis.</li>
+<li><strong>Never</strong> place a <code>config.txt</code> or <code>pieeprom.*</code> at the TFTP root (<code>/var/lib/netbootxyz/config/menus/</code>) — the former would hijack every Pi on the VLAN, the latter would trigger silent EEPROM self-update on netbooting Pis.</li>
 </ul>
 
 
