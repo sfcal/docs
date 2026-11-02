@@ -624,6 +624,8 @@
       
         
       
+        
+      
     
     
     
@@ -835,6 +837,34 @@
     
   
     Provision a CM5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitOps Deploys
   
 
     
@@ -1122,6 +1152,17 @@
     <span class="md-ellipsis">
       
         CA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI
       
     </span>
   </a>
@@ -1739,6 +1780,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#docker" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1913,6 +1965,10 @@
 <td>Deploy a single data-driven app</td>
 </tr>
 <tr>
+<td><code>task ansible:deploy-ci-access ENV=wil</code></td>
+<td>Create the CI deploy user on hosts the deploy workflow targets</td>
+</tr>
+<tr>
 <td><code>task ansible:ping ENV=wil</code></td>
 <td>Test connectivity to all hosts</td>
 </tr>
@@ -2008,6 +2064,30 @@
 <tr>
 <td><code>task ca:sign ENV=wil CSR=&lt;path&gt;</code></td>
 <td>Sign a CSR (optional: <code>DURATION=8760h</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ci"><a class="toclink" href="#ci">CI</a></h2>
+<p>Bootstrap for the GitHub Actions deploy workflow — see <a href="../../guides/gitops/">GitOps Deploys</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>task ci:keys ENV=wil</code></td>
+<td>Generate the environment's CI SSH + age keys, wire them into <code>ci.yml</code> / <code>.sops.yaml</code>, re-encrypt its secrets</td>
+</tr>
+<tr>
+<td><code>task ci:known-hosts ENV=wil</code></td>
+<td>Record host keys of the hosts CI deploys to into <code>environments/&lt;env&gt;/known_hosts</code></td>
+</tr>
+<tr>
+<td><code>task ci:secrets ENV=wil</code></td>
+<td>Create the GitHub environment and upload <code>SSH_DEPLOY_KEY</code> / <code>SOPS_AGE_KEY</code> with <code>gh</code></td>
 </tr>
 </tbody>
 </table>
