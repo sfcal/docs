@@ -1994,7 +1994,7 @@ from a GitHub-hosted runner and runs the affected playbooks — the same ones
 <li><strong>Trigger</strong> — <code>push</code> to <code>main</code> touching <code>group_vars</code>, <em>and</em> the head commit is authored by <code>renovate[bot]</code>. Your own commits are never auto-deployed; use <code>task ansible:deploy-*</code> or <strong>Run workflow</strong>.</li>
 <li><strong>Plan</strong> — diffs <code>group_vars</code> between the environment's tag <code>deploy/&lt;env&gt;</code> (last successful deploy) and the pushed commit. Because the base is the last <em>successful</em> deploy, a run that was cancelled, superseded or failed is picked up by the next one.</li>
 <li><strong>Targets</strong> — only the allowlist below is ever auto-deployed. Anything else that changed is listed in the run summary as "deploy manually".</li>
-<li><strong>Order</strong> — wil first, ldn only if wil didn't fail. One target at a time per environment; runs queue per environment.</li>
+<li><strong>Order</strong> — wil first, ldn only if wil didn't fail (no manual approval). One target at a time per environment; runs queue per environment.</li>
 <li><strong>Compose</strong> — playbooks apply image bumps with <code>compose up</code> (<code>state: present</code>), which recreates only the services whose image or definition changed.</li>
 <li><strong>Note</strong> — a playbook always deploys the whole current state of <code>main</code> for its stack. Anything you pushed but didn't deploy for that stack goes out too.</li>
 </ul>
@@ -2142,11 +2142,8 @@ from a GitHub-hosted runner and runs the affected playbooks — the same ones
 <h3 id="4-test"><a class="toclink" href="#4-test">4. Test</a></h3>
 <p><strong>Actions → Deploy → Run workflow</strong>, env <code>wil</code>, target <code>playbook:infrastructure/monitoring/deploy.yml</code> (or <code>app:website</code>). Once that's green, Renovate merges deploy wil on their own.</p>
 <h3 id="5-enable-ldn"><a class="toclink" href="#5-enable-ldn">5. Enable ldn</a></h3>
-<p>Repeat steps 2–3 with <code>ENV=ldn</code>. Add yourself as a <strong>required reviewer</strong> on the <code>ldn</code> environment, then set <code>DEPLOY_ENVS</code> to <code>wil ldn</code>. Each ldn deploy then waits for your approval after wil succeeds.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Environments, environment secrets and required reviewers are free on public repositories. On a private repository they need a paid plan (required reviewers need Enterprise).</p>
-</div>
+<p>Repeat steps 2–3 with <code>ENV=ldn</code> (federated identity subject <code>repo:sfcal/homelab:environment:ldn</code>), test with <code>app:kosync</code>, then set <code>DEPLOY_ENVS</code> to <code>wil ldn</code>. ldn then deploys unattended once wil has succeeded — no approval step.</p>
+<p>Images that only exist in ldn (kosync, the <code>work</code> apps, RomM, Wolf) have no wil canary; Renovate's <code>minimumReleaseAge</code> (1 day minor, 3 days major) is their buffer. If you ever want a pause before prod without having to approve anything, give the <code>ldn</code> environment a <strong>wait timer</strong> (free on public repos) — the run waits, and you can cancel it in that window.</p>
 <h2 id="day-to-day"><a class="toclink" href="#day-to-day">Day to day</a></h2>
 <ul>
 <li><strong>Manual deploy</strong> — Run workflow with <code>app:&lt;name&gt;</code> or <code>playbook:&lt;path&gt;</code>. With an empty target, it deploys everything changed since <code>deploy/&lt;env&gt;</code> and moves the tag.</li>
