@@ -1440,6 +1440,8 @@
       
         
       
+        
+      
     
     
     
@@ -1536,6 +1538,34 @@
     
   
     Reverse Proxy (Caddy)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/networking/sso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Single Sign-On (Authelia)
   
 
     
@@ -2102,6 +2132,12 @@
 <td>—</td>
 <td>Read buffer size</td>
 </tr>
+<tr>
+<td><code>auth</code></td>
+<td>no</td>
+<td><code>false</code></td>
+<td>Require an <a href="../../infrastructure/networking/sso/">Authelia</a> login</td>
+</tr>
 </tbody>
 </table>
 <p>For registry-generated entries, <code>backend_host</code> is derived (first inventory host of the app's <code>host_group</code>) and <code>backend_port</code> defaults to the app's <code>port</code> — the <code>proxy:</code> block supplies <code>name</code>, <code>domain</code>, <code>proxied</code>, and any optional fields.</p>
@@ -2133,7 +2169,7 @@
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wil.5am.cloud</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">      </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">             </span><span class="c1"># Required (no default in zone template)</span>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">      </span><span class="c1"># Optional: tls_skip_verify, forward_headers, host_header, encode,</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">      </span><span class="c1">#           read_buffer, dns, enabled, backend_port (overrides port)</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">      </span><span class="c1">#           read_buffer, auth, dns, enabled, backend_port (overrides port)</span>
 <a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="c1"># Optional:</span>
 <a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="c1"># nfs: true                 # Mount NFS shares</span>
 <a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="c1"># user: "1000"              # Service user</span>

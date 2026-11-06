@@ -1245,6 +1245,8 @@
       
         
       
+        
+      
     
     
     
@@ -1339,6 +1341,34 @@
     
   
     Reverse Proxy (Caddy)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Single Sign-On (Authelia)
   
 
     
@@ -1865,6 +1895,11 @@
 <td><a href="proxy/">Reverse Proxy</a></td>
 </tr>
 <tr>
+<td><a href="sso/">Authelia</a></td>
+<td>Single sign-on login in front of proxied services</td>
+<td><a href="sso/">Single Sign-On</a></td>
+</tr>
+<tr>
 <td><a href="tailscale/">Tailscale</a></td>
 <td>Encrypted WireGuard VPN mesh between sites</td>
 <td><a href="tailscale/">VPN</a></td>
@@ -1969,12 +2004,13 @@
 <p>Deploy the full networking stack:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
-<p>The playbook targets the <code>infra_networking</code> host group and runs four components in order:</p>
+<p>The playbook targets the <code>infra_networking</code> host group and runs five components in order:</p>
 <ol>
+<li><strong>Tailscale</strong> — VPN mesh (via role)</li>
 <li><strong>BIND9</strong> — DNS server configuration and zone files</li>
 <li><strong>Cloudflare DDNS</strong> — dynamic DNS updater container</li>
+<li><strong>Authelia</strong> — single sign-on login</li>
 <li><strong>Caddy</strong> — reverse proxy with TLS</li>
-<li><strong>Tailscale</strong> — VPN mesh (via role)</li>
 </ol>
 <h3 id="deployment-order"><a class="toclink" href="#deployment-order">Deployment Order</a></h3>
 <p>Networking deploys first in the infrastructure stack. The dependency chain:</p>
