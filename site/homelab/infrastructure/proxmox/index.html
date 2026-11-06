@@ -1834,7 +1834,7 @@
 <tbody>
 <tr>
 <td><code>/usr/local/sbin/sriov-b50</code></td>
-<td>Waits for the <code>xe</code> driver, writes <code>sriov_numvfs</code>, binds the VFs to <code>vfio-pci</code></td>
+<td>Finds the PF by PCI id (<code>lspci -d 8086:e212</code>), waits for the <code>xe</code> driver, writes <code>sriov_numvfs</code>, binds the VFs to <code>vfio-pci</code></td>
 </tr>
 <tr>
 <td><code>/etc/systemd/system/sriov-b50.service</code></td>
@@ -1844,26 +1844,25 @@
 </table>
 <p>Then it runs <code>pvesh get /cluster/mapping/pci --check-node pve-ldn</code>, the same validation <code>qm start</code> performs, and fails if a mapping no longer matches the hardware.</p>
 <p>Configuration (<code>ansible/environments/ldn/group_vars/infra_proxmox/vars.yml</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">proxmox_sriov_devices</span><span class="p">:</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">b50</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">pf</span><span class="p">:</span><span class="w"> </span><span class="s">"0000:0b:00.0"</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">num_vfs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">b50_num_vfs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 </code></pre></div>
+<p>The card itself (PCI id <code>8086:e212</code>, unit and mapping names) is hardcoded in the play and templates.</p>
 <h2 id="facts-worth-knowing"><a class="toclink" href="#facts-worth-knowing">Facts worth knowing</a></h2>
 <ul>
-<li>Kernel 6.17 (Proxmox VE 9.1) supports Battlemage SR-IOV out of the box: no module option, DKMS or <code>force_probe</code>.</li>
-<li>Intel's current B50 firmware allows 2 VFs (<code>cat /sys/bus/pci/devices/0000:0b:00.0/sriov_totalvfs</code>); the Q3 2025 firmware allowed 12. Each VF gets <code>1/num_vfs</code> of the card's memory.</li>
-<li>Mapping IDs are <code>b50-vf1</code> (VM 3005 gaming) and <code>b50-vf2</code> (VM 3004 work), paths <code>0000:0b:00.1</code> and <code>0000:0b:00.2</code>. If a kernel or BIOS change moves their IOMMU groups, the play fails and names the mapping; fix it in Datacenter &gt; Resource Mappings.</li>
+<li>Kernel 7.0 (Proxmox VE 9.2) supports Battlemage SR-IOV out of the box: no module option, DKMS or <code>force_probe</code>. 6.17 (PVE 9.1) did too; 7.0 adds per-VF debugfs quotas (<code>/sys/kernel/debug/dri/&lt;PF&gt;/sriov/vfN/tile0/vram_quota</code>) for an uneven VRAM split, unused here.</li>
+<li>The card's firmware data (<code>igsc fw-data version -d /dev/mei0</code>) sets <code>sriov_totalvfs</code>: Intel's current image (203.41) allows 2 VFs, the launch image (203.31, from driver package 32.0.101.6979, flashed on 2026-11-03) allows 12. Each VF's BAR is 16 GB divided by the VF count, rounded up to a power of two (8 GB with 2 or 3 VFs, 4 GB with 4), and the VRAM is split evenly between the VFs (about 5.2 GiB each with 3).</li>
+<li>Mapping IDs are <code>b50-vf1</code> (VM 3005 gaming), <code>b50-vf2</code> (VM 121 ubuntu-desktop-kasmvnc, moved from VM 3004 work on 2026-11-05) and <code>b50-vf3</code> (VM 118 windows-gpu). They are created once in Datacenter &gt; Resource Mappings, or with <code>pvesh create /cluster/mapping/pci --id b50-vfN --map node=pve-ldn,path=&lt;VF address&gt;,id=8086:e212,subsystem-id=8086:1114,iommugroup=&lt;group&gt;</code>. If a kernel or BIOS change moves a VF's IOMMU group, the play fails and names the mapping; fix it in Datacenter &gt; Resource Mappings.</li>
 <li>Never add <code>options vfio-pci ids=8086:e212</code> or <code>blacklist xe</code>: vfio-pci would claim the physical function and no VF could exist.</li>
-<li>To change <code>num_vfs</code>, edit the variable, re-run the play, and reboot the host (the count can only change while no VM holds a VF).</li>
-<li>A guest needs kernel 6.17 or newer for a Battlemage VF (Ubuntu 25.10 qualifies). VFs are render-only, no display outputs.</li>
+<li>To change <code>b50_num_vfs</code>, edit the variable, re-run the play, and reboot the host: the count can only change while no VM holds a VF. With the GPU VMs stopped, <code>systemctl restart sriov-b50</code> does the same without a reboot.</li>
+<li>Never run an Intel Windows installer against the bare PF, and never <code>fwupdmgr update</code> on the host: both re-flash the 2-VF firmware data. Guests holding a VF cannot flash anything. Both config-data images are kept in <code>/root</code> on pve-ldn (<code>b50fw-6979</code> is the 12-VF one, <code>b50fw</code> the 2-VF rollback).</li>
+<li>A guest needs kernel 6.17 or newer for a Battlemage VF (Ubuntu 25.10 qualifies; Ubuntu 24.04 needs <code>linux-generic-hwe-24.04</code>, its 6.8 kernel has no driver for the card). VFs are render-only, no display outputs.</li>
 </ul>
 <h2 id="verify"><a class="toclink" href="#verify">Verify</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ssh<span class="w"> </span>root@10.3.20.10<span class="w"> </span><span class="s1">'systemctl status sriov-b50; lspci -nnks 0b:00; pvesh get /cluster/mapping/pci --check-node pve-ldn'</span>
 </code></pre></div>
-<p>Expect <code>0b:00.0</code> on <code>xe</code>, <code>0b:00.1</code> and <code>0b:00.2</code> on <code>vfio-pci</code>, and no <code>checks</code> on the mappings. After a reboot <code>qm status 3005</code> should be <code>running</code> without manual action.</p>
+<p>Expect <code>0b:00.0</code> on <code>xe</code>, <code>0b:00.1</code> to <code>0b:00.3</code> on <code>vfio-pci</code>, and no <code>checks</code> on the mappings. After a reboot <code>qm status 3005</code> should be <code>running</code> without manual action.</p>
 <h2 id="terraform-notes"><a class="toclink" href="#terraform-notes">Terraform notes</a></h2>
-<p>The GPU VMs (<code>work_server</code>, <code>game_server</code>) are defined in <code>terraform/environments/ldn/vms.auto.tfvars</code> with <code>bios = "ovmf"</code>, <code>machine = "q35"</code> and <code>pci_mapping</code>. The provider (telmate 3.0.2-rc07) only format-checks the mapping ID; whether the VF exists is discovered at VM start. On apply the provider also starts a stopped VM.</p>
+<p>The GPU VM <code>game_server</code> is defined in <code>terraform/environments/ldn/vms.auto.tfvars</code> with <code>bios = "ovmf"</code>, <code>machine = "q35"</code> and <code>pci_mapping</code>. <code>work_server</code> keeps <code>bios</code> and <code>machine</code> but no longer maps a VF; VMs 118 and 121 are hand-made clones outside Terraform, given their VF with <code>qm set &lt;vmid&gt; --hostpci0 mapping=b50-vfN,pcie=1</code>. The provider (telmate 3.0.2-rc07) only format-checks the mapping ID; whether the VF exists is discovered at VM start. On apply the provider also starts a stopped VM.</p>
 <p>As of October 2026 the ldn state holds only <code>web_server</code>; every other ldn VM has to be imported before <code>task terraform:deploy ENV=ldn</code> (which applies with <code>-auto-approve</code>) is safe to run:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>terraform/environments/ldn
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">for</span><span class="w"> </span>pair<span class="w"> </span><span class="k">in</span><span class="w"> </span>networking_server:3000<span class="w"> </span>ca_server:3003<span class="w"> </span>monitoring_server:3002<span class="w"> </span>work_server:3004<span class="w"> </span>game_server:3005<span class="w"> </span>netboot_server:3006<span class="p">;</span><span class="w"> </span><span class="k">do</span>

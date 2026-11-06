@@ -2548,6 +2548,12 @@
 <td><code>"30d"</code></td>
 </tr>
 <tr>
+<td><code>prometheus_url</code></td>
+<td><code>string</code></td>
+<td>Public URL, used for the Homepage link</td>
+<td>(per-env)</td>
+</tr>
+<tr>
 <td><code>prometheus_node_targets</code></td>
 <td><code>list[string]</code></td>
 <td>Node exporter endpoints to scrape (<code>host:port</code>)</td>
@@ -2622,6 +2628,11 @@
 <td><code>node_exporter_full.json</code></td>
 <td>All <code>node-exporter</code>/<code>node</code> targets (<a href="https://grafana.com/grafana/dashboards/1860">grafana.com 1860</a>)</td>
 </tr>
+<tr>
+<td>System Activity</td>
+<td><code>system_activity.json</code></td>
+<td>CPU, memory, network and disk I/O per <code>node-exporter</code> target; Homepage embeds its four panels</td>
+</tr>
 </tbody>
 </table>
 <h3 id="container-configuration_1"><a class="toclink" href="#container-configuration_1">Container Configuration</a></h3>
@@ -2630,6 +2641,7 @@
 <li><strong>Depends on:</strong> Prometheus</li>
 <li><strong>Provisioning:</strong> mounted read-only at <code>/etc/grafana/provisioning</code></li>
 <li><strong>Sign-up:</strong> disabled (<code>GF_USERS_ALLOW_SIGN_UP=false</code>)</li>
+<li><strong>Embedding:</strong> allowed, and anyone who is not signed in gets read-only access (<code>GF_SECURITY_ALLOW_EMBEDDING</code>, <code>GF_AUTH_ANONYMOUS_*</code>), so Homepage can show panels in iframes without a login</li>
 </ul>
 <h3 id="configuration-reference_1"><a class="toclink" href="#configuration-reference_1">Configuration Reference</a></h3>
 <table>
@@ -2715,7 +2727,7 @@
 <tbody>
 <tr>
 <td><code>services.yaml.j2</code></td>
-<td>Service cards with status widgets (media, monitoring, node exporters)</td>
+<td>Service cards with status widgets (Grafana graphs, media, apps, infrastructure, monitoring, node exporters)</td>
 </tr>
 <tr>
 <td><code>bookmarks.yaml.j2</code></td>
@@ -2731,6 +2743,12 @@
 </tr>
 </tbody>
 </table>
+<p><code>services.yaml.j2</code> is plain Homepage YAML; edit it directly. Three parts are less obvious:</p>
+<ul>
+<li><strong>Apps</strong> and <strong>Infrastructure</strong> differ per site: one <code>if</code>/<code>else</code> block picks the ldn or wil cards by the inventory folder name. Everything else is shared by both sites.</li>
+<li><strong>System Activity</strong> shows the four panels of the System Activity Grafana dashboard in iframes (<code>&lt;grafana_url&gt;/d-solo/system-activity?panelId=1</code> to <code>4</code>). The time range and refresh interval come from the dashboard JSON.</li>
+<li><strong>SABnzbd</strong> has two widgets: Homepage's <code>sabnzbd</code> widget (speed, queue) and a <code>customapi</code> widget that reads the download totals for today, this week, this month and all time from SABnzbd's <code>server_stats</code> API once a minute.</li>
+</ul>
 <p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/containers.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/monitoring/templates/services.yaml.j2"><code>ansible/playbooks/infrastructure/monitoring/templates/services.yaml.j2</code></a></small></p>
 <hr />
 <h2 id="shared-configuration"><a class="toclink" href="#shared-configuration">Shared Configuration</a></h2>
