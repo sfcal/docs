@@ -1476,6 +1476,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#proxmox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proxmox
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#good-to-know" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1799,6 +1810,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#proxmox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proxmox
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#good-to-know" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1915,7 +1937,7 @@
 <li>oauth2-proxy then sets a cookie for the service's domain, so the other flagged services on that domain open directly.</li>
 <li>The first visit to a flagged service on another domain passes through the login page without asking for the password again.</li>
 </ol>
-<p>Authelia is a gate in front of a service, not a replacement for its login: a service that has its own (Proxmox, the NAS) still asks for it. <a href="#kasm">Kasm</a> is the exception: it logs in through Authelia itself.</p>
+<p>Authelia is a gate in front of a service, not a replacement for its login: a service that has its own (the NAS, for example) still asks for it. <a href="#kasm">Kasm</a> and <a href="#proxmox">Proxmox</a> are the exceptions: they log in through Authelia themselves.</p>
 <p>The login page is the service entry named <code>auth</code> in the site's proxy file:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">authelia</span><span class="w">   </span><span class="c1"># container name on the Caddy docker network</span>
@@ -2089,6 +2111,64 @@
 </table>
 <p>The first login creates a new Kasm user named after the Authelia user, in the default group. Add it to Administrators with the existing admin account; the membership stays as long as the group has no SSO mapping for this provider. Kasm does not link accounts: remove or rename a local user with the same name first, or the login is refused with <code>OIDC login rejected: Non OIDC user</code>.</p>
 <p>With Auto Login on, Kasm's own login page is at <code>https://kasm.ldn.5am.cloud/#/staticlogin</code>, which is also the way in when Authelia is down.</p>
+<h2 id="proxmox"><a class="toclink" href="#proxmox">Proxmox</a></h2>
+<p>Each site's Proxmox logs in through that site's Authelia as a client of its own: the client is in <code>authelia-configuration.yml.j2</code>, and the realm's settings live in Proxmox, not in this repository. Unlike Kasm, <code>vm</code> keeps <code>auth: true</code>: WIL's Caddy answers from the internet, and the gate keeps Proxmox's login page off it. The first visit therefore passes through the login page twice, the second time without asking for the password.</p>
+<p>Generate a client secret per site, using the same command as for <a href="#kasm">Kasm</a>. Store both values, because Proxmox's realm needs the password itself, then deploy networking:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/environments/wil/group_vars/infra_networking/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_oidc_proxmox_client_secret"]'</span><span class="w"> </span><span class="s1">'"&lt;Random Password&gt;"'</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/environments/wil/group_vars/infra_networking/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_oidc_proxmox_client_secret_hash"]'</span><span class="w"> </span><span class="s1">'"$pbkdf2-sha512$..."'</span>
+</code></pre></div>
+<p>Proxmox fetches Authelia's settings itself, so the host must resolve the login page, which is not in public DNS. Check from the host:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>getent<span class="w"> </span>hosts<span class="w"> </span>auth.wil.5am.cloud
+</code></pre></div>
+<p>If that prints nothing, as on both sites' hosts when this was set up, point the name at the site's networking VM (WIL <code>10.2.20.53</code>, LDN <code>10.3.20.53</code>) in the host's <code>/etc/hosts</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"10.2.20.53 auth.wil.5am.cloud"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/hosts
+</code></pre></div>
+<p>Add the realm under <strong>Datacenter &gt; Permissions &gt; Realms &gt; Add &gt; OpenID Connect Server</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Issuer URL</td>
+<td><code>https://auth.wil.5am.cloud</code></td>
+</tr>
+<tr>
+<td>Realm</td>
+<td><code>authelia</code></td>
+</tr>
+<tr>
+<td>Client ID</td>
+<td><code>proxmox</code></td>
+</tr>
+<tr>
+<td>Client Key</td>
+<td><code>authelia_oidc_proxmox_client_secret</code> from the site's secrets</td>
+</tr>
+<tr>
+<td>Default</td>
+<td>On, so the realm is preselected at login</td>
+</tr>
+<tr>
+<td>Autocreate Users</td>
+<td>Off</td>
+</tr>
+<tr>
+<td>Username Claim</td>
+<td>Type <code>preferred_username</code>. It cannot be changed later, and the default gives a user named after an opaque ID</td>
+</tr>
+</tbody>
+</table>
+<p>Then, on the host, create the user and make it an admin:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>pveum<span class="w"> </span>user<span class="w"> </span>add<span class="w"> </span>sfcal@authelia
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>pveum<span class="w"> </span>acl<span class="w"> </span>modify<span class="w"> </span>/<span class="w"> </span>--users<span class="w"> </span>sfcal@authelia<span class="w"> </span>--roles<span class="w"> </span>Administrator
+</code></pre></div>
+<p>Keep <code>root@pam</code>. It is the way in through <code>https://&lt;host-ip&gt;:8006</code> when Authelia or Caddy is down, and a few settings stay root-only, such as raw <code>args</code> or PCI passthrough without a mapping. The <code>authelia</code> realm only works on the <code>vm</code> name, because that is its only registered redirect URL.</p>
 <h2 id="good-to-know"><a class="toclink" href="#good-to-know">Good to Know</a></h2>
 <ul>
 <li>A login lasts 12 hours, or a month if you tick <strong>Remember me</strong>. Each domain's cookie also lasts 12 hours and is renewed without asking while the login lasts.</li>
@@ -2101,6 +2181,7 @@
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
 <p><strong>Deploy stops with <code>'authelia_password_hash' is undefined</code></strong> — the password has not been set for that environment. See <a href="#set-the-password">Set the Password</a>.</p>
 <p><strong>Deploy stops with <code>'authelia_oidc_kasm_client_secret_hash' is undefined</code></strong> — the Kasm client secret has not been set for LDN. See <a href="#kasm">Kasm</a>.</p>
+<p><strong>Deploy stops with <code>'authelia_oidc_proxmox_client_secret_hash' is undefined</code></strong> — the Proxmox client secret has not been set for that environment. See <a href="#proxmox">Proxmox</a>.</p>
 <p><strong>Kasm's login ends in <code>Internal Error</code></strong> — Kasm's log has the reason: <code>ssh 10.3.20.50 'docker exec kasm docker logs --since 10m kasm_api 2&gt;&amp;1' | grep -E 'Failed to find|\(invalid_'</code>. <code>Failed to find groups attribute</code> means Groups Attribute is not empty. <code>invalid_client</code> means the Client Secret does not match. <code>The authorization code has already been used</code> means the error page was reloaded: start again from the login page.</p>
 <p><strong>Every flagged service answers <code>502</code> after a deploy</strong> — one of the two containers is not running: <code>ssh &lt;networking-ip&gt; docker ps</code>, then <code>docker logs authelia</code> (usually a malformed password hash) or <code>docker logs oauth2-proxy</code> (it restarts until it can reach the login page, which takes up to a minute after the first deploy).</p>
 <p><strong>A new password is not accepted</strong> — Authelia reads its files only when it starts. If the deploy that changed the password failed part-way, restart it: <code>ssh &lt;networking-ip&gt; docker restart authelia</code>.</p>

@@ -1139,6 +1139,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Ubuntu Desktop Template">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kasmvnc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KasmVNC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nas-share" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NAS share
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-differences-from-the-server-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other differences from the server template
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1818,6 +1857,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Ubuntu Desktop Template">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kasmvnc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KasmVNC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nas-share" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NAS share
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-differences-from-the-server-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other differences from the server template
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1971,7 +2049,7 @@
 <tr>
 <td>Ubuntu Desktop</td>
 <td><code>ubuntu-desktop-base.pkr.hcl</code></td>
-<td>Ubuntu Server install with <code>ubuntu-desktop-minimal</code> on top (GNOME, Firefox), mDNS (avahi); no Docker or Node Exporter</td>
+<td>Ubuntu Server install with <code>ubuntu-desktop-minimal</code> on top (GNOME, no browser), KasmVNC, NAS share at <code>/mnt/data</code>, mDNS (avahi); no Docker or Node Exporter</td>
 </tr>
 <tr>
 <td>Debian Bookworm</td>
@@ -2012,18 +2090,27 @@
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│   ├── autounattend.xml.pkrtpl         # Windows answer file (rendered by the template)
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│   ├── setup.ps1                       # First-logon bootstrap: WinRM, VirtIO drivers, guest agent
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│   └── smb-share.ps1                   # Optional: NAS share as a persistent Z: drive
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>└── environments/
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    ├── wil/
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    │   ├── ubuntu-variables.pkrvars.hcl     # Ubuntu build variables
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    │   ├── ubuntu-desktop-variables.pkrvars.hcl  # Ubuntu Desktop build variables
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    │   ├── debian-variables.pkrvars.hcl     # Debian build variables
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    │   ├── windows-variables.pkrvars.hcl    # Windows build variables
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    │   └── credentials.wil.pkrvars.hcl      # Proxmox API tokens (encrypted)
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    └── ldn/
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>├── files/kasmvnc/                      # Ubuntu Desktop: KasmVNC service and config, lock screen off
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>└── environments/
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    ├── wil/
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    │   ├── ubuntu-variables.pkrvars.hcl     # Ubuntu build variables
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    │   ├── ubuntu-desktop-variables.pkrvars.hcl  # Ubuntu Desktop build variables
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    │   ├── debian-variables.pkrvars.hcl     # Debian build variables
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    │   ├── windows-variables.pkrvars.hcl    # Windows build variables
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    │   └── credentials.wil.pkrvars.hcl      # Proxmox API tokens (encrypted)
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    └── ldn/
 </code></pre></div>
 <h2 id="ubuntu-desktop-template"><a class="toclink" href="#ubuntu-desktop-template">Ubuntu Desktop Template</a></h2>
-<p>Built the same way as the Ubuntu Server template: same ISO, same autoinstall (<code>http/user-data</code>), same mDNS setup. Instead of Docker and Node Exporter the build then installs <code>ubuntu-desktop-minimal</code>, the default selection of the Ubuntu Desktop installer (GNOME, Firefox, basic utilities). No separate Desktop ISO is needed.</p>
-<p>It is still a cloud-init template, so clone it with the Terraform VM module (<code>template_name = "ubuntu-desktop-&lt;env&gt;-base"</code>, <code>memory</code> of 4096 or more, <code>disk_size</code> no smaller than the template's 32G) or by hand from the Proxmox UI. Clones boot to the GNOME login screen on the Proxmox console; log in with <code>ssh_username</code> / <code>ssh_password</code> from the environment and credentials var files.</p>
+<p>Built the same way as the Ubuntu Server template: same ISO, same autoinstall (<code>http/user-data</code>), same mDNS setup. Instead of Docker and Node Exporter the build then installs <code>ubuntu-desktop-minimal</code>, the default selection of the Ubuntu Desktop installer (GNOME, basic utilities), and KasmVNC. It leaves out the Firefox snap, whose downloads took over an hour of the build, so clones have no browser, and the first-login welcome wizard. The prompt to upgrade to the next Ubuntu release is turned off. No separate Desktop ISO is needed.</p>
+<p>It is still a cloud-init template, so clone it with the Terraform VM module (<code>template_name = "ubuntu-desktop-&lt;env&gt;-base"</code>, <code>memory</code> of 4096 or more, <code>disk_size</code> no smaller than the template's 32G) or by hand from the Proxmox UI. Clones start a GNOME desktop at boot and serve it through KasmVNC.</p>
+<h3 id="kasmvnc"><a class="toclink" href="#kasmvnc">KasmVNC</a></h3>
+<p><code>kasmvnc@&lt;ssh_username&gt;.service</code> runs the desktop on <code>https://&lt;clone&gt;:8444</code> with a self-signed certificate, the same on every clone. The login is <code>ssh_username</code> / <code>kasmvnc_password</code> from the credentials file. It is not <code>ssh_password</code> because the port is open to the whole network and that user has passwordless sudo.</p>
+<p>To put a clone behind SSO, add it to Kasm as a KasmVNC server on port 8444 with that login. Kasm sends the password itself, so the user only sees the SSO login. GNOME's lock screen is off on every clone (<code>files/kasmvnc/90-no-lock-screen.gschema.override</code>), so there is no second login inside the desktop.</p>
+<p>The Proxmox console still has the GNOME login screen (<code>ssh_username</code> / <code>ssh_password</code>). GNOME runs one session per user and KasmVNC's is already running, so stop the service before logging in there.</p>
+<p>GPU rendering is per VM and not in the template. After mapping a VF to a clone, install <code>linux-generic-hwe-24.04</code> (the template's 6.8 kernel has no driver for the Arc Pro B50), add the user to group <code>render</code>, set <code>desktop.gpu.hw3d: true</code> in <code>~/.vnc/kasmvnc.yaml</code>, and reboot.</p>
+<h3 id="nas-share"><a class="toclink" href="#nas-share">NAS share</a></h3>
+<p><code>nfs_share</code> in <code>ubuntu-desktop-variables.pkrvars.hcl</code> is mounted at <code>/mnt/data</code>: the same export and path the <code>nfs_mount</code> role gives WIL's media VM, and LDN clones reach it over the Tailscale tunnel. It mounts on first use and shows in the Files sidebar. A clone that cannot reach the NAS still boots. Files written from a clone end up owned by root on the share, and any user on the clone can write to all of it.</p>
+<h3 id="other-differences-from-the-server-template"><a class="toclink" href="#other-differences-from-the-server-template">Other differences from the server template</a></h3>
 <p>Two things differ from the server template on clones:</p>
 <ul>
 <li>The password keeps working, at the console only. cloud-init normally locks its default user's password on a clone's first boot, which would leave no way to log in at the GNOME screen, so the template sets <code>lock_passwd: false</code> for that user. The same file (<code>/etc/cloud/cloud.cfg.d/99-default-user.cfg</code>) sets <code>ssh_pwauth: false</code>, so SSH takes keys only: Terraform clones get their key as usual, a clone made by hand needs one in its Cloud-Init tab.</li>
