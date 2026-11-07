@@ -1140,6 +1140,8 @@
       
         
       
+        
+      
     
     
     
@@ -1619,6 +1621,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hermes-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hermes Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#data-driven-apps" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1699,6 +1712,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hermes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hermes Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1748,6 +1789,17 @@
     <span class="md-ellipsis">
       
         Gaming
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hermes-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hermes Agent
       
     </span>
   </a>
@@ -1919,6 +1971,8 @@
 <p>Deploy with <code>task ansible:deploy-media ENV=wil</code>.</p>
 <h2 id="gaming"><a class="toclink" href="#gaming">Gaming</a></h2>
 <p>Terraria (wil) and Wolf with RomM (ldn) share one playbook on the <code>app_gaming</code> host; each environment gets the stacks its group_vars define. Deploy with <code>task ansible:deploy-gaming ENV=&lt;env&gt;</code>; see <a href="../gaming/">Gaming</a>.</p>
+<h2 id="hermes-agent"><a class="toclink" href="#hermes-agent">Hermes Agent</a></h2>
+<p>Hermes Agent (ldn) has its own playbook, which also installs Claude Code and the Claude subscription plugin in the container. Deploy with <code>task ansible:deploy-hermes ENV=ldn</code>; see <a href="../hermes/">Hermes Agent</a>.</p>
 <h2 id="data-driven-apps"><a class="toclink" href="#data-driven-apps">Data-Driven Apps</a></h2>
 <p>Most applications use the shared <code>deploy-app.yml</code> playbook and are defined in <code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code>. See <a href="../../guides/deploy-service/">Deploy a Service</a> for the full workflow.</p>
 <table>
