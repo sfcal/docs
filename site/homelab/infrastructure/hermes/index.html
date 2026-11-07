@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -1964,7 +1964,7 @@
 <p>The token stays in <code>/var/lib/hermes/data/.env</code> on the VM, not in the repo, so a rebuilt VM needs this again. The wizard's Automatic option is less work, but the token then comes through a service Nous Research hosts.</p>
 <h2 id="fix-plex-problems"><a class="toclink" href="#fix-plex-problems">Fix Plex problems</a></h2>
 <p>Text the bot about something on Plex, such as a failed download, bad sound or the wrong HDR format. The <code>plex-fix</code> skill checks the file and how Plex is playing it, suggests a replacement and asks before grabbing it. The old file stays until the new one imports, and Hermes checks back about 30 minutes later. <code>/plex-fix</code> also starts it.</p>
-<p>Hermes reaches Radarr, Sonarr and Plex on <code>10.2.0.5</code> over the site tunnel, using the keys in <code>group_vars/app_hermes/secrets.sops.yml</code>. These are copies of the keys Homepage uses in wil, so update both if you rotate one.</p>
+<p>Hermes reaches Radarr, Sonarr and Plex on <code>10.2.0.5</code> over the site tunnel, using the keys in <code>group_vars/site_ldn/app_hermes/secrets.sops.yml</code>. These are copies of the keys Homepage uses in wil, so update both if you rotate one.</p>
 <ul>
 <li><strong>Format preference:</strong> SDR or HDR10 first, and no Dolby Vision-only files. Change this in <code>SKILL.md</code>.</li>
 <li><strong>Limits:</strong> Hermes can't hear or see a file, so sound fixes are best guesses. If a replacement ranks lower than the current file, Radarr or Sonarr refuses the import and the old file stays. Hermes can't finish a manual import either.</li>
@@ -1987,7 +1987,7 @@
 <p>After that, text the bot to sort now, show the last report, undo a sort, or always file a sender somewhere.</p>
 <ul>
 <li><strong>What it can do:</strong> move mail out of the Inbox into those five folders, up to 150 messages a run and 40 per sender. Every move can be undone. It holds back people, conversations, flagged mail and subjects about payments, security and other matters on its protected lists.</li>
-<li><strong>Personal settings:</strong> your addresses, protected senders and the phrases that say something about your life are in <code>group_vars/app_hermes/fastmail.sops.yml</code>, because this repo is public. Keep them out of <code>default-config.json</code>. The scan refuses to run if they're missing.</li>
+<li><strong>Personal settings:</strong> your addresses, protected senders and the phrases that say something about your life are in <code>group_vars/site_ldn/app_hermes/fastmail.sops.yml</code>, because this repo is public. Keep them out of <code>default-config.json</code>. The scan refuses to run if they're missing.</li>
 <li><strong>Safety:</strong> mail text only reaches a model with no tools, so a hostile subject line has nothing to act with. Reports carry counts and short sender addresses, never subject lines. Fastmail's Email scope can also delete mail, and the agent's terminal could read the token file, so don't ask Hermes to read mail text in chat.</li>
 <li><strong>History:</strong> Hermes saves each job's prompt, and a chat search can find it. The 08:30 job deletes those prompts, and the report says if that fails, so subject lines are searchable for about 30 minutes each week.</li>
 </ul>
@@ -2032,15 +2032,15 @@
 <td>Offline tests for <code>fastmail-triage</code></td>
 </tr>
 <tr>
-<td><code>ansible/environments/ldn/group_vars/app_hermes/vars.yml</code></td>
+<td><code>ansible/inventory/group_vars/app_hermes/vars.yml</code></td>
 <td>Hermes image and where the email report goes</td>
 </tr>
 <tr>
-<td><code>ansible/environments/ldn/group_vars/app_hermes/secrets.sops.yml</code></td>
+<td><code>ansible/inventory/group_vars/site_ldn/app_hermes/secrets.sops.yml</code></td>
 <td>Radarr, Sonarr and Plex keys</td>
 </tr>
 <tr>
-<td><code>ansible/environments/ldn/group_vars/app_hermes/fastmail.sops.yml</code></td>
+<td><code>ansible/inventory/group_vars/site_ldn/app_hermes/fastmail.sops.yml</code></td>
 <td>Your addresses and private protection lists for <code>fastmail-triage</code></td>
 </tr>
 <tr>
@@ -2167,7 +2167,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

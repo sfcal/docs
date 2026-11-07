@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -1941,7 +1941,7 @@
 
 
 <h1 id="gaming-terraria-wolf-romm"><a class="toclink" href="#gaming-terraria-wolf-romm">Gaming (Terraria, Wolf, RomM)</a></h1>
-<p>One playbook, <code>ansible/playbooks/apps/gaming/deploy.yml</code>, deploys every game stack on an environment's <code>app_gaming</code> host. A stack runs only where that environment's <code>group_vars/app_gaming/vars.yml</code> defines its image (<code>terraria_image</code>, <code>romm_image</code>, <code>wolf_image</code>), so the same command deploys different stacks per environment:</p>
+<p>One playbook, <code>ansible/playbooks/apps/gaming/deploy.yml</code>, deploys every game stack on an environment's <code>app_gaming</code> host. A stack runs only where that environment's <code>group_vars/site_&lt;env&gt;/app_gaming/vars.yml</code> defines its image (<code>terraria_image</code>, <code>romm_image</code>, <code>wolf_image</code>), so the same command deploys different stacks per environment:</p>
 <table>
 <thead>
 <tr>
@@ -1966,7 +1966,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-gaming<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">   </span><span class="c1"># Terraria</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-gaming<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn<span class="w">   </span><span class="c1"># Wolf and RomM</span>
 </code></pre></div>
-<p>To run a stack in another environment, copy its vars into that environment's <code>group_vars/app_gaming/vars.yml</code>, along with its secrets.</p>
+<p>To run a stack in another environment, copy its vars into that environment's <code>group_vars/site_&lt;env&gt;/app_gaming/vars.yml</code>, along with its secrets.</p>
 <h2 id="files"><a class="toclink" href="#files">Files</a></h2>
 <table>
 <thead>
@@ -2005,19 +2005,19 @@
 <td>Upstream udev rules (<code>/dev/uinput</code>, <code>/dev/uhid</code>, virtual pads off the host seat)</td>
 </tr>
 <tr>
-<td><code>ansible/environments/wil/group_vars/app_gaming/vars.yml</code></td>
+<td><code>ansible/inventory/group_vars/site_wil/app_gaming/vars.yml</code></td>
 <td>Terraria image, paths, world settings</td>
 </tr>
 <tr>
-<td><code>ansible/environments/wil/group_vars/all/app.secrets.sops.yml</code></td>
+<td><code>ansible/inventory/group_vars/site_wil/app.secrets.sops.yml</code></td>
 <td>Terraria join password (<code>terraria_server_password</code>)</td>
 </tr>
 <tr>
-<td><code>ansible/environments/ldn/group_vars/app_gaming/vars.yml</code></td>
+<td><code>ansible/inventory/group_vars/site_ldn/app_gaming/vars.yml</code></td>
 <td>Wolf and RomM images, paths, render node</td>
 </tr>
 <tr>
-<td><code>ansible/environments/ldn/group_vars/app_gaming/secrets.sops.yml</code></td>
+<td><code>ansible/inventory/group_vars/site_ldn/app_gaming/secrets.sops.yml</code></td>
 <td>RomM database, auth and IGDB secrets</td>
 </tr>
 </tbody>
@@ -2064,7 +2064,7 @@
 <p>Moonlight talks directly to the VM; it cannot go through Caddy. Ports: 47984/tcp, 47989/tcp, 47999/udp, 48010/tcp, 48100/udp, 48200/udp. <code>wolf.ldn.5am.cloud</code> is a plain A record for the VM. Pair a client by opening the PIN URL Wolf logs (<code>http://wolf.ldn.5am.cloud:47989/pin/#&lt;secret&gt;</code>).</p>
 <p>RomM is proxied as <code>https://roms.ldn.5am.cloud</code> (container port 8080, host port 8085).</p>
 <h2 id="rom-library"><a class="toclink" href="#rom-library">ROM library</a></h2>
-<p><code>romm_library_path</code> (<code>/srv/romm/library</code>) holds <code>roms/&lt;platform&gt;/&lt;game&gt;</code> and <code>bios/&lt;platform&gt;</code>, RomM's default layout. Pegasus and RetroArch mount <code>roms/</code> at <code>/ROMs</code>. The library is local to the VM; to use a NAS, add <code>nfs_mounts</code> in <code>ansible/environments/ldn/group_vars/app_gaming/nfs.yml</code> and point <code>romm_library_path</code> at the mount.</p>
+<p><code>romm_library_path</code> (<code>/srv/romm/library</code>) holds <code>roms/&lt;platform&gt;/&lt;game&gt;</code> and <code>bios/&lt;platform&gt;</code>, RomM's default layout. Pegasus and RetroArch mount <code>roms/</code> at <code>/ROMs</code>. The library is local to the VM; to use a NAS, add <code>nfs_mounts</code> in <code>ansible/inventory/group_vars/site_ldn/app_gaming/nfs.yml</code> and point <code>romm_library_path</code> at the mount.</p>
 <p>GameCube games go in <code>roms/gc/</code> and Wii games in <code>roms/wii/</code> (the play creates both). RomM maps <code>gc</code> to its <code>ngc</code> platform, and these are the folder names the Pegasus image scans; <code>roms/ngc/</code> would work for RomM but not Pegasus.</p>
 <p>Back up <code>/var/lib/romm/db</code> and <code>/var/lib/romm/assets</code> (saves and states); <code>resources</code> is a regenerable metadata cache.</p>
 <h2 id="verify-in-the-guest"><a class="toclink" href="#verify-in-the-guest">Verify in the guest</a></h2>
@@ -2197,7 +2197,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

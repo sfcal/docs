@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -2290,7 +2290,7 @@
 <li>Tailscale routes traffic to <code>10.2.20.53</code> through the WireGuard tunnel</li>
 </ol>
 <h3 id="trusted-network-configuration"><a class="toclink" href="#trusted-network-configuration">Trusted Network Configuration</a></h3>
-<p>Both sites include the Tailscale CGNAT range in their BIND9 trusted networks:</p>
+<p>Both sites include the Tailscale CGNAT range in their BIND9 trusted networks, which are derived in <code>group_vars/all/sites.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">dns_trusted_networks</span><span class="p">:</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.64.0.0/10</span><span class="w">  </span><span class="c1"># Tailscale CGNAT</span>
 </code></pre></div>
@@ -2364,9 +2364,8 @@
 <li>Set up Tailscale on the new site's networking VM as a subnet router (see above)</li>
 <li>On existing sites, ensure <code>tailscale_accept_routes: true</code> so they accept the new site's routes</li>
 <li>Add <a href="../unifi/#adding-a-new-site-route">static routes on each site's UDM Pro</a> pointing the new subnet at the local Tailscale VM</li>
-<li>Add the new site's subnet to <code>dns_trusted_networks</code> on existing DNS servers</li>
-<li>Configure zone transfers between the new site and existing sites (see <a href="../dns/#configure-zone-transfer-to-a-new-secondary">DNS — Configure zone transfer to a new secondary</a>)</li>
-<li>Deploy all affected environments</li>
+<li>Add the new site's row to <code>group_vars/all/sites.yml</code>; every DNS server then trusts its subnet and exchanges zones with it (see <a href="../dns/#configure-zone-transfer-to-a-new-secondary">DNS — Configure zone transfer to a new secondary</a>)</li>
+<li>Deploy networking at every site</li>
 </ol>
 <h3 id="force-re-authentication"><a class="toclink" href="#force-re-authentication">Force re-authentication</a></h3>
 <p>If a node's auth key expires or the node needs to rejoin:</p>
@@ -2507,7 +2506,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

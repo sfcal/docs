@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -2010,9 +2010,9 @@
 
 <h1 id="gitops-deploys"><a class="toclink" href="#gitops-deploys">GitOps Deploys</a></h1>
 <p>Renovate image bumps deploy themselves. When a Renovate merge to <code>main</code> changes
-<code>ansible/environments/*/group_vars/</code>, the <strong>Deploy</strong> workflow joins the tailnet
+<code>ansible/inventory/group_vars/</code>, the <strong>Deploy</strong> workflow joins the tailnet
 from a GitHub-hosted runner and runs the affected playbooks — the same ones
-<code>task ansible:deploy-*</code> runs — against that environment.</p>
+<code>task ansible:deploy-*</code> runs — against each environment it touches.</p>
 <pre class="mermaid"><code>graph LR
     R[Renovate merge] --&gt; P[plan: diff group_vars]
     P --&gt; W[wil: deploy targets]
@@ -2052,7 +2052,7 @@ from a GitHub-hosted runner and runs the affected playbooks — the same ones
 </table>
 <ul>
 <li><strong>Trigger</strong> — <code>push</code> to <code>main</code> touching <code>group_vars</code>, <em>and</em> the head commit is authored by <code>renovate[bot]</code>. Your own commits are never auto-deployed; use <code>task ansible:deploy-*</code> or <strong>Run workflow</strong>.</li>
-<li><strong>Plan</strong> — diffs <code>group_vars</code> between the environment's tag <code>deploy/&lt;env&gt;</code> (last successful deploy) and the pushed commit. Because the base is the last <em>successful</em> deploy, a run that was cancelled, superseded or failed is picked up by the next one.</li>
+<li><strong>Plan</strong> — diffs <code>group_vars</code> between the environment's tag <code>deploy/&lt;env&gt;</code> (last successful deploy) and the pushed commit. Because the base is the last <em>successful</em> deploy, a run that was cancelled, superseded or failed is picked up by the next one. A changed file counts for an environment when it's in <code>site_&lt;env&gt;/</code> or in the folder of a group with hosts there; other sites' folders are skipped, and files moved without changes don't count.</li>
 <li><strong>Targets</strong> — only the allowlist below is ever auto-deployed. Anything else that changed is listed in the run summary as "deploy manually".</li>
 <li><strong>Order</strong> — wil first, ldn only if wil didn't fail (no manual approval). One target at a time per environment; runs queue per environment.</li>
 <li><strong>Compose</strong> — playbooks apply image bumps with <code>compose up</code> (<code>state: present</code>), which recreates only the services whose image or definition changed.</li>
@@ -2069,37 +2069,37 @@ from a GitHub-hosted runner and runs the affected playbooks — the same ones
 <tbody>
 <tr>
 <td><code>all/apps.yml</code></td>
-<td><code>deploy-app.yml</code> for each app whose entry changed</td>
+<td><code>deploy-app.yml</code> for each app whose entry changed and that is hosted in the environment</td>
 </tr>
 <tr>
 <td><code>app_mediastack/</code></td>
 <td><code>apps/media/deploy.yml</code></td>
 </tr>
 <tr>
-<td><code>app_frigate/</code></td>
+<td><code>app_frigate/</code>, <code>site_wil/app_frigate/</code></td>
 <td><code>apps/frigate/deploy.yml</code></td>
 </tr>
 <tr>
-<td><code>app_gaming/</code></td>
+<td><code>site_&lt;env&gt;/app_gaming/</code></td>
 <td><code>apps/gaming/deploy.yml</code></td>
 </tr>
 <tr>
-<td><code>infra_monitoring/</code></td>
+<td><code>site_&lt;env&gt;/infra_monitoring/</code></td>
 <td><code>infrastructure/monitoring/deploy.yml</code></td>
 </tr>
 <tr>
-<td><code>infra_netboot/</code></td>
+<td><code>site_&lt;env&gt;/infra_netboot/</code></td>
 <td><code>infrastructure/netboot/deploy.yml</code></td>
 </tr>
 </tbody>
 </table>
-<p>Never auto-deployed: <code>infra_ca</code>, <code>infra_networking</code>, <code>infra_ntp</code>, <code>infra_proxmox</code>, and <code>all/</code> other than <code>apps.yml</code>. CI has no SSH access to those hosts at all. <code>app_hermes</code> isn't on the allowlist either: deploy it by hand (see <a href="../../infrastructure/hermes/">Hermes Agent</a>). To change the allowlist, edit <code>PLAYBOOK_FOR</code> in <code>deploy-plan.sh</code> <strong>and</strong> the host pattern in <code>playbooks/ci-access.yml</code> / <code>TARGET_PATTERN</code> in the CI Taskfile.</p>
+<p>Never auto-deployed: <code>infra_ca</code>, <code>infra_networking</code>, <code>infra_ntp</code>, <code>infra_proxmox</code>, <code>all/</code> other than <code>apps.yml</code>, and files directly in <code>site_&lt;env&gt;/</code>. CI has no SSH access to those hosts at all. <code>app_hermes</code> isn't on the allowlist either: deploy it by hand (see <a href="../../infrastructure/hermes/">Hermes Agent</a>). To change the allowlist, edit <code>PLAYBOOK_FOR</code> in <code>deploy-plan.sh</code> <strong>and</strong> the host pattern in <code>playbooks/ci-access.yml</code> / <code>TARGET_PATTERN</code> in the CI Taskfile.</p>
 <h2 id="security-model"><a class="toclink" href="#security-model">Security model</a></h2>
 <ul>
 <li>The runner joins as an <strong>ephemeral <code>tag:ci</code> node</strong> using workload identity federation — no long-lived Tailscale secret.</li>
 <li>The Tailscale policy grants <code>tag:ci</code> <strong>TCP 22 to the deploy hosts only</strong>. <code>ldn-gateway</code> also advertises the Haivision corporate /16s, so the grant must stay host-specific.</li>
 <li>CI logs in as <strong><code>deploy</code></strong>, whose key carries <code>from="&lt;site gateway LAN IP&gt;"</code>. The subnet router SNATs tailnet traffic, so the key only works when it arrives via the tailnet. <code>deploy</code> has passwordless sudo (every play uses <code>become</code>), so treat <code>SSH_DEPLOY_KEY</code> as root on the deploy hosts.</li>
-<li>Each environment has its own <strong>CI age key</strong>. <code>.sops.yaml</code> encrypts <code>ansible/environments/&lt;env&gt;/**/*.sops.yml</code> to master + that CI key only, so CI can't read Terraform/Packer credentials or the other environment's secrets.</li>
+<li>Each environment has its own <strong>CI age key</strong>. <code>.sops.yaml</code> encrypts <code>ansible/inventory/group_vars/site_&lt;env&gt;/**/*.sops.yml</code> to master + that CI key only, so CI can't read Terraform/Packer credentials or the other environment's secrets. That's why every Ansible secret lives in its site's folder, and why each job runs with <code>--limit site_&lt;env&gt;</code>: without it the run would need the other site's secrets too.</li>
 <li>Secrets are <strong>GitHub environment secrets</strong> (<code>wil</code>, <code>ldn</code>), so they're only released to jobs running in that environment.</li>
 <li><strong>Logs</strong> — the workflow never runs with <code>--diff</code> or <code>-v</code>; rendered templates contain decrypted secrets.</li>
 </ul>
@@ -2168,8 +2168,8 @@ from a GitHub-hosted runner and runs the affected playbooks — the same ones
 <p>From your machine, on the LAN or tailnet:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>task<span class="w"> </span>ci:keys<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">               </span><span class="c1"># CI SSH + age keys in ~/.config/homelab-ci/wil, re-encrypts wil secrets</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>task<span class="w"> </span>ansible:deploy-ci-access<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>task<span class="w"> </span>ci:known-hosts<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">        </span><span class="c1"># writes ansible/environments/wil/known_hosts</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>git<span class="w"> </span>add<span class="w"> </span>.sops.yaml<span class="w"> </span>ansible/environments/wil<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"ci deploy keys for wil"</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>task<span class="w"> </span>ci:known-hosts<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">        </span><span class="c1"># writes ansible/inventory/known_hosts/wil</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>git<span class="w"> </span>add<span class="w"> </span>.sops.yaml<span class="w"> </span>ansible/inventory/group_vars/site_wil<span class="w"> </span>ansible/inventory/known_hosts/wil<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"ci deploy keys for wil"</span>
 </code></pre></div>
 <h3 id="3-github"><a class="toclink" href="#3-github">3. GitHub</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>task<span class="w"> </span>ci:secrets<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">            </span><span class="c1"># creates the environment, sets SSH_DEPLOY_KEY + SOPS_AGE_KEY</span>
@@ -2333,7 +2333,7 @@ from a GitHub-hosted runner and runs the affected playbooks — the same ones
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

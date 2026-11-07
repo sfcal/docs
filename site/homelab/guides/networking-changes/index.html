@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -1956,7 +1956,7 @@
 <p>Common DNS, proxy, and routing operations.</p>
 <h2 id="add-a-service-to-dns-and-proxy"><a class="toclink" href="#add-a-service-to-dns-and-proxy">Add a Service to DNS and Proxy</a></h2>
 <h3 id="registry-apps"><a class="toclink" href="#registry-apps">Registry apps</a></h3>
-<p>For apps in the <a href="../../reference/config/#app-registry">app registry</a>, add a <code>proxy:</code> block to the app's entry in <code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code>:</p>
+<p>For apps in the <a href="../../reference/config/#app-registry">app registry</a>, add a <code>proxy:</code> block to the app's entry in <code>ansible/inventory/group_vars/all/apps.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># apps.yml</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">myapp</span><span class="p">:</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_myapp</span>
@@ -1973,7 +1973,7 @@
 </code></pre></div>
 <p><code>backend_host</code> and <code>backend_port</code> are derived automatically: the first inventory host of the app's <code>host_group</code>, and the app's <code>port</code> (override with <code>backend_port</code> inside the <code>proxy:</code> block).</p>
 <h3 id="non-catalog-services"><a class="toclink" href="#non-catalog-services">Non-catalog services</a></h3>
-<p>For services outside the registry (third-party devices, media stack, monitoring), add an entry to the appropriate domain file in <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code>:</p>
+<p>For services outside the registry (third-party devices, media stack, monitoring), add an entry to the appropriate domain file in <code>ansible/inventory/group_vars/all/proxy/</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># wil.5am.cloud.yml</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.60</span>
@@ -2075,7 +2075,7 @@
 <h2 id="add-a-new-domain"><a class="toclink" href="#add-a-new-domain">Add a New Domain</a></h2>
 <ol>
 <li>
-<p>Create a domain file in <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code>:</p>
+<p>Create a domain file in <code>ansible/inventory/group_vars/all/proxy/</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># mydomain.com.yml</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">mydomain_services</span><span class="p">:</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app1</span>
@@ -2085,35 +2085,37 @@
 </code></pre></div>
 </li>
 <li>
-<p>Add the domain to <code>group_vars/all/vars.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">domains</span><span class="p">:</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5am.video</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5am.cloud</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="c1"># ... existing domains ...</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mydomain.com</span>
+<p>Add the domain to the site's <code>zones</code> in <code>group_vars/all/sites.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">sites</span><span class="p">:</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">wil</span><span class="p">:</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="c1"># ...</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">zones</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">5am.video</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5am.cloud</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">wil.5am.cloud</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">ext.5am.cloud</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">sfc.al</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">mydomain.com</span><span class="p p-Indicator">]</span>
 </code></pre></div>
 </li>
 <li>
 <p>Add the list to <code>_services.yml</code> aggregation:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="no">{{</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="no">...</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="no">(mydomain_services | default([]) | map('combine', {'domain': 'mydomain.com'}) | list)</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="no">}}</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="no">(</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="no">...</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="no">(mydomain_services | default([]) | map('combine', {'domain': 'mydomain.com'}) | list) +</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="no">registry_services</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="no">) | selectattr('domain', 'in', sites[site].zones) | list</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="no">}}</span>
 </code></pre></div>
 </li>
 <li>
-<p>Redeploy networking: <code>task ansible:deploy-networking ENV=wil</code></p>
+<p>Redeploy networking at every site, so the other sites pick up the new zone as secondaries: <code>task ansible:deploy-networking ENV=wil</code>, then <code>ENV=ldn</code></p>
 </li>
 </ol>
 <h2 id="add-a-ptr-record"><a class="toclink" href="#add-a-ptr-record">Add a PTR Record</a></h2>
-<p>PTR records (reverse DNS) are not generated from the <code>services</code> list — the reverse zone template (<code>reverse.zone.j2</code>) is rendered from the <code>dns_ptr_records</code> list in <code>group_vars/infra_networking/bind9.yml</code>. Add an entry there for any host that needs reverse DNS.</p>
+<p>PTR records (reverse DNS) are not generated from the <code>services</code> list — the reverse zone template (<code>reverse.zone.j2</code>) is rendered from the <code>dns_ptr_records</code> list in <code>group_vars/site_&lt;env&gt;/infra_networking/bind9.yml</code>. Add an entry there for any host that needs reverse DNS.</p>
 <p>See <a href="../../infrastructure/networking/dns/#reverse-dns-ptr-records">DNS — Reverse DNS</a> for details.</p>
 <h2 id="set-up-cross-site-zone-transfer"><a class="toclink" href="#set-up-cross-site-zone-transfer">Set Up Cross-Site Zone Transfer</a></h2>
-<p>To replicate DNS zones between sites (e.g., WIL ↔ LDN):</p>
+<p>Zone transfers between sites (e.g., WIL ↔ LDN) are derived from <code>group_vars/all/sites.yml</code>: every site's BIND9 is a secondary for the other sites' <code>zones</code>. To change them:</p>
 <ol>
-<li>Configure BIND9 on the primary site as zone master with <code>allow-transfer</code></li>
-<li>Configure BIND9 on the secondary site as a slave zone</li>
+<li>Edit the site's row in <code>group_vars/all/sites.yml</code> (<code>dns</code>, <code>ts_router_ips</code>, <code>zones</code>)</li>
+<li>Redeploy networking at every site</li>
 <li>Ensure Tailscale connectivity between sites</li>
 </ol>
 <p>See <a href="../../infrastructure/networking/dns/#cross-site-zone-transfers">DNS — Cross-Site Zone Transfers</a> for the full configuration.</p>
@@ -2243,7 +2245,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

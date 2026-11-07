@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -2034,7 +2034,7 @@
 </tr>
 <tr>
 <td><code>task ansible:ping ENV=wil</code></td>
-<td>Test connectivity to all hosts</td>
+<td>Test connectivity to all hosts of the site</td>
 </tr>
 </tbody>
 </table>
@@ -2151,7 +2151,7 @@
 </tr>
 <tr>
 <td><code>task ci:known-hosts ENV=wil</code></td>
-<td>Record host keys of the hosts CI deploys to into <code>environments/&lt;env&gt;/known_hosts</code></td>
+<td>Record host keys of the hosts CI deploys to into <code>inventory/known_hosts/&lt;env&gt;</code></td>
 </tr>
 <tr>
 <td><code>task ci:secrets ENV=wil</code></td>
@@ -2207,7 +2207,7 @@
 <tr>
 <td><code>ENV</code></td>
 <td>All</td>
-<td><code>dev</code></td>
+<td><code>ldn</code></td>
 <td>Target environment (e.g., <code>wil</code>, <code>ldn</code>)</td>
 </tr>
 <tr>
@@ -2238,7 +2238,7 @@
 </table>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
 <p><strong>"task: Task not found"</strong> — Check the exact task name with <code>task --list-all</code>. Namespace and command are separated by <code>:</code>.</p>
-<p><strong>Wrong environment</strong> — <code>ENV</code> defaults to <code>dev</code>. Always pass <code>ENV=wil</code> (or your environment) explicitly.</p>
+<p><strong>Wrong environment</strong> — <code>ENV</code> defaults to <code>ldn</code> (production). Always pass <code>ENV=wil</code> (or your environment) explicitly.</p>
 <p><strong>Ansible timeout</strong> — Add <code>-vvv</code> for verbose output: edit the task in <code>.taskfiles/ansible/Taskfile.yaml</code> and add <code>-vvv</code> to <code>EXTRA_ARGS</code>.</p>
 
 
@@ -2362,7 +2362,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

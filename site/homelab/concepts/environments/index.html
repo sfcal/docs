@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -1907,28 +1907,25 @@
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>task<span class="w"> </span>packer:build-ubuntu<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 <h2 id="directory-structure"><a class="toclink" href="#directory-structure">Directory Structure</a></h2>
-<p>Each environment has its own configuration under both Ansible and Terraform:</p>
+<p>Terraform and Packer have a directory per environment. Ansible has one inventory for both sites:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Ansible</label><label for="__tabbed_1_2">Terraform</label><label for="__tabbed_1_3">Packer</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ansible/environments/
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── wil/
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│   ├── hosts.ini                    # Inventory
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   └── group_vars/
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│       ├── all/
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│       │   ├── vars.yml             # Shared variables
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│       │   ├── apps.yml             # App registry
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│       │   ├── secrets.sops.yml     # Encrypted secrets
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│       │   └── proxy/               # Service definitions per domain
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│       ├── infra_networking/        # Networking-specific vars
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│       ├── infra_ca/               # CA-specific vars
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>│       └── app_mediastack/         # Media stack vars
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>├── ldn/
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>│   ├── hosts.ini
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>│   └── group_vars/
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>└── external/
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    ├── hosts.ini
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    └── group_vars/
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ansible/inventory/
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── hosts.ini                        # Inventory (both sites)
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>└── group_vars/
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    ├── all/                         # Every host
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    │   ├── sites.yml                # One row per site
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    │   ├── vars.yml                 # Shared variables
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    │   ├── apps.yml                 # App registry
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    │   └── proxy/                   # Service definitions per domain
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    ├── site_wil/                    # wil's own values and secrets
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    │   ├── vars.yml                 # site: wil
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    │   ├── secrets.sops.yml         # Encrypted secrets
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    │   ├── infra_networking/        # Networking-specific vars
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    │   └── infra_ca/                # CA-specific vars
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    ├── site_ldn/
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    └── app_mediastack/              # Media stack vars (wil only)
 </code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -1956,40 +1953,59 @@
 </div>
 </div>
 </div>
+<p>Every host in <code>hosts.ini</code> is listed in its site group (<code>[site_wil]</code>, <code>[site_ldn]</code>) and in the role groups the playbooks target, so <code>[infra_networking]</code> lists both <code>.53</code> VMs. Group variables come from three kinds of folders:</p>
+<ul>
+<li><code>all/</code> — every host. <code>sites.yml</code> has one row per site; <code>domains</code>, <code>system_timezone</code> and the cross-site BIND9 settings (trusted networks, secondary zones, zone transfers, notifies) are derived from it.</li>
+<li><code>site_&lt;site&gt;/</code> — that site's own values, in sub-folders named after the group that reads them (they apply to every host of the site), and all of the site's secrets.</li>
+<li><code>&lt;group&gt;/</code> — groups that run at one site only (<code>app_mediastack</code>, <code>app_frigate</code>, <code>infra_ntp</code>, <code>app_hermes</code>, <code>infra_proxmox</code>). Their secrets still go in the site's folder.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># ansible/inventory/group_vars/all/sites.yml</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">sites</span><span class="p">:</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">wil</span><span class="p">:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">cidr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.0.0/16</span><span class="w">                   </span><span class="c1"># LAN range</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">tz</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">America/New_York</span><span class="w">                </span><span class="c1"># Timezone of the site's hosts</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="nt">dns</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"10.2.20.53"</span><span class="p p-Indicator">]</span><span class="w">                 </span><span class="c1"># BIND9 primary (networking VM)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="nt">ts_router_ips</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"100.103.137.102"</span><span class="p p-Indicator">]</span><span class="w">  </span><span class="c1"># Tailnet IP of the subnet router</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="nt">zones</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">5am.video</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5am.cloud</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">wil.5am.cloud</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">ext.5am.cloud</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">sfc.al</span><span class="p p-Indicator">]</span><span class="w">  </span><span class="c1"># Zones it is primary for</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="nt">ldn</span><span class="p">:</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="c1"># ...</span>
+</code></pre></div>
+<p>To add a site, or move a site's DNS server or zones, edit its row, then deploy networking at every site.</p>
 <h2 id="how-env-works"><a class="toclink" href="#how-env-works">How <code>ENV=</code> Works</a></h2>
-<p>The root <code>Taskfile.yaml</code> defines <code>ENV</code> as a variable (defaults to <code>dev</code>). Each namespace's Taskfile uses it to resolve paths:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># .taskfiles/ansible/Taskfile.yaml</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">vars</span><span class="p">:</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">ENV_DIR</span><span class="p">:</span><span class="w"> </span><span class="s">"environments/{{.ENV}}"</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">HOSTS_FILE</span><span class="p">:</span><span class="w"> </span><span class="s">"{{.ENV_DIR}}/hosts.ini"</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># .taskfiles/terraform/Taskfile.yaml</span>
+<p>The root <code>Taskfile.yaml</code> defines <code>ENV</code> as a variable (defaults to <code>ldn</code>). Terraform and Packer use it to resolve paths; Ansible uses it to limit the run to the site's group:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># .taskfiles/ansible/Taskfile.yaml</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">vars</span><span class="p">:</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">ENV_DIR</span><span class="p">:</span><span class="w"> </span><span class="s">"environments/{{.ENV}}"</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">HOSTS_FILE</span><span class="p">:</span><span class="w"> </span><span class="s">'inventory/hosts.ini'</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">LIMIT</span><span class="p">:</span><span class="w"> </span><span class="s">'site_{{.ENV}}'</span>
 </code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># .taskfiles/terraform/Taskfile.yaml</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">vars</span><span class="p">:</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">ENV_DIR</span><span class="p">:</span><span class="w"> </span><span class="s">"environments/{{.ENV}}"</span>
+</code></pre></div>
+<p>So <code>task ansible:deploy-networking ENV=wil</code> runs <code>ansible-playbook -i inventory/hosts.ini --limit site_wil ...</code>. Running <code>ansible-playbook</code> by hand without <code>--limit</code> hits both sites and needs both sites' secrets, which is fine with the master key.</p>
 <p>This means the same task commands work across environments — just change <code>ENV=</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>task<span class="w"> </span>ansible:ping<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">    </span><span class="c1"># Pings WIL hosts</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>task<span class="w"> </span>ansible:ping<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn<span class="w">    </span><span class="c1"># Pings LDN hosts</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:ping<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">    </span><span class="c1"># Pings WIL hosts</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>task<span class="w"> </span>ansible:ping<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn<span class="w">    </span><span class="c1"># Pings LDN hosts</span>
 </code></pre></div>
 <h2 id="shared-vs-environment-specific-config"><a class="toclink" href="#shared-vs-environment-specific-config">Shared vs. Environment-Specific Config</a></h2>
 <p><strong>Shared across environments:</strong></p>
 <ul>
 <li>Ansible roles (<code>ansible/roles/</code>)</li>
 <li>Playbook definitions (<code>ansible/playbooks/</code>)</li>
+<li>Inventory (<code>hosts.ini</code>) and <code>group_vars/all/</code> (sites, app registry, proxy lists)</li>
 <li>Terraform modules (<code>terraform/modules/</code>)</li>
 <li>Packer templates (<code>packer/templates/</code>)</li>
 </ul>
 <p><strong>Per-environment:</strong></p>
 <ul>
-<li>Inventory (<code>hosts.ini</code>)</li>
-<li>Group variables (<code>group_vars/</code>)</li>
+<li>Group variables (<code>group_vars/site_&lt;env&gt;/</code>)</li>
 <li>VM definitions (<code>vms.auto.tfvars</code>)</li>
 <li>Secrets (<code>secrets.sops.yml</code>, <code>credentials.*.pkrvars.hcl</code>)</li>
 <li>Terraform state (<code>terraform.tfstate</code>)</li>
 </ul>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>Wrong environment deployed</strong> — Double-check <code>ENV=</code> in your command. The default is <code>dev</code>, not <code>wil</code>. Run <code>task ansible:ping ENV=&lt;env&gt;</code> to verify you're targeting the right hosts.</p>
-<p><strong>Missing environment directory</strong> — Each new environment needs both <code>ansible/environments/&lt;env&gt;/</code> and <code>terraform/environments/&lt;env&gt;/</code> directories with the required files.</p>
+<p><strong>Wrong environment deployed</strong> — Double-check <code>ENV=</code> in your command. The default is <code>ldn</code> (production), not <code>wil</code>. Run <code>task ansible:ping ENV=&lt;env&gt;</code> to verify you're targeting the right hosts.</p>
+<p><strong>Missing environment directory</strong> — Each new environment needs a <code>[site_&lt;env&gt;]</code> group in <code>ansible/inventory/hosts.ini</code>, a row in <code>group_vars/all/sites.yml</code>, a <code>group_vars/site_&lt;env&gt;/</code> folder (with <code>site: &lt;env&gt;</code> in its <code>vars.yml</code>), and a <code>terraform/environments/&lt;env&gt;/</code> directory with the required files.</p>
 <p><strong>Cross-site access</strong> — WIL and LDN communicate over Tailscale. Ensure the subnet router VM is deployed and advertising routes. See <a href="../../infrastructure/networking/tailscale/">Tailscale</a>.</p>
 
 
@@ -2113,7 +2129,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

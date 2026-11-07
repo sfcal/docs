@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -2515,7 +2515,7 @@
 <td>Grafana datasource provisioning</td>
 </tr>
 <tr>
-<td><code>playbooks/infrastructure/monitoring/templates/services.yaml.j2</code></td>
+<td><code>playbooks/infrastructure/monitoring/templates/homepage/services.yaml.j2</code></td>
 <td>Homepage services dashboard</td>
 </tr>
 <tr>
@@ -2535,7 +2535,7 @@
 <td>Container lifecycle handlers</td>
 </tr>
 <tr>
-<td><code>environments/&lt;env&gt;/group_vars/infra_monitoring/</code></td>
+<td><code>inventory/group_vars/site_&lt;env&gt;/infra_monitoring/</code></td>
 <td>Per-environment variables</td>
 </tr>
 </tbody>
@@ -2645,7 +2645,7 @@
 </tr>
 </tbody>
 </table>
-<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/prometheus.yml</code> · <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/containers.yml</code></small></p>
+<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/prometheus.yml</code> · <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/containers.yml</code></small></p>
 <hr />
 <h2 id="grafana"><a class="toclink" href="#grafana">Grafana</a></h2>
 <p>Grafana connects to Prometheus as its default datasource and provides metric visualization dashboards.</p>
@@ -2740,7 +2740,7 @@
 </tr>
 </tbody>
 </table>
-<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/grafana.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/monitoring/templates/grafana-datasources.yml.j2"><code>ansible/playbooks/infrastructure/monitoring/templates/grafana-datasources.yml.j2</code></a></small></p>
+<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/grafana.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/monitoring/templates/grafana-datasources.yml.j2"><code>ansible/playbooks/infrastructure/monitoring/templates/grafana-datasources.yml.j2</code></a></small></p>
 <hr />
 <h2 id="homepage"><a class="toclink" href="#homepage">Homepage</a></h2>
 <p>Homepage provides a service dashboard with status widgets, service health indicators, and quick links to all homelab services.</p>
@@ -2805,11 +2805,11 @@
 </table>
 <p><code>services.yaml.j2</code> is plain Homepage YAML; edit it directly. Three parts are less obvious:</p>
 <ul>
-<li><strong>Apps</strong> and <strong>Infrastructure</strong> differ per site: one <code>if</code>/<code>else</code> block picks the ldn or wil cards by the inventory folder name. Everything else is shared by both sites.</li>
+<li><strong>Apps</strong> and <strong>Infrastructure</strong> differ per site: one <code>if</code>/<code>else</code> block picks the ldn or wil cards by the host's <code>site</code>. Everything else is shared by both sites.</li>
 <li><strong>System Activity</strong> shows the four panels of the System Activity Grafana dashboard in iframes (<code>&lt;grafana_url&gt;/d-solo/system-activity?panelId=1</code> to <code>4</code>). The time range and refresh interval come from the dashboard JSON.</li>
 <li><strong>SABnzbd</strong> has two widgets: Homepage's <code>sabnzbd</code> widget (speed, queue) and a <code>customapi</code> widget that reads the download totals for today, this week, this month and all time from SABnzbd's <code>server_stats</code> API once a minute.</li>
 </ul>
-<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/containers.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/monitoring/templates/services.yaml.j2"><code>ansible/playbooks/infrastructure/monitoring/templates/services.yaml.j2</code></a></small></p>
+<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/containers.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/monitoring/templates/homepage/services.yaml.j2"><code>ansible/playbooks/infrastructure/monitoring/templates/homepage/services.yaml.j2</code></a></small></p>
 <hr />
 <h2 id="shared-configuration"><a class="toclink" href="#shared-configuration">Shared Configuration</a></h2>
 <p>These variables apply to all monitoring containers:</p>
@@ -2847,7 +2847,7 @@
 <h3 id="add-a-new-prometheus-scrape-target"><a class="toclink" href="#add-a-new-prometheus-scrape-target">Add a new Prometheus scrape target</a></h3>
 <ol>
 <li>
-<p>Edit <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/prometheus.yml</code>:</p>
+<p>Edit <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/prometheus.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">prometheus_node_targets</span><span class="p">:</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="c1"># ... existing targets</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"10.2.20.60:9100"</span><span class="w">   </span><span class="c1"># new VM</span>
@@ -2862,7 +2862,7 @@
 <h3 id="change-metrics-retention"><a class="toclink" href="#change-metrics-retention">Change metrics retention</a></h3>
 <ol>
 <li>
-<p>Edit <code>ansible/environments/&lt;env&gt;/group_vars/infra_monitoring/prometheus.yml</code>:</p>
+<p>Edit <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/prometheus.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">prometheus_retention</span><span class="p">:</span><span class="w"> </span><span class="s">"90d"</span>
 </code></pre></div>
 </li>
@@ -2874,7 +2874,7 @@
 </ol>
 <h3 id="add-a-homepage-service-widget"><a class="toclink" href="#add-a-homepage-service-widget">Add a Homepage service widget</a></h3>
 <ol>
-<li>Edit <code>ansible/playbooks/infrastructure/monitoring/templates/services.yaml.j2</code></li>
+<li>Edit <code>ansible/playbooks/infrastructure/monitoring/templates/homepage/services.yaml.j2</code></li>
 <li>Add a new service entry under the appropriate section</li>
 <li>If the service requires an API key, add the key to <code>secrets.sops.yml</code> and pass it through <code>compose.yaml.j2</code></li>
 <li>
@@ -3005,7 +3005,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

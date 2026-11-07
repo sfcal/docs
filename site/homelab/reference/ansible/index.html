@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -2108,7 +2108,7 @@
 </tr>
 <tr>
 <td><code>ping</code></td>
-<td>Test connectivity to all hosts</td>
+<td>Test connectivity to all hosts of the site</td>
 </tr>
 </tbody>
 </table>
@@ -2179,7 +2179,7 @@
 </tbody>
 </table>
 <h3 id="data-driven-apps"><a class="toclink" href="#data-driven-apps">Data-Driven Apps</a></h3>
-<p>Most applications use the shared <code>deploy-app.yml</code> playbook. Apps are defined in <code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code>:</p>
+<p>Most applications use the shared <code>deploy-app.yml</code> playbook. Apps are defined in <code>ansible/inventory/group_vars/all/apps.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">birdle</span><span class="p">:</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_birdle</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="c1"># renovate: datasource=docker</span>
@@ -2308,14 +2308,13 @@
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>│   ├── docker_service/
 <a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>│   ├── tailscale/
 <a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>│   └── nfs_mount/
-<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>└── environments/
-<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>    └── &lt;env&gt;/
-<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>        ├── hosts.ini
-<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>        └── group_vars/
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>└── inventory/
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>    ├── hosts.ini                    # Both sites
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    └── group_vars/
 </code></pre></div>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
 <p><strong>Connection refused</strong> — Verify the VM is running and the IP in <code>hosts.ini</code> is correct. Test with <code>ssh sfcal@&lt;ip&gt;</code>.</p>
-<p><strong>"No hosts matched"</strong> — The host group in the playbook doesn't match any group in <code>hosts.ini</code>. Check group names match (e.g., <code>infra_networking</code>, <code>app_birdle</code>).</p>
+<p><strong>"No hosts matched"</strong> — The host group in the playbook doesn't match any group in <code>hosts.ini</code>, or none of its hosts are in the site group <code>ENV=</code> picks (<code>site_&lt;env&gt;</code>). Check group names match (e.g., <code>infra_networking</code>, <code>app_birdle</code>).</p>
 <p><strong>Handler not triggered</strong> — Handlers only run when a task reports <code>changed</code>. If you need to force a restart, use <code>--force-handlers</code> or run the service command directly.</p>
 <p><strong>Secrets decryption failure</strong> — Ensure the Age key is at <code>~/.config/sops/age/keys.txt</code> and <code>community.sops</code> is installed.</p>
 
@@ -2440,7 +2439,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

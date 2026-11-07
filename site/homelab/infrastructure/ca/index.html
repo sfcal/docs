@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -2063,11 +2063,11 @@
 <td>Container lifecycle handlers</td>
 </tr>
 <tr>
-<td><code>environments/&lt;env&gt;/group_vars/infra_ca/vars.yml</code></td>
+<td><code>inventory/group_vars/site_&lt;env&gt;/infra_ca/vars.yml</code></td>
 <td>Per-environment CA variables</td>
 </tr>
 <tr>
-<td><code>environments/&lt;env&gt;/group_vars/infra_ca/secrets.sops.yml</code></td>
+<td><code>inventory/group_vars/site_&lt;env&gt;/infra_ca/secrets.sops.yml</code></td>
 <td>Encrypted provisioner password</td>
 </tr>
 </tbody>
@@ -2120,7 +2120,7 @@
 </ul>
 <p><small><strong>Source:</strong> <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/ca/templates/compose.yaml.j2"><code>ansible/playbooks/infrastructure/ca/templates/compose.yaml.j2</code></a></small></p>
 <h2 id="configuration-reference"><a class="toclink" href="#configuration-reference">Configuration Reference</a></h2>
-<p>All variables are set in <code>ansible/environments/&lt;env&gt;/group_vars/infra_ca/vars.yml</code>.</p>
+<p>All variables are set in <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_ca/vars.yml</code>.</p>
 <table>
 <thead>
 <tr>
@@ -2199,7 +2199,7 @@
 </tr>
 </tbody>
 </table>
-<p><small><strong>Sources:</strong> <code>ansible/environments/&lt;env&gt;/group_vars/infra_ca/vars.yml</code> · <code>ansible/environments/&lt;env&gt;/group_vars/infra_ca/secrets.sops.yml</code></small></p>
+<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_ca/vars.yml</code> · <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_ca/secrets.sops.yml</code></small></p>
 <h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
 <h3 id="verify-ca-health"><a class="toclink" href="#verify-ca-health">Verify CA health</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>task<span class="w"> </span>ca:health<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
@@ -2214,7 +2214,7 @@
 <h3 id="change-certificate-duration"><a class="toclink" href="#change-certificate-duration">Change certificate duration</a></h3>
 <ol>
 <li>
-<p>Edit <code>ansible/environments/&lt;env&gt;/group_vars/infra_ca/vars.yml</code>:</p>
+<p>Edit <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_ca/vars.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">step_ca_default_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">"2160h"</span><span class="w">   </span><span class="c1"># 90 days</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">step_ca_max_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">"17520h"</span><span class="w">      </span><span class="c1"># 2 years</span>
 </code></pre></div>
@@ -2353,7 +2353,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

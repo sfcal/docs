@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -2028,7 +2028,7 @@
     R["App registry\n(apps.yml proxy: blocks)"] --&gt; B
     B --&gt; C["domain.zone.j2\n(DNS A records)"]
     B --&gt; D["Caddyfile.j2\n(reverse proxy)"]</code></pre>
-<p>Service definitions come from two sources. Apps in the registry (<code>group_vars/all/apps.yml</code>) declare a <code>proxy:</code> block, from which <code>_services.yml</code> generates entries automatically. Manual per-domain files in <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code> cover services outside the catalog (third-party devices, media stack, monitoring). The <code>_services.yml</code> file aggregates the domain lists (injecting the <code>domain</code> field) and appends the registry-generated entries.</p>
+<p>Service definitions come from two sources. Apps in the registry (<code>group_vars/all/apps.yml</code>) declare a <code>proxy:</code> block, from which <code>_services.yml</code> generates entries automatically. Manual per-domain files in <code>ansible/inventory/group_vars/all/proxy/</code> cover services outside the catalog (third-party devices, media stack, monitoring). The <code>_services.yml</code> file aggregates the domain lists (injecting the <code>domain</code> field), appends the registry-generated entries, and keeps only the zones of the host's site.</p>
 <p>See <a href="proxy/#service-definition-reference">Reverse Proxy — Service Definition Reference</a> for the full field specification.</p>
 <h2 id="deployment"><a class="toclink" href="#deployment">Deployment</a></h2>
 <p>Deploy the full networking stack:</p>
@@ -2072,15 +2072,19 @@
 <td>Service restart handlers</td>
 </tr>
 <tr>
-<td><code>ansible/environments/&lt;env&gt;/group_vars/infra_networking/</code></td>
+<td><code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_networking/</code></td>
 <td>Per-environment variables</td>
 </tr>
 <tr>
-<td><code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code></td>
+<td><code>ansible/inventory/group_vars/all/sites.yml</code></td>
+<td>Each site's network, DNS server and zones (cross-site DNS variables are derived from it)</td>
+</tr>
+<tr>
+<td><code>ansible/inventory/group_vars/all/proxy/</code></td>
 <td>Manual service definitions and aggregation</td>
 </tr>
 <tr>
-<td><code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code></td>
+<td><code>ansible/inventory/group_vars/all/apps.yml</code></td>
 <td>App registry (<code>proxy:</code> blocks)</td>
 </tr>
 </tbody>
@@ -2088,7 +2092,7 @@
 <h2 id="cloudflare-ddns"><a class="toclink" href="#cloudflare-ddns">Cloudflare DDNS</a></h2>
 <p>Cloudflare DDNS runs as a Docker container using the <a href="https://github.com/favonia/cloudflare-ddns"><code>favonia/cloudflare-ddns</code></a> image in host network mode. It detects the public IP and updates specified Cloudflare DNS records.</p>
 <h3 id="configuration"><a class="toclink" href="#configuration">Configuration</a></h3>
-<p>Edit <code>ansible/environments/&lt;env&gt;/group_vars/infra_networking/ddns.yml</code>:</p>
+<p>Edit <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_networking/ddns.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">ddns_domains</span><span class="p">:</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"plex.5am.video"</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"convert.wil.5am.cloud"</span>
@@ -2222,7 +2226,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

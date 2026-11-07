@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -2070,14 +2070,15 @@
 <p>Service definitions drive both DNS records and reverse proxy entries. They come from two sources:</p>
 <ol>
 <li><strong>App registry</strong> — apps in <code>group_vars/all/apps.yml</code> declare a <code>proxy:</code> block; <code>_services.yml</code> generates a <code>registry_services</code> entry for each one (see <a href="#app-registry">App Registry</a>)</li>
-<li><strong>Manual per-domain files</strong> — for services outside the catalog (third-party devices, media stack, monitoring, Frigate, cloud gaming), each domain has its own file in <code>ansible/environments/&lt;env&gt;/group_vars/all/proxy/</code>:</li>
+<li><strong>Manual per-domain files</strong> — for services outside the catalog (third-party devices, media stack, monitoring, Frigate, cloud gaming), each domain has its own file in <code>ansible/inventory/group_vars/all/proxy/</code>:</li>
 </ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>proxy/
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── _services.yml          # Generates registry entries, aggregates all lists
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── 5am.video.yml          # video_services
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── 5am.cloud.yml          # cloud_services
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── wil.5am.cloud.yml      # wil_services
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└── ext.5am.cloud.yml      # ext_services
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├── ext.5am.cloud.yml      # ext_services
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>└── ldn.5am.cloud.yml      # ldn_services
 </code></pre></div>
 <h3 id="service-entry-format"><a class="toclink" href="#service-entry-format">Service Entry Format</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span><span class="w">              </span><span class="c1"># Subdomain → myapp.wil.5am.cloud</span>
@@ -2172,22 +2173,25 @@
 </table>
 <p>For registry-generated entries, <code>backend_host</code> is derived (first inventory host of the app's <code>host_group</code>) and <code>backend_port</code> defaults to the app's <code>port</code> — the <code>proxy:</code> block supplies <code>name</code>, <code>domain</code>, <code>proxied</code>, and any optional fields.</p>
 <h3 id="service-aggregation"><a class="toclink" href="#service-aggregation">Service Aggregation</a></h3>
-<p><code>_services.yml</code> combines all manual domain lists (injecting the domain name) and appends the registry-generated entries:</p>
+<p><code>_services.yml</code> combines all manual domain lists (injecting the domain name), appends the registry-generated entries, and keeps only the zones of the host's site:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="no">{{</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="no">(video_services | default([]) | map('combine', {'domain': '5am.video'}) | list) +</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="no">(cloud_services | default([]) | map('combine', {'domain': '5am.cloud'}) | list) +</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="no">(wil_services | default([]) | map('combine', {'domain': 'wil.5am.cloud'}) | list) +</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="no">(ext_services | default([]) | map('combine', {'domain': 'ext.5am.cloud'}) | list) +</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="no">(sfc_services | default([]) | map('combine', {'domain': 'sfc.al'}) | list) +</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="no">registry_services</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="no">}}</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="no">(</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="no">(video_services | default([]) | map('combine', {'domain': '5am.video'}) | list) +</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="no">(cloud_services | default([]) | map('combine', {'domain': '5am.cloud'}) | list) +</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="no">(wil_services | default([]) | map('combine', {'domain': 'wil.5am.cloud'}) | list) +</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="no">(ext_services | default([]) | map('combine', {'domain': 'ext.5am.cloud'}) | list) +</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">      </span><span class="no">(sfc_services | default([]) | map('combine', {'domain': 'sfc.al'}) | list) +</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="no">(ldn_services | default([]) | map('combine', {'domain': 'ldn.5am.cloud'}) | list) +</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">      </span><span class="no">registry_services</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="no">) | selectattr('domain', 'in', sites[site].zones) | list</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">  </span><span class="no">}}</span>
 </code></pre></div>
 <p>Both BIND9 and Caddy templates consume the unified <code>services</code> list.</p>
 <h2 id="vm-definitions"><a class="toclink" href="#vm-definitions">VM Definitions</a></h2>
 <p>VMs are defined in HCL maps in <code>terraform/environments/&lt;env&gt;/vms.auto.tfvars</code>. See <a href="../terraform/#vm-module-variables">Terraform — VM Module Variables</a> for the full field reference.</p>
 <h2 id="app-registry"><a class="toclink" href="#app-registry">App Registry</a></h2>
-<p>Data-driven apps are defined in <code>ansible/environments/&lt;env&gt;/group_vars/all/apps.yml</code> — the single service catalog for images, ports, and proxy/DNS metadata:</p>
+<p>Data-driven apps are defined in <code>ansible/inventory/group_vars/all/apps.yml</code> — the single service catalog for images, ports, and proxy/DNS metadata:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apps</span><span class="p">:</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">myapp</span><span class="p">:</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_myapp</span><span class="w">      </span><span class="c1"># Ansible inventory group</span>
@@ -2288,19 +2292,18 @@
 <td>Applications</td>
 <td><code>app_mediastack</code>, <code>app_birdle</code></td>
 </tr>
+<tr>
+<td><code>site_*</code></td>
+<td>Sites; every host is in one</td>
+<td><code>site_wil</code>, <code>site_ldn</code></td>
+</tr>
 </tbody>
 </table>
 <p>Parent groups: <code>[infrastructure:children]</code> and <code>[apps:children]</code> aggregate all groups of each type.</p>
 <h2 id="global-variables"><a class="toclink" href="#global-variables">Global Variables</a></h2>
-<p>Defined in <code>ansible/environments/&lt;env&gt;/group_vars/all/vars.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">domains</span><span class="p">:</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5am.video</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5am.cloud</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wil.5am.cloud</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ext.5am.cloud</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sfc.al</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nt">system_timezone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">America/New_York</span>
+<p>Defined in <code>ansible/inventory/group_vars/all/vars.yml</code>, filled in from the site's row in <code>all/sites.yml</code> (see <a href="../../concepts/environments/">Environments</a>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">domains</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">sites[site].zones</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">map('community.general.dict_kv',</span><span class="nv"> </span><span class="s">'name')</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">list</span><span class="nv"> </span><span class="s">}}"</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">system_timezone</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">sites[site].tz</span><span class="nv"> </span><span class="s">}}"</span>
 </code></pre></div>
 <h3 id="filesystem-layout"><a class="toclink" href="#filesystem-layout">Filesystem Layout</a></h3>
 <p>Hosts follow the Filesystem Hierarchy Standard. The paths are hard-coded in
@@ -2456,7 +2459,7 @@ in their group_vars so the tasks and templates share one definition.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.tracking", "navigation.footer", "navigation.top", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.follow", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>
