@@ -2619,8 +2619,8 @@
 <td>Image and allowed hosts</td>
 </tr>
 <tr>
-<td><code>inventory/group_vars/site_wil/infra_dashboard/secrets.sops.yml</code></td>
-<td>Widget API keys</td>
+<td><code>inventory/group_vars/site_wil/secrets.sops.yml</code></td>
+<td>Widget API keys (section <code>infra_dashboard</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -2959,7 +2959,7 @@
 <ol>
 <li>Edit <code>ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></li>
 <li>Add a new service entry under the appropriate section</li>
-<li>If the service requires an API key, add the key to <code>group_vars/site_wil/infra_dashboard/secrets.sops.yml</code> and pass it through <code>dashboard/templates/compose.yaml.j2</code></li>
+<li>If the service requires an API key, add the key to the <code>infra_dashboard</code> section of <code>group_vars/site_wil/secrets.sops.yml</code> and pass it through <code>dashboard/templates/compose.yaml.j2</code></li>
 <li>
 <p>Deploy:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil

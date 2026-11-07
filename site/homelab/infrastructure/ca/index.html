@@ -2067,8 +2067,8 @@
 <td>Per-environment CA variables</td>
 </tr>
 <tr>
-<td><code>inventory/group_vars/site_&lt;env&gt;/infra_ca/secrets.sops.yml</code></td>
-<td>Encrypted provisioner password</td>
+<td><code>inventory/group_vars/site_&lt;env&gt;/secrets.sops.yml</code></td>
+<td>Encrypted provisioner password (section <code>infra_ca</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -2199,7 +2199,7 @@
 </tr>
 </tbody>
 </table>
-<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_ca/vars.yml</code> · <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_ca/secrets.sops.yml</code></small></p>
+<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_ca/vars.yml</code> · <code>ansible/inventory/group_vars/site_&lt;env&gt;/secrets.sops.yml</code></small></p>
 <h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
 <h3 id="verify-ca-health"><a class="toclink" href="#verify-ca-health">Verify CA health</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>task<span class="w"> </span>ca:health<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil

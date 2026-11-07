@@ -2031,8 +2031,8 @@
 <td>Images and user name</td>
 </tr>
 <tr>
-<td><code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_networking/secrets.sops.yml</code></td>
-<td>Password hash and generated keys</td>
+<td><code>ansible/inventory/group_vars/site_&lt;env&gt;/secrets.sops.yml</code></td>
+<td>Password hash and generated keys (section <code>infra_networking</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -2042,7 +2042,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>authelia/authelia:4.39.28<span class="w"> </span>authelia<span class="w"> </span>crypto<span class="w"> </span><span class="nb">hash</span><span class="w"> </span>generate<span class="w"> </span>argon2
 </code></pre></div>
 <p>Store the digest in the environment's secrets, then deploy networking:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/infra_networking/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_password_hash"]'</span><span class="w"> </span><span class="s1">'"$argon2id$..."'</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_password_hash"]'</span><span class="w"> </span><span class="s1">'"$argon2id$..."'</span>
 </code></pre></div>
 <p>Use single quotes as shown: in double quotes the shell eats the <code>$</code> parts of the digest. After the deploy, <code>docker ps</code> on the networking VM should show <code>authelia</code> as <code>(healthy)</code> and <code>oauth2-proxy</code> as up.</p>
 <p>The password cannot be changed in Authelia itself; repeat these steps to change it.</p>
@@ -2064,7 +2064,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>authelia/authelia:4.39.28<span class="w"> </span>authelia<span class="w"> </span>crypto<span class="w"> </span><span class="nb">hash</span><span class="w"> </span>generate<span class="w"> </span>pbkdf2<span class="w"> </span>--variant<span class="w"> </span>sha512<span class="w"> </span>--random<span class="w"> </span>--random.length<span class="w"> </span><span class="m">72</span><span class="w"> </span>--random.charset<span class="w"> </span>rfc3986
 </code></pre></div>
 <p>Store the digest, then deploy networking:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_ldn/infra_networking/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_oidc_kasm_client_secret_hash"]'</span><span class="w"> </span><span class="s1">'"$pbkdf2-sha512$..."'</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_ldn/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_oidc_kasm_client_secret_hash"]'</span><span class="w"> </span><span class="s1">'"$pbkdf2-sha512$..."'</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn
 </code></pre></div>
@@ -2144,9 +2144,9 @@
 <h2 id="proxmox"><a class="toclink" href="#proxmox">Proxmox</a></h2>
 <p>Each site's Proxmox logs in through that site's Authelia as a client of its own: the client is in <code>authelia-configuration.yml.j2</code>, and the realm's settings live in Proxmox, not in this repository. Unlike Kasm, <code>vm</code> keeps <code>auth: true</code>: WIL's Caddy answers from the internet, and the gate keeps Proxmox's login page off it. The first visit therefore passes through the login page twice, the second time without asking for the password.</p>
 <p>Generate a client secret per site, using the same command as for <a href="#kasm">Kasm</a>. Store both values, because Proxmox's realm needs the password itself, then deploy networking:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/infra_networking/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_oidc_proxmox_client_secret"]'</span><span class="w"> </span><span class="s1">'"&lt;Random Password&gt;"'</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_oidc_proxmox_client_secret"]'</span><span class="w"> </span><span class="s1">'"&lt;Random Password&gt;"'</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/infra_networking/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_oidc_proxmox_client_secret_hash"]'</span><span class="w"> </span><span class="s1">'"$pbkdf2-sha512$..."'</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_oidc_proxmox_client_secret_hash"]'</span><span class="w"> </span><span class="s1">'"$pbkdf2-sha512$..."'</span>
 </code></pre></div>
 <p>Proxmox fetches Authelia's settings itself, so the host must resolve the login page, which is not in public DNS. Check from the host:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>getent<span class="w"> </span>hosts<span class="w"> </span>auth.wil.5am.cloud
