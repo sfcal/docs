@@ -1286,6 +1286,8 @@
       
         
       
+        
+      
     
     
     
@@ -1762,6 +1764,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/kasm-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kasm Agent (OVH VPS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1997,8 +2027,12 @@
 <td>Prometheus, Grafana</td>
 </tr>
 <tr>
-<td><code>task ansible:deploy-dashboard ENV=wil</code></td>
-<td>Homepage on the OVH VPS (tailnet only)</td>
+<td><code>task ansible:deploy-dashboard ENV=ovh</code></td>
+<td>Homepage and Uptime Kuma on the OVH VPS</td>
+</tr>
+<tr>
+<td><code>task ansible:deploy-kasm-agent ENV=ovh</code></td>
+<td>Kasm agent for Deluge on the OVH VPS</td>
 </tr>
 <tr>
 <td><code>task ansible:deploy-netboot ENV=wil</code></td>

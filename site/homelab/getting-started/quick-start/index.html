@@ -1264,6 +1264,8 @@
       
         
       
+        
+      
     
     
     
@@ -1740,6 +1742,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/kasm-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kasm Agent (OVH VPS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1960,7 +1990,7 @@
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">             </span><span class="c1"># Step-CA certificate authority</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>task<span class="w"> </span>ansible:deploy-ntp<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">            </span><span class="c1"># Chrony time server</span>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">     </span><span class="c1"># Prometheus, Grafana</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">      </span><span class="c1"># Homepage (OVH VPS)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh<span class="w">      </span><span class="c1"># Homepage (OVH VPS)</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>task<span class="w"> </span>ansible:deploy-media<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">          </span><span class="c1"># Plex, *arr stack</span>
 </code></pre></div>
 <h2 id="5-verify"><a class="toclink" href="#5-verify">5. Verify</a></h2>

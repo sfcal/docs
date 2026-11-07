@@ -1142,6 +1142,8 @@
       
         
       
+        
+      
     
     
     
@@ -1843,6 +1845,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#uptime-kuma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uptime Kuma
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Uptime Kuma">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#access_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#badges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Badges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-reference_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#shared-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1892,6 +1944,17 @@
     <span class="md-ellipsis">
       
         Add a Homepage service widget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-a-readme-badge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add a README badge
       
     </span>
   </a>
@@ -1983,6 +2046,34 @@
     
   
     Hermes Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kasm-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kasm Agent (OVH VPS)
   
 
     
@@ -2302,6 +2393,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#uptime-kuma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uptime Kuma
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Uptime Kuma">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#access_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#badges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Badges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-reference_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#shared-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2351,6 +2492,17 @@
     <span class="md-ellipsis">
       
         Add a Homepage service widget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-a-readme-badge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add a README badge
       
     </span>
   </a>
@@ -2445,6 +2597,8 @@
 
     subgraph Dashboard VPS
         Homepage[Homepage]
+        UptimeKuma[Uptime Kuma]
+        Caddy[Caddy]
     end
 
     subgraph Targets
@@ -2454,19 +2608,17 @@
         NE4[Node Exporter\nwebsite]
     end
 
-    subgraph Monitoring VM
-        UptimeKuma[Uptime Kuma]
-    end
-
     NE1 &amp; NE2 &amp; NE3 &amp; NE4 --&gt;|metrics| Prometheus
     Prometheus --&gt;|datasource| Grafana
-    UptimeKuma --&gt;|health checks| Prometheus
-    Homepage --&gt;|widgets, over the tailnet| Prometheus</code></pre>
+    Homepage --&gt;|widgets, over the tailnet| Prometheus
+    Homepage --&gt;|widget| UptimeKuma
+    Caddy --&gt;|badges only| UptimeKuma
+    GitHub[GitHub README] --&gt;|badge images| Caddy</code></pre>
 <ul>
 <li><strong>Prometheus</strong> scrapes node exporters across all VMs for system metrics</li>
 <li><strong>Grafana</strong> visualizes metrics from Prometheus with dashboards</li>
 <li><strong>Homepage</strong> provides a service dashboard with status widgets and quick links</li>
-<li><strong>Uptime Kuma</strong> provides uptime monitoring for internal services</li>
+<li><strong>Uptime Kuma</strong> checks services from outside the lab and serves the README's status badges</li>
 </ul>
 <h2 id="components"><a class="toclink" href="#components">Components</a></h2>
 <table>
@@ -2500,8 +2652,14 @@
 <tr>
 <td>Uptime Kuma</td>
 <td><code>louislam/uptime-kuma</code></td>
-<td>3001</td>
-<td>Uptime monitoring</td>
+<td>3001 (127.0.0.1 on the dashboard VPS)</td>
+<td>Uptime checks, README badges</td>
+</tr>
+<tr>
+<td>Caddy</td>
+<td><code>caddy</code></td>
+<td>80, 443 (public, on the dashboard VPS)</td>
+<td>Uptime Kuma's badges only</td>
 </tr>
 </tbody>
 </table>
@@ -2532,7 +2690,7 @@
 </tr>
 <tr>
 <td>Dashboard</td>
-<td>OVH VPS (Homepage)</td>
+<td>OVH VPS (Homepage, Uptime Kuma)</td>
 <td><code>135.148.219.216</code>, tailnet <code>dashboard</code></td>
 </tr>
 </tbody>
@@ -2588,15 +2746,23 @@
 <tbody>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/deploy.yml</code></td>
-<td>Playbook: Tailscale, Docker, Homepage</td>
+<td>Playbook: Tailscale, Docker, Uptime Kuma, Homepage</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/tasks/uptime-kuma.yml</code></td>
+<td>Uptime Kuma and Caddy directories, Caddyfile, tailnet port 3001</td>
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/tasks/homepage.yml</code></td>
-<td>Deployment task</td>
+<td>Homepage config, starts the compose project</td>
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/templates/compose.yaml.j2</code></td>
-<td>Docker Compose definition</td>
+<td>Docker Compose definition (Homepage, Uptime Kuma, Caddy)</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/files/Caddyfile</code></td>
+<td>Public site: Uptime Kuma's badges only</td>
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></td>
@@ -2615,18 +2781,26 @@
 <td>Homepage widgets</td>
 </tr>
 <tr>
-<td><code>inventory/group_vars/site_wil/infra_dashboard/vars.yml</code></td>
-<td>Image and allowed hosts</td>
+<td><code>inventory/group_vars/site_ovh/infra_dashboard/vars.yml</code></td>
+<td>Images and allowed hosts</td>
 </tr>
 <tr>
-<td><code>inventory/group_vars/site_wil/secrets.sops.yml</code></td>
+<td><code>inventory/group_vars/site_wil/proxy/ext.5am.cloud.yml</code></td>
+<td>wil's BIND record for <code>uptime.ext.5am.cloud</code></td>
+</tr>
+<tr>
+<td><code>inventory/group_vars/site_ovh/infra_dashboard/tailscale.yml</code></td>
+<td>Tailscale client settings</td>
+</tr>
+<tr>
+<td><code>inventory/group_vars/site_ovh/secrets.sops.yml</code></td>
 <td>Widget API keys (section <code>infra_dashboard</code>)</td>
 </tr>
 </tbody>
 </table>
 <h2 id="deployment"><a class="toclink" href="#deployment">Deployment</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">    </span><span class="c1"># Homepage on the OVH VPS (the VPS is in site_wil)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh<span class="w">    </span><span class="c1"># Homepage and Uptime Kuma on the OVH VPS (site ovh)</span>
 </code></pre></div>
 <h3 id="monitoring-stack-deployment"><a class="toclink" href="#monitoring-stack-deployment">Monitoring Stack Deployment</a></h3>
 <p>The task file:</p>
@@ -2823,9 +2997,9 @@
 <h2 id="homepage"><a class="toclink" href="#homepage">Homepage</a></h2>
 <p>Homepage provides a service dashboard with status widgets, service health indicators, and quick links to all homelab services. One instance covers both sites and runs on an OVH VPS (<code>135.148.219.216</code>, Virginia), so it stays up when a site is down; its cards then show what is unreachable.</p>
 <h3 id="access"><a class="toclink" href="#access">Access</a></h3>
-<p>Tailnet only: <strong>http://dashboard/</strong> (needs Tailscale's DNS on the device, which adds the tailnet's search domain). Homepage listens on <code>127.0.0.1:3002</code>, and <code>tailscale serve</code> puts it on the tailnet's port 80. The VPS has no other open port besides SSH. Plain HTTP, because the System Activity panels load from each monitoring VM's Grafana by IP over HTTP and an HTTPS page would block them; the tailnet encrypts the traffic anyway. Use the short name: for the full name <code>dashboard.tail1e494e.ts.net</code>, Chrome tries HTTPS first and warns or blocks, since the tailnet has HTTPS certificates off (single-label names are exempt).</p>
+<p>Tailnet only: <strong>http://dashboard/</strong> (needs Tailscale's DNS on the device, which adds the tailnet's search domain). Homepage listens on <code>127.0.0.1:3002</code>, and <code>tailscale serve</code> puts it on the tailnet's port 80. Besides SSH, the VPS's only public ports are 80 and 443, which serve Uptime Kuma's badges and nothing else (see <a href="#uptime-kuma">Uptime Kuma</a>). Plain HTTP, because the System Activity panels load from each monitoring VM's Grafana by IP over HTTP and an HTTPS page would block them; the tailnet encrypts the traffic anyway. Use the short name: for the full name <code>dashboard.tail1e494e.ts.net</code>, Chrome tries HTTPS first and warns or blocks, since the tailnet has HTTPS certificates off (single-label names are exempt).</p>
 <p><code>tailscale serve</code> cannot proxy to the sites' subnets itself (tailscaled's own connections don't use the subnet routes), so anything the browser needs from a site must be reachable from the browser directly, like the Grafana panels.</p>
-<p>The VPS joins the tailnet as a client named <code>dashboard</code> that accepts the sites' subnet routes, which is how its widgets reach <code>10.2.x.x</code> and <code>10.3.x.x</code>. Its Tailscale values are set in <code>dashboard/deploy.yml</code>, not in group vars, because every wil host also inherits <code>site_wil/infra_networking/tailscale.yml</code> (wil-gateway's subnet router).</p>
+<p>The VPS joins the tailnet as a client named <code>dashboard</code> that accepts the sites' subnet routes, which is how its widgets reach <code>10.2.x.x</code> and <code>10.3.x.x</code>. Its Tailscale values are in <code>site_ovh/infra_dashboard/tailscale.yml</code>. The VPS is its own site, <code>ovh</code>, so it inherits nothing from the lab sites (in <code>site_wil</code> it would pick up wil-gateway's subnet-router settings).</p>
 <h3 id="container-configuration_2"><a class="toclink" href="#container-configuration_2">Container Configuration</a></h3>
 <ul>
 <li><strong>Memory:</strong> 512MB limit, 256MB reservation</li>
@@ -2892,7 +3066,72 @@
 <li><strong>Node Exporters</strong> lists the targets of each site's <code>prometheus_node_targets</code> by hand; add a node there too.</li>
 <li><strong>SABnzbd</strong> has two widgets: Homepage's <code>sabnzbd</code> widget (speed, queue) and a <code>customapi</code> widget that reads the download totals for today, this week, this month and all time from SABnzbd's <code>server_stats</code> API once a minute.</li>
 </ul>
-<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_wil/infra_dashboard/vars.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2"><code>ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></a></small></p>
+<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_ovh/infra_dashboard/vars.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2"><code>ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></a></small></p>
+<hr />
+<h2 id="uptime-kuma"><a class="toclink" href="#uptime-kuma">Uptime Kuma</a></h2>
+<p>Uptime Kuma runs next to Homepage on the OVH VPS, in the same compose project (<code>/opt/dashboard</code>, state in <code>/var/lib/dashboard/uptime-kuma</code>), so its checks keep running when a site is down. It reaches the sites over the tailnet like Homepage's widgets, and the internet directly. The status badges in the repository's README come from it.</p>
+<h3 id="access_1"><a class="toclink" href="#access_1">Access</a></h3>
+<ul>
+<li><strong>Admin page:</strong> tailnet only, <strong>http://dashboard:3001</strong>. Uptime Kuma listens on <code>127.0.0.1:3001</code> and <code>tailscale serve</code> puts it on the tailnet's port 3001. The first visit asks for the admin account. <code>UPTIME_KUMA_DB_TYPE=sqlite</code> skips the database question that Uptime Kuma 2 asks first.</li>
+<li><strong>Badges:</strong> public, <strong>https://uptime.ext.5am.cloud/api/badge/...</strong>. Caddy (<code>files/Caddyfile</code>) passes <code>/api/badge/*</code> to Uptime Kuma and answers 404 for everything else, the login and status pages included. It gets its certificate from Let's Encrypt, so ports 80 and 443 are open on the VPS's public address (only there: <code>tailscale serve</code> holds port 80 on the tailnet address).</li>
+<li><strong>DNS:</strong> <code>uptime.ext.5am.cloud</code> is a DNS-only A record in Cloudflare pointing at <code>135.148.219.216</code>, and wil's BIND serves the same address to the lab (<code>site_wil/proxy/ext.5am.cloud.yml</code>, applied by a wil networking deploy).</li>
+</ul>
+<p>Monitors and status pages live in Uptime Kuma's database, not in Ansible: add them on the admin page.</p>
+<h3 id="badges"><a class="toclink" href="#badges">Badges</a></h3>
+<p>Uptime Kuma only draws a badge for a monitor that is on a published status page; any other monitor ID returns a grey <code>N/A</code>. Every monitor with a badge goes on the status page with the slug <code>default</code>, which Homepage's Uptime Kuma widget reads too. The page itself isn't reachable from the internet; publishing it only lets the badges show.</p>
+<table>
+<thead>
+<tr>
+<th>Badge</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Up / Down</td>
+<td><code>https://uptime.ext.5am.cloud/api/badge/&lt;id&gt;/status?label=&lt;name&gt;</code></td>
+</tr>
+<tr>
+<td>Uptime %</td>
+<td><code>https://uptime.ext.5am.cloud/api/badge/&lt;id&gt;/uptime/&lt;duration&gt;?label=&lt;name&gt;</code> (<code>24h</code>, <code>7d</code>, <code>30d</code>; set <code>label</code>, the default one reads <code>Uptime (30h)</code> for <code>30d</code>)</td>
+</tr>
+<tr>
+<td>Response time</td>
+<td><code>https://uptime.ext.5am.cloud/api/badge/&lt;id&gt;/ping/&lt;duration&gt;</code></td>
+</tr>
+<tr>
+<td>Certificate expiry</td>
+<td><code>https://uptime.ext.5am.cloud/api/badge/&lt;id&gt;/cert-exp</code></td>
+</tr>
+</tbody>
+</table>
+<p>The monitor ID is the number at the end of its URL on the admin page (<code>/dashboard/&lt;id&gt;</code>). Badges are sent with <code>Cache-Control: no-store</code>, so GitHub's image proxy shows the current state (Uptime Kuma caches each badge for 5 minutes itself).</p>
+<h3 id="configuration-reference_3"><a class="toclink" href="#configuration-reference_3">Configuration Reference</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uptime_kuma_image</code></td>
+<td><code>string</code></td>
+<td>Docker image for Uptime Kuma</td>
+<td><code>louislam/uptime-kuma:2.5.9</code></td>
+</tr>
+<tr>
+<td><code>caddy_image</code></td>
+<td><code>string</code></td>
+<td>Docker image for the badge proxy</td>
+<td><code>caddy:2.11.9</code></td>
+</tr>
+</tbody>
+</table>
+<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_ovh/infra_dashboard/vars.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/dashboard/files/Caddyfile"><code>ansible/playbooks/infrastructure/dashboard/files/Caddyfile</code></a></small></p>
 <hr />
 <h2 id="shared-configuration"><a class="toclink" href="#shared-configuration">Shared Configuration</a></h2>
 <p>These variables apply to all monitoring containers:</p>
@@ -2959,13 +3198,24 @@
 <ol>
 <li>Edit <code>ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></li>
 <li>Add a new service entry under the appropriate section</li>
-<li>If the service requires an API key, add the key to the <code>infra_dashboard</code> section of <code>group_vars/site_wil/secrets.sops.yml</code> and pass it through <code>dashboard/templates/compose.yaml.j2</code></li>
+<li>If the service requires an API key, add the key to the <code>infra_dashboard</code> section of <code>group_vars/site_ovh/secrets.sops.yml</code> and pass it through <code>dashboard/templates/compose.yaml.j2</code></li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh
 </code></pre></div>
 </li>
 </ol>
+<h3 id="add-a-readme-badge"><a class="toclink" href="#add-a-readme-badge">Add a README badge</a></h3>
+<ol>
+<li>On http://dashboard:3001, add the monitor and put it on the <code>default</code> status page (Edit Status Page → add the monitor → Save)</li>
+<li>Note its ID from the address bar (<code>/dashboard/&lt;id&gt;</code>)</li>
+<li>
+<p>Add the badge to <code>README.md</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>![<span class="nt">wil</span>](<span class="na">https://uptime.ext.5am.cloud/api/badge/&lt;id&gt;/status?label=wil</span>)
+</code></pre></div>
+</li>
+</ol>
+<p>No deploy needed: monitors live in Uptime Kuma's database.</p>
 
 
 

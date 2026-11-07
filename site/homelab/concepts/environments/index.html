@@ -1242,6 +1242,8 @@
       
         
       
+        
+      
     
     
     
@@ -1718,6 +1720,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/kasm-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kasm Agent (OVH VPS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1899,6 +1929,12 @@
 <td>10.3.20.0/24</td>
 <td><code>pve-lon</code></td>
 </tr>
+<tr>
+<td><strong>OVH</strong></td>
+<td>Dashboard VPS (Virginia), outside the lab</td>
+<td>none; tailnet name <code>dashboard</code></td>
+<td>—</td>
+</tr>
 </tbody>
 </table>
 <p>Every <code>task</code> command takes an <code>ENV=</code> variable that threads through to Terraform, Ansible, and Packer:</p>
@@ -1956,7 +1992,7 @@
 <p>Every host in <code>hosts.ini</code> is listed in its site group (<code>[site_wil]</code>, <code>[site_ldn]</code>) and in the role groups the playbooks target, so <code>[infra_networking]</code> lists both <code>.53</code> VMs. Group variables come from two kinds of folders:</p>
 <ul>
 <li><code>all/</code> — every host. <code>sites.yml</code> has one row per site; <code>domains</code>, <code>system_timezone</code> and the cross-site BIND9 settings (trusted networks, secondary zones, zone transfers, notifies) are derived from it. <code>vars.yml</code> also combines the site's DNS/proxy lists into <code>services</code>.</li>
-<li><code>site_&lt;site&gt;/</code> — that site's own values: its app registry (<code>apps.yml</code>), its DNS/proxy entries (<code>proxy/&lt;domain&gt;.yml</code>), sub-folders named after the group that reads them (they apply to every host of the site), and all of the site's secrets. Groups that run at one site only (<code>app_mediastack</code>, <code>app_frigate</code>, <code>infra_ntp</code>, <code>infra_dashboard</code> at wil; <code>app_hermes</code>, <code>infra_proxmox</code> at ldn) have their folder there too.</li>
+<li><code>site_&lt;site&gt;/</code> — that site's own values: its app registry (<code>apps.yml</code>), its DNS/proxy entries (<code>proxy/&lt;domain&gt;.yml</code>), sub-folders named after the group that reads them (they apply to every host of the site), and all of the site's secrets. Groups that run at one site only (<code>app_mediastack</code>, <code>app_frigate</code>, <code>infra_ntp</code> at wil; <code>app_hermes</code>, <code>infra_proxmox</code> at ldn; <code>infra_dashboard</code>, <code>app_kasm_agent</code> at ovh) have their folder there too.</li>
 </ul>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># ansible/inventory/group_vars/all/sites.yml</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">sites</span><span class="p">:</span>
@@ -1968,8 +2004,13 @@
 <a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="nt">zones</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">5am.video</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5am.cloud</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">wil.5am.cloud</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">ext.5am.cloud</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">sfc.al</span><span class="p p-Indicator">]</span><span class="w">  </span><span class="c1"># Zones it is primary for</span>
 <a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="nt">ldn</span><span class="p">:</span>
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="c1"># ...</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="nt">ovh</span><span class="p">:</span><span class="w">                                  </span><span class="c1"># Dashboard VPS: no LAN or DNS, so no cidr</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="nt">tz</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">America/New_York</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="nt">dns</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="nt">ts_router_ips</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">    </span><span class="nt">zones</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 </code></pre></div>
-<p>To add a site, or move a site's DNS server or zones, edit its row, then deploy networking at every site.</p>
+<p>To add a site, or move a site's DNS server or zones, edit its row, then deploy networking at every site. A site without DNS (ovh) changes nothing at the others.</p>
 <h2 id="how-env-works"><a class="toclink" href="#how-env-works">How <code>ENV=</code> Works</a></h2>
 <p>The root <code>Taskfile.yaml</code> defines <code>ENV</code> as a variable (defaults to <code>ldn</code>). Terraform and Packer use it to resolve paths; Ansible uses it to limit the run to the site's group:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># .taskfiles/ansible/Taskfile.yaml</span>
