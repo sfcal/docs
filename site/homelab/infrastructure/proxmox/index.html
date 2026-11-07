@@ -1903,7 +1903,7 @@
 </tbody>
 </table>
 <p>Then it runs <code>pvesh get /cluster/mapping/pci --check-node pve-ldn</code>, the same validation <code>qm start</code> performs, and fails if a mapping no longer matches the hardware.</p>
-<p>Configuration (<code>ansible/inventory/group_vars/infra_proxmox/vars.yml</code>):</p>
+<p>Configuration (<code>ansible/inventory/group_vars/site_ldn/infra_proxmox/vars.yml</code>):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">b50_num_vfs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 </code></pre></div>
 <p>The card itself (PCI id <code>8086:e212</code>, unit and mapping names) is hardcoded in the play and templates.</p>
@@ -1922,15 +1922,13 @@
 </code></pre></div>
 <p>Expect <code>0b:00.0</code> on <code>xe</code>, <code>0b:00.1</code> to <code>0b:00.3</code> on <code>vfio-pci</code>, and no <code>checks</code> on the mappings. After a reboot <code>qm status 3005</code> should be <code>running</code> without manual action.</p>
 <h2 id="terraform-notes"><a class="toclink" href="#terraform-notes">Terraform notes</a></h2>
-<p>The GPU VM <code>game_server</code> is defined in <code>terraform/environments/ldn/vms.auto.tfvars</code> with <code>bios = "ovmf"</code>, <code>machine = "q35"</code> and <code>pci_mapping</code>. <code>work_server</code> keeps <code>bios</code> and <code>machine</code> but no longer maps a VF; VMs 118 and 121 are hand-made clones outside Terraform, given their VF with <code>qm set &lt;vmid&gt; --hostpci0 mapping=b50-vfN,pcie=1</code>. The provider (telmate 3.0.2-rc07) only format-checks the mapping ID; whether the VF exists is discovered at VM start. On apply the provider also starts a stopped VM.</p>
-<p>As of October 2026 the ldn state holds only <code>web_server</code>; every other ldn VM has to be imported before <code>task terraform:deploy ENV=ldn</code> (which applies with <code>-auto-approve</code>) is safe to run:</p>
+<p>The GPU VM <code>game_server</code> is defined in <code>terraform/environments/ldn/vms.auto.tfvars</code> with <code>bios = "ovmf"</code>, <code>machine = "q35"</code> and <code>pci_mapping</code>. <code>work_server</code> keeps <code>bios</code> and <code>machine</code> but no longer maps a VF; VMs 118 and 121 are hand-made clones outside Terraform, given their VF with <code>qm set &lt;vmid&gt; --hostpci0 mapping=b50-vfN,pcie=1</code>. The provider is bpg/proxmox (<code>proxmox_virtual_environment_vm</code>). The module sets <code>rombar = true</code> on the mapped device because bpg sends <code>rombar=0</code> when it is left out. On apply the provider also starts a stopped VM (<code>started</code> defaults to true), so a stopped GPU VM is started and needs its VF free.</p>
+<p>Since November 2026 the ldn state holds all eight ldn VMs as <code>proxmox_virtual_environment_vm</code> (imported when the provider changed from telmate). A VM made outside Terraform is imported with <code>&lt;node&gt;/&lt;vmid&gt;</code> as the ID:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>terraform/environments/ldn
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">for</span><span class="w"> </span>pair<span class="w"> </span><span class="k">in</span><span class="w"> </span>networking_server:3000<span class="w"> </span>ca_server:3003<span class="w"> </span>monitoring_server:3002<span class="w"> </span>work_server:3004<span class="w"> </span>game_server:3005<span class="w"> </span>netboot_server:3006<span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>terraform<span class="w"> </span>import<span class="w"> </span><span class="s2">"module.infrastructure.module.vms[\"</span><span class="si">${</span><span class="nv">pair</span><span class="p">%%:*</span><span class="si">}</span><span class="s2">\"].proxmox_vm_qemu.vm"</span><span class="w"> </span><span class="s2">"pve-ldn/qemu/</span><span class="si">${</span><span class="nv">pair</span><span class="p">##*:</span><span class="si">}</span><span class="s2">"</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">done</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>terraform<span class="w"> </span>plan
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>terraform<span class="w"> </span>import<span class="w"> </span><span class="s1">'module.infrastructure.module.vms["&lt;key&gt;"].proxmox_virtual_environment_vm.vm'</span><span class="w"> </span>pve-ldn/&lt;vmid&gt;
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>terraform<span class="w"> </span>plan
 </code></pre></div>
-<p>The VM module ignores <code>clone</code> and <code>full_clone</code> changes so an imported VM does not plan as a replacement. Always read the plan before applying: anything marked <code>forces replacement</code> would destroy the VM.</p>
+<p>The VM module ignores <code>clone</code> changes so an imported VM does not plan as a replacement. Always read the plan before applying (<code>task terraform:deploy ENV=ldn</code> applies with <code>-auto-approve</code>): anything marked <code>forces replacement</code> would destroy the VM.</p>
 
 
 

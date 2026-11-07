@@ -2023,7 +2023,7 @@
 <h2 id="data-driven-apps-recommended"><a class="toclink" href="#data-driven-apps-recommended">Data-Driven Apps (Recommended)</a></h2>
 <p>Most applications follow this pattern. The shared <code>deploy-app.yml</code> playbook handles everything.</p>
 <h3 id="1-add-the-app-to-appsyml"><a class="toclink" href="#1-add-the-app-to-appsyml">1. Add the App to <code>apps.yml</code></a></h3>
-<p>Add an entry to <code>ansible/inventory/group_vars/all/apps.yml</code>:</p>
+<p>Add an entry to the registry of the site that hosts the app, <code>ansible/inventory/group_vars/site_&lt;env&gt;/apps.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">myapp</span><span class="p">:</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_myapp</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="c1"># renovate: datasource=docker</span>
@@ -2077,7 +2077,7 @@
 </code></pre></div>
 <p>Dedicated tasks (e.g., <code>deploy-media</code>) exist only for apps with custom playbooks.</p>
 <h3 id="6-dnsproxy-entry"><a class="toclink" href="#6-dnsproxy-entry">6. DNS/Proxy Entry</a></h3>
-<p>The <code>proxy:</code> block from step 1 already covers this — <code>backend_host</code> and <code>backend_port</code> are derived from the app's <code>host_group</code> and <code>port</code>, and the entry is generated when networking is deployed. Manual entries in <code>group_vars/all/proxy/&lt;domain&gt;.yml</code> are only for services outside the app registry (third-party devices, media stack, monitoring).</p>
+<p>The <code>proxy:</code> block from step 1 already covers this — <code>backend_host</code> and <code>backend_port</code> are derived from the app's <code>host_group</code> and <code>port</code>, and the entry is generated when networking is deployed. Manual entries in <code>group_vars/site_&lt;env&gt;/proxy/&lt;domain&gt;.yml</code> are only for services outside the app registry (third-party devices, media stack, monitoring).</p>
 <h3 id="7-deploy"><a class="toclink" href="#7-deploy">7. Deploy</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>task<span class="w"> </span>ansible:deploy-app<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w"> </span><span class="nv">APP</span><span class="o">=</span>myapp
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">  </span><span class="c1"># Updates DNS and proxy</span>

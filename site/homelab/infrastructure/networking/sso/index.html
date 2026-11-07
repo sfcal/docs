@@ -2057,7 +2057,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 <p>Only browsers can log in. Leave <code>auth</code> off services that apps, devices or scripts talk to through the hostname (KOSync and MicroBin, for example). Anything else can still use a protected service's IP and port directly.</p>
-<p>Homepage shows Grafana panels in iframes, so keep <code>auth</code> the same on <code>homepage</code> and <code>grafana</code>.</p>
+<p>Homepage (on the dashboard VPS, tailnet only, no Authelia) loads its Grafana panels from each monitoring VM's IP and port, so <code>auth</code> on <code>grafana</code> doesn't affect it.</p>
 <h2 id="kasm"><a class="toclink" href="#kasm">Kasm</a></h2>
 <p>Kasm has no <code>auth: true</code>, so a desktop left open does not depend on a cookie that runs out. It logs in through LDN's Authelia as a second OpenID Connect client: the client is in <code>authelia-configuration.yml.j2</code>, and the settings on Kasm's side live in Kasm's database, not in this repository.</p>
 <p>Generate the client secret (it prints a <code>Random Password</code> and a <code>Digest:</code> line):</p>

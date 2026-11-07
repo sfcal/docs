@@ -1626,6 +1626,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#dashboard-homepage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboard (Homepage)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1781,6 +1792,17 @@
   
     <nav class="md-nav" aria-label="Homepage">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#container-configuration_2" class="md-nav__link">
@@ -2063,6 +2085,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#dashboard-homepage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboard (Homepage)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2218,6 +2251,17 @@
   
     <nav class="md-nav" aria-label="Homepage">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#container-configuration_2" class="md-nav__link">
@@ -2387,7 +2431,7 @@
 
 
 <h1 id="monitoring"><a class="toclink" href="#monitoring">Monitoring</a></h1>
-<p>The monitoring stack provides metrics collection, visualization, a service dashboard, and external uptime monitoring. It runs as Docker containers on a dedicated VM in each environment.</p>
+<p>The monitoring stack provides metrics collection, visualization, a service dashboard, and external uptime monitoring. It runs as Docker containers on a dedicated VM in each environment; Homepage, the service dashboard, runs once for both sites on an OVH VPS outside the lab (see <a href="#homepage">Homepage</a>).</p>
 <div class="admonition note">
 <p class="admonition-title">Deployment order</p>
 <p>Monitoring deploys after <a href="../networking/">Networking</a>, <a href="../ca/">Step-CA</a>, and <a href="../ntp/">NTP</a>. It is the last infrastructure service to deploy before applications.</p>
@@ -2397,6 +2441,9 @@
     subgraph Monitoring VM
         Prometheus[Prometheus]
         Grafana[Grafana]
+    end
+
+    subgraph Dashboard VPS
         Homepage[Homepage]
     end
 
@@ -2413,7 +2460,8 @@
 
     NE1 &amp; NE2 &amp; NE3 &amp; NE4 --&gt;|metrics| Prometheus
     Prometheus --&gt;|datasource| Grafana
-    UptimeKuma --&gt;|health checks| Prometheus</code></pre>
+    UptimeKuma --&gt;|health checks| Prometheus
+    Homepage --&gt;|widgets, over the tailnet| Prometheus</code></pre>
 <ul>
 <li><strong>Prometheus</strong> scrapes node exporters across all VMs for system metrics</li>
 <li><strong>Grafana</strong> visualizes metrics from Prometheus with dashboards</li>
@@ -2446,7 +2494,7 @@
 <tr>
 <td>Homepage</td>
 <td><code>ghcr.io/gethomepage/homepage</code></td>
-<td>3002</td>
+<td>3002 (127.0.0.1 on the dashboard VPS)</td>
 <td>Service dashboard</td>
 </tr>
 <tr>
@@ -2482,6 +2530,11 @@
 <td>VPS</td>
 <td><code>178.156.190.134</code></td>
 </tr>
+<tr>
+<td>Dashboard</td>
+<td>OVH VPS (Homepage)</td>
+<td><code>135.148.219.216</code>, tailnet <code>dashboard</code></td>
+</tr>
 </tbody>
 </table>
 <h2 id="file-locations"><a class="toclink" href="#file-locations">File Locations</a></h2>
@@ -2515,22 +2568,6 @@
 <td>Grafana datasource provisioning</td>
 </tr>
 <tr>
-<td><code>playbooks/infrastructure/monitoring/templates/homepage/services.yaml.j2</code></td>
-<td>Homepage services dashboard</td>
-</tr>
-<tr>
-<td><code>playbooks/infrastructure/monitoring/templates/bookmarks.yaml.j2</code></td>
-<td>Homepage bookmarks</td>
-</tr>
-<tr>
-<td><code>playbooks/infrastructure/monitoring/templates/settings.yaml.j2</code></td>
-<td>Homepage theme and layout</td>
-</tr>
-<tr>
-<td><code>playbooks/infrastructure/monitoring/templates/widgets.yaml.j2</code></td>
-<td>Homepage widgets</td>
-</tr>
-<tr>
 <td><code>playbooks/infrastructure/monitoring/handlers/main.yml</code></td>
 <td>Container lifecycle handlers</td>
 </tr>
@@ -2540,8 +2577,56 @@
 </tr>
 </tbody>
 </table>
+<h3 id="dashboard-homepage"><a class="toclink" href="#dashboard-homepage">Dashboard (Homepage)</a></h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/deploy.yml</code></td>
+<td>Playbook: Tailscale, Docker, Homepage</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/tasks/homepage.yml</code></td>
+<td>Deployment task</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/templates/compose.yaml.j2</code></td>
+<td>Docker Compose definition</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></td>
+<td>Homepage services dashboard</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/templates/homepage/bookmarks.yaml.j2</code></td>
+<td>Homepage bookmarks</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/templates/homepage/settings.yaml.j2</code></td>
+<td>Homepage theme and layout</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/templates/homepage/widgets.yaml.j2</code></td>
+<td>Homepage widgets</td>
+</tr>
+<tr>
+<td><code>inventory/group_vars/site_wil/infra_dashboard/vars.yml</code></td>
+<td>Image and allowed hosts</td>
+</tr>
+<tr>
+<td><code>inventory/group_vars/site_wil/infra_dashboard/secrets.sops.yml</code></td>
+<td>Widget API keys</td>
+</tr>
+</tbody>
+</table>
 <h2 id="deployment"><a class="toclink" href="#deployment">Deployment</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">    </span><span class="c1"># Homepage on the OVH VPS (the VPS is in site_wil)</span>
 </code></pre></div>
 <h3 id="monitoring-stack-deployment"><a class="toclink" href="#monitoring-stack-deployment">Monitoring Stack Deployment</a></h3>
 <p>The task file:</p>
@@ -2550,9 +2635,8 @@
 <li>Sets ownership to <code>monitoring_uid:monitoring_gid</code></li>
 <li>Deploys Prometheus configuration</li>
 <li>Deploys Grafana datasource provisioning</li>
-<li>Deploys Homepage configuration files (services, bookmarks, settings, widgets)</li>
 <li>Deploys Docker Compose file</li>
-<li>Starts all containers</li>
+<li>Starts all containers and removes any that are no longer in <code>compose.yaml</code></li>
 </ol>
 <hr />
 <h2 id="prometheus"><a class="toclink" href="#prometheus">Prometheus</a></h2>
@@ -2606,12 +2690,6 @@
 <td><code>string</code></td>
 <td>Metrics data retention period</td>
 <td><code>"30d"</code></td>
-</tr>
-<tr>
-<td><code>prometheus_url</code></td>
-<td><code>string</code></td>
-<td>Public URL, used for the Homepage link</td>
-<td>(per-env)</td>
 </tr>
 <tr>
 <td><code>prometheus_node_targets</code></td>
@@ -2743,12 +2821,16 @@
 <p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/grafana.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/monitoring/templates/grafana-datasources.yml.j2"><code>ansible/playbooks/infrastructure/monitoring/templates/grafana-datasources.yml.j2</code></a></small></p>
 <hr />
 <h2 id="homepage"><a class="toclink" href="#homepage">Homepage</a></h2>
-<p>Homepage provides a service dashboard with status widgets, service health indicators, and quick links to all homelab services.</p>
+<p>Homepage provides a service dashboard with status widgets, service health indicators, and quick links to all homelab services. One instance covers both sites and runs on an OVH VPS (<code>135.148.219.216</code>, Virginia), so it stays up when a site is down; its cards then show what is unreachable.</p>
+<h3 id="access"><a class="toclink" href="#access">Access</a></h3>
+<p>Tailnet only: <strong>http://dashboard/</strong> (needs Tailscale's DNS on the device, which adds the tailnet's search domain). Homepage listens on <code>127.0.0.1:3002</code>, and <code>tailscale serve</code> puts it on the tailnet's port 80. The VPS has no other open port besides SSH. Plain HTTP, because the System Activity panels load from each monitoring VM's Grafana by IP over HTTP and an HTTPS page would block them; the tailnet encrypts the traffic anyway. Use the short name: for the full name <code>dashboard.tail1e494e.ts.net</code>, Chrome tries HTTPS first and warns or blocks, since the tailnet has HTTPS certificates off (single-label names are exempt).</p>
+<p><code>tailscale serve</code> cannot proxy to the sites' subnets itself (tailscaled's own connections don't use the subnet routes), so anything the browser needs from a site must be reachable from the browser directly, like the Grafana panels.</p>
+<p>The VPS joins the tailnet as a client named <code>dashboard</code> that accepts the sites' subnet routes, which is how its widgets reach <code>10.2.x.x</code> and <code>10.3.x.x</code>. Its Tailscale values are set in <code>dashboard/deploy.yml</code>, not in group vars, because every wil host also inherits <code>site_wil/infra_networking/tailscale.yml</code> (wil-gateway's subnet router).</p>
 <h3 id="container-configuration_2"><a class="toclink" href="#container-configuration_2">Container Configuration</a></h3>
 <ul>
 <li><strong>Memory:</strong> 512MB limit, 256MB reservation</li>
-<li><strong>Docker socket:</strong> mounted read-only for container status widgets</li>
-<li><strong>Environment:</strong> receives API keys for service widgets (Sonarr, Radarr, Bazarr, Prowlarr, SABnzbd, Plex)</li>
+<li><strong>Ports:</strong> <code>127.0.0.1:3002</code> only</li>
+<li><strong>Environment:</strong> receives API keys for service widgets (Sonarr, Radarr, Bazarr, Prowlarr, SABnzbd, Plex); <code>compose.yaml</code> is root-only (<code>0600</code>)</li>
 </ul>
 <h3 id="configuration-reference_2"><a class="toclink" href="#configuration-reference_2">Configuration Reference</a></h3>
 <table>
@@ -2765,13 +2847,13 @@
 <td><code>homepage_image</code></td>
 <td><code>string</code></td>
 <td>Docker image for Homepage</td>
-<td>(per-env)</td>
+<td><code>ghcr.io/gethomepage/homepage:latest</code></td>
 </tr>
 <tr>
 <td><code>homepage_allowed_hosts</code></td>
 <td><code>string</code></td>
 <td>Comma-separated hostnames Homepage responds to</td>
-<td>(per-env)</td>
+<td><code>dashboard.tail1e494e.ts.net,dashboard</code></td>
 </tr>
 </tbody>
 </table>
@@ -2803,13 +2885,14 @@
 </tr>
 </tbody>
 </table>
-<p><code>services.yaml.j2</code> is plain Homepage YAML; edit it directly. Three parts are less obvious:</p>
+<p><code>services.yaml.j2</code> is plain Homepage YAML; edit it directly. Four parts are less obvious:</p>
 <ul>
-<li><strong>Apps</strong> and <strong>Infrastructure</strong> differ per site: one <code>if</code>/<code>else</code> block picks the ldn or wil cards by the host's <code>site</code>. Everything else is shared by both sites.</li>
-<li><strong>System Activity</strong> shows the four panels of the System Activity Grafana dashboard in iframes (<code>&lt;grafana_url&gt;/d-solo/system-activity?panelId=1</code> to <code>4</code>). The time range and refresh interval come from the dashboard JSON.</li>
+<li><strong>Per-site groups:</strong> System Activity, Apps, Infrastructure, Monitoring and Node Exporters appear once per site, named <code>(wil)</code> and <code>(ldn)</code>. A new group needs a matching entry in the <code>layout</code> of <code>settings.yaml.j2</code>.</li>
+<li><strong>System Activity</strong> shows the four panels of each site's System Activity Grafana dashboard in iframes from <code>http://10.&lt;site&gt;.20.30:3000/d-solo/system-activity?panelId=1</code> to <code>4</code>. They use the IP because <code>grafana.&lt;site&gt;.5am.cloud</code> is behind Authelia, and a browser does not send that login cookie to a frame inside a page on another domain. Grafana allows anonymous viewing and embedding. The time range and refresh interval come from the dashboard JSON.</li>
+<li><strong>Node Exporters</strong> lists the targets of each site's <code>prometheus_node_targets</code> by hand; add a node there too.</li>
 <li><strong>SABnzbd</strong> has two widgets: Homepage's <code>sabnzbd</code> widget (speed, queue) and a <code>customapi</code> widget that reads the download totals for today, this week, this month and all time from SABnzbd's <code>server_stats</code> API once a minute.</li>
 </ul>
-<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/containers.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/monitoring/templates/homepage/services.yaml.j2"><code>ansible/playbooks/infrastructure/monitoring/templates/homepage/services.yaml.j2</code></a></small></p>
+<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_wil/infra_dashboard/vars.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2"><code>ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></a></small></p>
 <hr />
 <h2 id="shared-configuration"><a class="toclink" href="#shared-configuration">Shared Configuration</a></h2>
 <p>These variables apply to all monitoring containers:</p>
@@ -2874,12 +2957,12 @@
 </ol>
 <h3 id="add-a-homepage-service-widget"><a class="toclink" href="#add-a-homepage-service-widget">Add a Homepage service widget</a></h3>
 <ol>
-<li>Edit <code>ansible/playbooks/infrastructure/monitoring/templates/homepage/services.yaml.j2</code></li>
+<li>Edit <code>ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></li>
 <li>Add a new service entry under the appropriate section</li>
-<li>If the service requires an API key, add the key to <code>secrets.sops.yml</code> and pass it through <code>compose.yaml.j2</code></li>
+<li>If the service requires an API key, add the key to <code>group_vars/site_wil/infra_dashboard/secrets.sops.yml</code> and pass it through <code>dashboard/templates/compose.yaml.j2</code></li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 </li>
 </ol>

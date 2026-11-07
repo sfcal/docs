@@ -2163,7 +2163,7 @@
 <p>BIND9 generates zone files from two data sources:</p>
 <ol>
 <li><strong><code>domains</code></strong> — derived from the site's <code>zones</code> in <code>group_vars/all/sites.yml</code>, defines which zones this server is authoritative for</li>
-<li><strong><code>services</code></strong> — aggregated service list provides A records within each zone. It is built from two sources: manual per-domain lists in <code>group_vars/all/proxy/&lt;domain&gt;.yml</code> (non-catalog services) plus registry-generated entries from <code>proxy:</code> blocks in <code>group_vars/all/apps.yml</code> (see <a href="../proxy/#registry-generated-entries">Reverse Proxy — Registry-Generated Entries</a>)</li>
+<li><strong><code>services</code></strong> — aggregated service list provides A records within each zone. It is built (in <code>group_vars/all/vars.yml</code>) from two sources in the site's folder: manual per-domain lists in <code>group_vars/site_&lt;env&gt;/proxy/&lt;domain&gt;.yml</code> (non-catalog services) plus registry-generated entries from <code>proxy:</code> blocks in <code>group_vars/site_&lt;env&gt;/apps.yml</code> (see <a href="../proxy/#registry-generated-entries">Reverse Proxy — Registry-Generated Entries</a>)</li>
 </ol>
 <p>For each domain, the <code>domain.zone.j2</code> template generates:</p>
 <ul>
@@ -2250,7 +2250,7 @@
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"ldn.5am.cloud"</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">masters</span><span class="p">:</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"10.3.20.53"</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"100.78.61.80"</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"100.73.47.81"</span>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="nt">dns_transfer_clients</span><span class="p">:</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"10.3.20.53"</span>
@@ -2459,7 +2459,7 @@
 <a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>dig<span class="w"> </span>AXFR<span class="w"> </span>5am.video<span class="w"> </span>@10.2.20.53
 </code></pre></div>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>Service not resolving</strong> — Check BIND9 is running: <code>ssh &lt;networking-ip&gt; docker logs bind9</code>. Verify the service has an entry in the correct domain file under <code>group_vars/all/proxy/</code> (or a <code>proxy:</code> block on the app's entry in <code>group_vars/all/apps.yml</code>) and redeploy: <code>task ansible:deploy-networking ENV=wil</code>.</p>
+<p><strong>Service not resolving</strong> — Check BIND9 is running: <code>ssh &lt;networking-ip&gt; docker logs bind9</code>. Verify the service has an entry in the correct domain file under <code>group_vars/site_&lt;env&gt;/proxy/</code> (or a <code>proxy:</code> block on the app's entry in <code>group_vars/site_&lt;env&gt;/apps.yml</code>) and redeploy: <code>task ansible:deploy-networking ENV=wil</code>.</p>
 <p><strong>Wrong IP returned</strong> — If a proxied service resolves to <code>backend_host</code> instead of <code>reverse_proxy_ip</code>, check that <code>proxied: true</code> is set. If a non-proxied service resolves to the Caddy IP, check that <code>proxied: false</code> is set.</p>
 <p><strong>Zone transfer not working</strong> — Verify Tailscale connectivity between sites. Check that <code>dns_transfer_clients</code> (derived from <code>group_vars/all/sites.yml</code>) includes the remote DNS server IP and the CGNAT range. Test with <code>dig AXFR &lt;zone&gt; @&lt;primary-dns&gt;</code>.</p>
 <p><strong>Serial number not incrementing</strong> — Zone serials use the current epoch. If BIND9 doesn't pick up changes, restart the container: <code>ssh &lt;networking-ip&gt; docker restart bind9</code>.</p>

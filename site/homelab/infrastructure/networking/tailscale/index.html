@@ -2198,7 +2198,7 @@
 <h2 id="deployment-modes"><a class="toclink" href="#deployment-modes">Deployment Modes</a></h2>
 <p>Tailscale supports two modes, controlled by <code>tailscale_mode</code>:</p>
 <h3 id="client"><a class="toclink" href="#client">Client</a></h3>
-<p>Default mode. Joins the Tailscale mesh as a regular node. Accepts routes from subnet routers to reach other sites.</p>
+<p>Default mode. Joins the Tailscale mesh as a regular node. Accepts routes from subnet routers to reach other sites. Used by the dashboard VPS (<code>dashboard</code>, see <a href="../../monitoring/#homepage">Homepage</a>).</p>
 <h3 id="subnet-router"><a class="toclink" href="#subnet-router">Subnet Router</a></h3>
 <p>Advertises local network routes to the mesh. Used on networking VMs to make an entire site reachable from other sites. Enables:</p>
 <ul>

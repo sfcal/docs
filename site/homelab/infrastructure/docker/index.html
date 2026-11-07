@@ -1974,7 +1974,7 @@
 <h2 id="hermes-agent"><a class="toclink" href="#hermes-agent">Hermes Agent</a></h2>
 <p>Hermes Agent (ldn) has its own playbook, which also installs Claude Code and the Claude subscription plugin in the container. Deploy with <code>task ansible:deploy-hermes ENV=ldn</code>; see <a href="../hermes/">Hermes Agent</a>.</p>
 <h2 id="data-driven-apps"><a class="toclink" href="#data-driven-apps">Data-Driven Apps</a></h2>
-<p>Most applications use the shared <code>deploy-app.yml</code> playbook and are defined in <code>ansible/inventory/group_vars/all/apps.yml</code>. See <a href="../../guides/deploy-service/">Deploy a Service</a> for the full workflow.</p>
+<p>Most applications use the shared <code>deploy-app.yml</code> playbook and are defined in the registry of the site that hosts them, <code>ansible/inventory/group_vars/site_&lt;env&gt;/apps.yml</code>. See <a href="../../guides/deploy-service/">Deploy a Service</a> for the full workflow.</p>
 <table>
 <thead>
 <tr>
@@ -2037,7 +2037,7 @@
 </tr>
 <tr>
 <td>Prometheus, Grafana, Homepage</td>
-<td><a href="../monitoring/">Monitoring</a></td>
+<td><a href="../monitoring/">Monitoring</a> (Homepage on the OVH VPS)</td>
 </tr>
 <tr>
 <td>Step-CA</td>

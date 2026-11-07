@@ -1956,8 +1956,8 @@
 <p>Common DNS, proxy, and routing operations.</p>
 <h2 id="add-a-service-to-dns-and-proxy"><a class="toclink" href="#add-a-service-to-dns-and-proxy">Add a Service to DNS and Proxy</a></h2>
 <h3 id="registry-apps"><a class="toclink" href="#registry-apps">Registry apps</a></h3>
-<p>For apps in the <a href="../../reference/config/#app-registry">app registry</a>, add a <code>proxy:</code> block to the app's entry in <code>ansible/inventory/group_vars/all/apps.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># apps.yml</span>
+<p>For apps in the <a href="../../reference/config/#app-registry">app registry</a>, add a <code>proxy:</code> block to the app's entry in its site's registry, <code>ansible/inventory/group_vars/site_&lt;env&gt;/apps.yml</code>. Use a zone of that site: a site's networking reads only its own registry.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># site_wil/apps.yml</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">myapp</span><span class="p">:</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_myapp</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="c1"># renovate: datasource=docker</span>
@@ -1973,7 +1973,7 @@
 </code></pre></div>
 <p><code>backend_host</code> and <code>backend_port</code> are derived automatically: the first inventory host of the app's <code>host_group</code>, and the app's <code>port</code> (override with <code>backend_port</code> inside the <code>proxy:</code> block).</p>
 <h3 id="non-catalog-services"><a class="toclink" href="#non-catalog-services">Non-catalog services</a></h3>
-<p>For services outside the registry (third-party devices, media stack, monitoring), add an entry to the appropriate domain file in <code>ansible/inventory/group_vars/all/proxy/</code>:</p>
+<p>For services outside the registry (third-party devices, media stack, monitoring), add an entry to the domain's file in the proxy folder of the site that is primary for it, <code>ansible/inventory/group_vars/site_&lt;env&gt;/proxy/</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># wil.5am.cloud.yml</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.60</span>
@@ -2075,7 +2075,7 @@
 <h2 id="add-a-new-domain"><a class="toclink" href="#add-a-new-domain">Add a New Domain</a></h2>
 <ol>
 <li>
-<p>Create a domain file in <code>ansible/inventory/group_vars/all/proxy/</code>:</p>
+<p>Create a domain file in the proxy folder of the site that will be primary for it, <code>ansible/inventory/group_vars/site_&lt;env&gt;/proxy/</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># mydomain.com.yml</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">mydomain_services</span><span class="p">:</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app1</span>
@@ -2093,7 +2093,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Add the list to <code>_services.yml</code> aggregation:</p>
+<p>Add the list to the <code>services</code> aggregation in <code>group_vars/all/vars.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="no">{{</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="no">(</span>

@@ -1916,16 +1916,16 @@
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>└── group_vars/
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    ├── all/                         # Every host
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    │   ├── sites.yml                # One row per site
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    │   ├── vars.yml                 # Shared variables
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    │   ├── apps.yml                 # App registry
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    │   └── proxy/                   # Service definitions per domain
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    ├── site_wil/                    # wil's own values and secrets
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    │   ├── vars.yml                 # site: wil
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    │   ├── secrets.sops.yml         # Encrypted secrets
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    │   └── vars.yml                 # Shared variables, services list
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    ├── site_wil/                    # wil's own values and secrets
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    │   ├── vars.yml                 # site: wil
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    │   ├── secrets.sops.yml         # Encrypted secrets
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    │   ├── apps.yml                 # wil's app registry
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    │   ├── proxy/                   # wil's DNS/proxy entries per domain
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    │   ├── infra_networking/        # Networking-specific vars
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    │   └── infra_ca/                # CA-specific vars
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    ├── site_ldn/
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    └── app_mediastack/              # Media stack vars (wil only)
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    │   ├── infra_ca/                # CA-specific vars
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    │   └── app_mediastack/          # Media stack vars (wil only)
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    └── site_ldn/
 </code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -1953,11 +1953,10 @@
 </div>
 </div>
 </div>
-<p>Every host in <code>hosts.ini</code> is listed in its site group (<code>[site_wil]</code>, <code>[site_ldn]</code>) and in the role groups the playbooks target, so <code>[infra_networking]</code> lists both <code>.53</code> VMs. Group variables come from three kinds of folders:</p>
+<p>Every host in <code>hosts.ini</code> is listed in its site group (<code>[site_wil]</code>, <code>[site_ldn]</code>) and in the role groups the playbooks target, so <code>[infra_networking]</code> lists both <code>.53</code> VMs. Group variables come from two kinds of folders:</p>
 <ul>
-<li><code>all/</code> — every host. <code>sites.yml</code> has one row per site; <code>domains</code>, <code>system_timezone</code> and the cross-site BIND9 settings (trusted networks, secondary zones, zone transfers, notifies) are derived from it.</li>
-<li><code>site_&lt;site&gt;/</code> — that site's own values, in sub-folders named after the group that reads them (they apply to every host of the site), and all of the site's secrets.</li>
-<li><code>&lt;group&gt;/</code> — groups that run at one site only (<code>app_mediastack</code>, <code>app_frigate</code>, <code>infra_ntp</code>, <code>app_hermes</code>, <code>infra_proxmox</code>). Their secrets still go in the site's folder.</li>
+<li><code>all/</code> — every host. <code>sites.yml</code> has one row per site; <code>domains</code>, <code>system_timezone</code> and the cross-site BIND9 settings (trusted networks, secondary zones, zone transfers, notifies) are derived from it. <code>vars.yml</code> also combines the site's DNS/proxy lists into <code>services</code>.</li>
+<li><code>site_&lt;site&gt;/</code> — that site's own values: its app registry (<code>apps.yml</code>), its DNS/proxy entries (<code>proxy/&lt;domain&gt;.yml</code>), sub-folders named after the group that reads them (they apply to every host of the site), and all of the site's secrets. Groups that run at one site only (<code>app_mediastack</code>, <code>app_frigate</code>, <code>infra_ntp</code>, <code>infra_dashboard</code> at wil; <code>app_hermes</code>, <code>infra_proxmox</code> at ldn) have their folder there too.</li>
 </ul>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># ansible/inventory/group_vars/all/sites.yml</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">sites</span><span class="p">:</span>
@@ -1992,20 +1991,20 @@
 <ul>
 <li>Ansible roles (<code>ansible/roles/</code>)</li>
 <li>Playbook definitions (<code>ansible/playbooks/</code>)</li>
-<li>Inventory (<code>hosts.ini</code>) and <code>group_vars/all/</code> (sites, app registry, proxy lists)</li>
+<li>Inventory (<code>hosts.ini</code>) and <code>group_vars/all/</code> (sites table, derived variables)</li>
 <li>Terraform modules (<code>terraform/modules/</code>)</li>
 <li>Packer templates (<code>packer/templates/</code>)</li>
 </ul>
 <p><strong>Per-environment:</strong></p>
 <ul>
-<li>Group variables (<code>group_vars/site_&lt;env&gt;/</code>)</li>
+<li>Group variables (<code>group_vars/site_&lt;env&gt;/</code>, including the app registry and proxy lists)</li>
 <li>VM definitions (<code>vms.auto.tfvars</code>)</li>
 <li>Secrets (<code>secrets.sops.yml</code>, <code>credentials.*.pkrvars.hcl</code>)</li>
 <li>Terraform state (<code>terraform.tfstate</code>)</li>
 </ul>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
 <p><strong>Wrong environment deployed</strong> — Double-check <code>ENV=</code> in your command. The default is <code>ldn</code> (production), not <code>wil</code>. Run <code>task ansible:ping ENV=&lt;env&gt;</code> to verify you're targeting the right hosts.</p>
-<p><strong>Missing environment directory</strong> — Each new environment needs a <code>[site_&lt;env&gt;]</code> group in <code>ansible/inventory/hosts.ini</code>, a row in <code>group_vars/all/sites.yml</code>, a <code>group_vars/site_&lt;env&gt;/</code> folder (with <code>site: &lt;env&gt;</code> in its <code>vars.yml</code>), and a <code>terraform/environments/&lt;env&gt;/</code> directory with the required files.</p>
+<p><strong>Missing environment directory</strong> — Each new environment needs a <code>[site_&lt;env&gt;]</code> group in <code>ansible/inventory/hosts.ini</code>, a row in <code>group_vars/all/sites.yml</code>, a <code>group_vars/site_&lt;env&gt;/</code> folder (with <code>site: &lt;env&gt;</code> in its <code>vars.yml</code>, and an <code>apps.yml</code>, at least <code>apps: {}</code>, which the Taskfile passes to <code>deploy-app</code> and <code>deploy-all</code>), and a <code>terraform/environments/&lt;env&gt;/</code> directory with the required files.</p>
 <p><strong>Cross-site access</strong> — WIL and LDN communicate over Tailscale. Ensure the subnet router VM is deployed and advertising routes. See <a href="../../infrastructure/networking/tailscale/">Tailscale</a>.</p>
 
 

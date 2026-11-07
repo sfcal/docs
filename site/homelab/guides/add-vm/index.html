@@ -1994,7 +1994,7 @@
 <td><code>template_name</code></td>
 <td>string</td>
 <td>required</td>
-<td>Packer template to clone</td>
+<td>Packer template to clone (exactly one of that name on the node)</td>
 </tr>
 <tr>
 <td><code>ip_address</code></td>
@@ -2030,7 +2030,7 @@
 <td><code>disk_size</code></td>
 <td>string</td>
 <td><code>"20G"</code></td>
-<td>Root disk size</td>
+<td>Root disk size in GB, written <code>"&lt;N&gt;G"</code></td>
 </tr>
 <tr>
 <td><code>storage_pool</code></td>
@@ -2065,7 +2065,7 @@
 </tbody>
 </table>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>Template not found</strong> — The <code>template_name</code> must match an existing Packer template. Check with <code>qm list</code> on the Proxmox host. Build one with <code>task packer:build-ubuntu ENV=wil</code>.</p>
+<p><strong>Template not found</strong> — The <code>template_name</code> must match exactly one Packer template on the node; otherwise the plan fails at <code>clone.vm_id</code>. Check with <code>qm list</code> on the Proxmox host. Build one with <code>task packer:build-ubuntu ENV=wil</code>.</p>
 <p><strong>VMID conflict</strong> — Each VM needs a unique VMID. Check existing IDs in <code>vms.auto.tfvars</code> or with <code>qm list</code>.</p>
 <p><strong>Can't SSH after provisioning</strong> — Cloud-init may still be running. Wait 30 seconds, then retry. Verify the IP is correct and the VM is on the right network bridge.</p>
 <p><strong>State conflict</strong> — If a VM was manually deleted, Terraform state is stale. Run <code>task terraform:clean ENV=wil</code> and redeploy.</p>

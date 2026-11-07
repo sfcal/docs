@@ -2081,7 +2081,7 @@
 <td>Service restart handler</td>
 </tr>
 <tr>
-<td><code>inventory/group_vars/infra_ntp/chrony.yml</code></td>
+<td><code>inventory/group_vars/site_wil/infra_ntp/chrony.yml</code></td>
 <td>NTP variables</td>
 </tr>
 </tbody>
@@ -2134,7 +2134,7 @@
 </ul>
 <p><small><strong>Sources:</strong> <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/ntp/tasks/chrony.yml"><code>ansible/playbooks/infrastructure/ntp/tasks/chrony.yml</code></a> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/ntp/templates/server.conf.j2"><code>ansible/playbooks/infrastructure/ntp/templates/server.conf.j2</code></a></small></p>
 <h2 id="configuration-reference"><a class="toclink" href="#configuration-reference">Configuration Reference</a></h2>
-<p>All variables are set in <code>ansible/inventory/group_vars/infra_ntp/chrony.yml</code>, which holds wil's values (NTP runs only at wil). An NTP host at another site needs its own values in <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_ntp/</code> instead.</p>
+<p>All variables are set in <code>ansible/inventory/group_vars/site_wil/infra_ntp/chrony.yml</code>, which holds wil's values (NTP runs only at wil). An NTP host at another site needs its own copy in <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_ntp/</code>.</p>
 <table>
 <thead>
 <tr>
@@ -2159,7 +2159,7 @@
 </tr>
 </tbody>
 </table>
-<p><small><strong>Sources:</strong> <a href="https://github.com/sfcal/homelab/blob/main/ansible/inventory/group_vars/infra_ntp/chrony.yml"><code>ansible/inventory/group_vars/infra_ntp/chrony.yml</code></a> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/ntp/templates/servers.conf.j2"><code>ansible/playbooks/infrastructure/ntp/templates/servers.conf.j2</code></a> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/ntp/templates/allow.conf.j2"><code>ansible/playbooks/infrastructure/ntp/templates/allow.conf.j2</code></a></small></p>
+<p><small><strong>Sources:</strong> <a href="https://github.com/sfcal/homelab/blob/main/ansible/inventory/group_vars/site_wil/infra_ntp/chrony.yml"><code>ansible/inventory/group_vars/site_wil/infra_ntp/chrony.yml</code></a> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/ntp/templates/servers.conf.j2"><code>ansible/playbooks/infrastructure/ntp/templates/servers.conf.j2</code></a> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/ntp/templates/allow.conf.j2"><code>ansible/playbooks/infrastructure/ntp/templates/allow.conf.j2</code></a></small></p>
 <h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
 <h3 id="verify-time-synchronization"><a class="toclink" href="#verify-time-synchronization">Verify time synchronization</a></h3>
 <p>SSH to the NTP server and check the tracking status:</p>
@@ -2177,7 +2177,7 @@
 <h3 id="add-a-new-upstream-ntp-server"><a class="toclink" href="#add-a-new-upstream-ntp-server">Add a new upstream NTP server</a></h3>
 <ol>
 <li>
-<p>Edit <code>ansible/inventory/group_vars/infra_ntp/chrony.yml</code>:</p>
+<p>Edit <code>ansible/inventory/group_vars/site_wil/infra_ntp/chrony.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">chrony_ntp_servers</span><span class="p">:</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="c1"># ... existing servers</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time.google.com</span>

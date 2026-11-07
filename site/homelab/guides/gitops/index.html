@@ -2068,15 +2068,15 @@ from a GitHub-hosted runner and runs the affected playbooks — the same ones
 </thead>
 <tbody>
 <tr>
-<td><code>all/apps.yml</code></td>
-<td><code>deploy-app.yml</code> for each app whose entry changed and that is hosted in the environment</td>
+<td><code>site_&lt;env&gt;/apps.yml</code></td>
+<td><code>deploy-app.yml</code> for each app whose entry changed</td>
 </tr>
 <tr>
-<td><code>app_mediastack/</code></td>
+<td><code>site_&lt;env&gt;/app_mediastack/</code></td>
 <td><code>apps/media/deploy.yml</code></td>
 </tr>
 <tr>
-<td><code>app_frigate/</code>, <code>site_wil/app_frigate/</code></td>
+<td><code>site_&lt;env&gt;/app_frigate/</code></td>
 <td><code>apps/frigate/deploy.yml</code></td>
 </tr>
 <tr>
@@ -2093,7 +2093,7 @@ from a GitHub-hosted runner and runs the affected playbooks — the same ones
 </tr>
 </tbody>
 </table>
-<p>Never auto-deployed: <code>infra_ca</code>, <code>infra_networking</code>, <code>infra_ntp</code>, <code>infra_proxmox</code>, <code>all/</code> other than <code>apps.yml</code>, and files directly in <code>site_&lt;env&gt;/</code>. CI has no SSH access to those hosts at all. <code>app_hermes</code> isn't on the allowlist either: deploy it by hand (see <a href="../../infrastructure/hermes/">Hermes Agent</a>). To change the allowlist, edit <code>PLAYBOOK_FOR</code> in <code>deploy-plan.sh</code> <strong>and</strong> the host pattern in <code>playbooks/ci-access.yml</code> / <code>TARGET_PATTERN</code> in the CI Taskfile.</p>
+<p>Never auto-deployed: <code>infra_ca</code>, <code>infra_networking</code>, <code>infra_ntp</code>, <code>infra_proxmox</code>, <code>all/</code>, <code>site_&lt;env&gt;/proxy/</code>, and other files directly in <code>site_&lt;env&gt;/</code>. CI has no SSH access to those hosts at all. <code>app_hermes</code> isn't on the allowlist either: deploy it by hand (see <a href="../../infrastructure/hermes/">Hermes Agent</a>). To change the allowlist, edit <code>PLAYBOOK_FOR</code> in <code>deploy-plan.sh</code> <strong>and</strong> the host pattern in <code>playbooks/ci-access.yml</code> / <code>TARGET_PATTERN</code> in the CI Taskfile.</p>
 <h2 id="security-model"><a class="toclink" href="#security-model">Security model</a></h2>
 <ul>
 <li>The runner joins as an <strong>ephemeral <code>tag:ci</code> node</strong> using workload identity federation — no long-lived Tailscale secret.</li>

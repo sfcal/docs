@@ -2072,7 +2072,11 @@
 </tr>
 <tr>
 <td><code>deploy-monitoring</code></td>
-<td>Prometheus, Grafana, Homepage</td>
+<td>Prometheus, Grafana</td>
+</tr>
+<tr>
+<td><code>deploy-dashboard</code></td>
+<td>Homepage on the OVH VPS (tailnet only)</td>
 </tr>
 <tr>
 <td><code>deploy-netboot</code></td>
@@ -2164,7 +2168,12 @@
 <tr>
 <td><code>monitoring/deploy.yml</code></td>
 <td><code>infra_monitoring</code></td>
-<td>Prometheus, Grafana, Homepage</td>
+<td>Prometheus, Grafana</td>
+</tr>
+<tr>
+<td><code>dashboard/deploy.yml</code></td>
+<td><code>infra_dashboard</code></td>
+<td>Tailscale, Homepage (OVH VPS)</td>
 </tr>
 <tr>
 <td><code>netboot/deploy.yml</code></td>
@@ -2179,7 +2188,7 @@
 </tbody>
 </table>
 <h3 id="data-driven-apps"><a class="toclink" href="#data-driven-apps">Data-Driven Apps</a></h3>
-<p>Most applications use the shared <code>deploy-app.yml</code> playbook. Apps are defined in <code>ansible/inventory/group_vars/all/apps.yml</code>:</p>
+<p>Most applications use the shared <code>deploy-app.yml</code> playbook. Apps are defined in the registry of the site that hosts them, <code>ansible/inventory/group_vars/site_&lt;env&gt;/apps.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">birdle</span><span class="p">:</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_birdle</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="c1"># renovate: datasource=docker</span>
