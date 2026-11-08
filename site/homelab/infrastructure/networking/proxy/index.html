@@ -1790,7 +1790,7 @@
   <span class="md-ellipsis">
     
   
-    Single Sign-On (Authelia)
+    Single Sign-On (Kanidm)
   
 
     
@@ -2948,7 +2948,7 @@
 <a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>502 Bad Gateway</strong> — Caddy can reach the backend but it's not responding. Check the backend container is running: <code>ssh &lt;host&gt; docker ps</code>. Verify <code>backend_port</code> matches the container's exposed port. A service with <code>auth: true</code> also answers 502 while Authelia is down: check <code>docker ps</code> on the networking VM.</p>
+<p><strong>502 Bad Gateway</strong> — Caddy can reach the backend but it's not responding. Check the backend container is running: <code>ssh &lt;host&gt; docker ps</code>. Verify <code>backend_port</code> matches the container's exposed port. A service with <code>auth: true</code> also answers 502 while oauth2-proxy is down: check <code>docker ps</code> on the networking VM.</p>
 <p><strong>Certificate not issuing</strong> — Check Caddy logs: <code>ssh &lt;networking-ip&gt; docker logs caddy</code>. Common causes: Cloudflare API token expired, domain not on Cloudflare, or Let's Encrypt rate limit hit.</p>
 <p><strong>Service accessible via IP but not hostname</strong> — The DNS record is missing or pointing to the wrong IP. Check with <code>dig &lt;service&gt;.&lt;domain&gt; @10.2.20.53</code> and verify the service entry in the domain file (or the app's <code>proxy:</code> block in <code>apps.yml</code> for registry apps).</p>
 <p><strong>Headers not forwarded</strong> — Ensure <code>forward_headers: true</code> is set on the service entry and redeploy networking.</p>
@@ -3006,13 +3006,13 @@
         
         
           
-          <a href="../sso/" class="md-footer__link md-footer__link--next" aria-label="Next: Single Sign-On (Authelia)">
+          <a href="../sso/" class="md-footer__link md-footer__link--next" aria-label="Next: Single Sign-On (Kanidm)">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Single Sign-On (Authelia)
+                Single Sign-On (Kanidm)
               </div>
             </div>
             <div class="md-footer__button md-icon">

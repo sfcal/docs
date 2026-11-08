@@ -1552,7 +1552,7 @@
   <span class="md-ellipsis">
     
   
-    Single Sign-On (Authelia)
+    Single Sign-On (Kanidm)
   
 
     
@@ -2090,7 +2090,7 @@
 </tr>
 <tr>
 <td><code>deploy-networking</code></td>
-<td>BIND9, Caddy, Authelia, DDNS, Tailscale</td>
+<td>BIND9, Caddy, oauth2-proxy, DDNS, Tailscale</td>
 </tr>
 <tr>
 <td><code>deploy-ca</code></td>
@@ -2102,11 +2102,11 @@
 </tr>
 <tr>
 <td><code>deploy-monitoring</code></td>
-<td>Prometheus, Grafana</td>
+<td>Prometheus</td>
 </tr>
 <tr>
 <td><code>deploy-dashboard</code></td>
-<td>Homepage and Uptime Kuma on the OVH VPS</td>
+<td>Grafana, Homepage, Uptime Kuma and Kanidm on the OVH VPS</td>
 </tr>
 <tr>
 <td><code>deploy-netboot</code></td>
@@ -2183,7 +2183,7 @@
 <tr>
 <td><code>networking/deploy.yml</code></td>
 <td><code>infra_networking</code></td>
-<td>BIND9, Caddy, Authelia, DDNS, Tailscale</td>
+<td>BIND9, Caddy, oauth2-proxy, DDNS, Tailscale</td>
 </tr>
 <tr>
 <td><code>ca/deploy.yml</code></td>
@@ -2198,12 +2198,12 @@
 <tr>
 <td><code>monitoring/deploy.yml</code></td>
 <td><code>infra_monitoring</code></td>
-<td>Prometheus, Grafana</td>
+<td>Prometheus</td>
 </tr>
 <tr>
 <td><code>dashboard/deploy.yml</code></td>
 <td><code>infra_dashboard</code></td>
-<td>Tailscale, Homepage, Uptime Kuma (OVH VPS)</td>
+<td>Tailscale, Grafana, Homepage, Uptime Kuma (OVH VPS)</td>
 </tr>
 <tr>
 <td><code>apps/kasm-agent/deploy.yml</code></td>

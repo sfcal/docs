@@ -1372,7 +1372,7 @@
   <span class="md-ellipsis">
     
   
-    Single Sign-On (Authelia)
+    Single Sign-On (Kanidm)
   
 
     
@@ -1642,6 +1642,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Data-Driven Apps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#isponsorblocktv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iSponsorBlockTV
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1845,6 +1862,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Data-Driven Apps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#isponsorblocktv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iSponsorBlockTV
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2025,6 +2059,11 @@
 <td>8074</td>
 </tr>
 <tr>
+<td>iSponsorBlockTV</td>
+<td><code>ghcr.io/dmunozv04/isponsorblocktv</code></td>
+<td>—</td>
+</tr>
+<tr>
 <td>Kasm</td>
 <td><code>lscr.io/linuxserver/kasm</code></td>
 <td>4443</td>
@@ -2051,6 +2090,13 @@
 </tr>
 </tbody>
 </table>
+<h3 id="isponsorblocktv"><a class="toclink" href="#isponsorblocktv">iSponsorBlockTV</a></h3>
+<p><a href="https://github.com/dmunozv04/iSponsorBlockTV">iSponsorBlockTV</a> (ldn, on the <code>web</code> VM) skips SponsorBlock segments and ads on YouTube TV apps. It has no web UI and only needs to reach youtube.com, so it has no port or proxy entry. Paired TVs and settings are in <code>/var/lib/isponsorblocktv/data/config.json</code> on the VM, written by the setup wizard, not by Ansible; a rebuilt VM needs its TVs paired again. Until a TV is paired the container exits every 10 seconds and restarts.</p>
+<p>To pair a TV (also to add another one or change settings), open YouTube on the TV, go to Settings → Link with TV code, then on the VM:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>/opt/isponsorblocktv
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>isponsorblocktv<span class="w"> </span>setup<span class="w">      </span><span class="c1"># setup-cli for plain prompts</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>restart
+</code></pre></div>
 <h2 id="infrastructure-services"><a class="toclink" href="#infrastructure-services">Infrastructure Services</a></h2>
 <p>Infrastructure services have dedicated playbooks rather than using the data-driven pattern:</p>
 <table>
@@ -2062,12 +2108,12 @@
 </thead>
 <tbody>
 <tr>
-<td>BIND9, Caddy, Authelia, DDNS, Tailscale</td>
+<td>BIND9, Caddy, oauth2-proxy, DDNS, Tailscale</td>
 <td><a href="../networking/">Networking</a></td>
 </tr>
 <tr>
 <td>Prometheus, Grafana, Homepage</td>
-<td><a href="../monitoring/">Monitoring</a> (Homepage on the OVH VPS)</td>
+<td><a href="../monitoring/">Monitoring</a> (Grafana and Homepage on the OVH VPS)</td>
 </tr>
 <tr>
 <td>Step-CA</td>

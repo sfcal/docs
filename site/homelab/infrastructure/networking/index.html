@@ -1372,7 +1372,7 @@
   <span class="md-ellipsis">
     
   
-    Single Sign-On (Authelia)
+    Single Sign-On (Kanidm)
   
 
     
@@ -1955,8 +1955,8 @@
 <td><a href="proxy/">Reverse Proxy</a></td>
 </tr>
 <tr>
-<td><a href="sso/">Authelia</a></td>
-<td>Single sign-on login in front of proxied services</td>
+<td><a href="sso/">oauth2-proxy</a></td>
+<td>Login check in front of proxied services; users sign in with Kanidm on the VPS</td>
 <td><a href="sso/">Single Sign-On</a></td>
 </tr>
 <tr>
@@ -2044,7 +2044,7 @@
 <td><code>10.3.20.123</code></td>
 </tr>
 <tr>
-<td>Monitoring (Prometheus, Grafana)</td>
+<td>Monitoring (Prometheus)</td>
 <td><code>.30</code></td>
 <td><code>10.2.20.30</code></td>
 <td><code>10.3.20.30</code></td>
@@ -2069,7 +2069,7 @@
 <li><strong>Tailscale</strong> — VPN mesh (via role)</li>
 <li><strong>BIND9</strong> — DNS server configuration and zone files</li>
 <li><strong>Cloudflare DDNS</strong> — dynamic DNS updater container</li>
-<li><strong>Authelia</strong> — single sign-on login</li>
+<li><strong>oauth2-proxy</strong> — login check (users sign in with Kanidm), then the sync of Kanidm's redirect URLs</li>
 <li><strong>Caddy</strong> — reverse proxy with TLS</li>
 </ol>
 <h3 id="deployment-order"><a class="toclink" href="#deployment-order">Deployment Order</a></h3>

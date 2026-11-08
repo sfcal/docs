@@ -1372,7 +1372,7 @@
   <span class="md-ellipsis">
     
   
-    Single Sign-On (Authelia)
+    Single Sign-On (Kanidm)
   
 
     
@@ -1629,10 +1629,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#dashboard-homepage" class="md-nav__link">
+  <a href="#dashboard-vps-grafana-homepage-uptime-kuma" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Dashboard (Homepage)
+        Dashboard VPS (Grafana, Homepage, Uptime Kuma)
       
     </span>
   </a>
@@ -1735,6 +1735,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#datasource-provisioning" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1796,7 +1807,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#access" class="md-nav__link">
+  <a href="#access_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Access
@@ -1857,7 +1868,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#access_1" class="md-nav__link">
+  <a href="#access_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Access
@@ -2177,10 +2188,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#dashboard-homepage" class="md-nav__link">
+  <a href="#dashboard-vps-grafana-homepage-uptime-kuma" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Dashboard (Homepage)
+        Dashboard VPS (Grafana, Homepage, Uptime Kuma)
       
     </span>
   </a>
@@ -2283,6 +2294,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#datasource-provisioning" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2344,7 +2366,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#access" class="md-nav__link">
+  <a href="#access_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Access
@@ -2405,7 +2427,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#access_1" class="md-nav__link">
+  <a href="#access_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Access
@@ -2583,7 +2605,7 @@
 
 
 <h1 id="monitoring"><a class="toclink" href="#monitoring">Monitoring</a></h1>
-<p>The monitoring stack provides metrics collection, visualization, a service dashboard, and external uptime monitoring. It runs as Docker containers on a dedicated VM in each environment; Homepage, the service dashboard, runs once for both sites on an OVH VPS outside the lab (see <a href="#homepage">Homepage</a>).</p>
+<p>The monitoring stack provides metrics collection, visualization, a service dashboard, and external uptime monitoring. Prometheus runs as a Docker container on a dedicated VM in each environment; Grafana, Homepage and Uptime Kuma run once for both sites on an OVH VPS outside the lab (see <a href="#grafana">Grafana</a> and <a href="#homepage">Homepage</a>).</p>
 <div class="admonition note">
 <p class="admonition-title">Deployment order</p>
 <p>Monitoring deploys after <a href="../networking/">Networking</a>, <a href="../ca/">Step-CA</a>, and <a href="../ntp/">NTP</a>. It is the last infrastructure service to deploy before applications.</p>
@@ -2592,10 +2614,10 @@
 <pre class="mermaid"><code>graph TD
     subgraph Monitoring VM
         Prometheus[Prometheus]
-        Grafana[Grafana]
     end
 
     subgraph Dashboard VPS
+        Grafana[Grafana]
         Homepage[Homepage]
         UptimeKuma[Uptime Kuma]
         Caddy[Caddy]
@@ -2609,14 +2631,15 @@
     end
 
     NE1 &amp; NE2 &amp; NE3 &amp; NE4 --&gt;|metrics| Prometheus
-    Prometheus --&gt;|datasource| Grafana
+    Grafana --&gt;|datasource, over the tailnet| Prometheus
     Homepage --&gt;|widgets, over the tailnet| Prometheus
+    Homepage --&gt;|panels| Grafana
     Homepage --&gt;|widget| UptimeKuma
     Caddy --&gt;|badges only| UptimeKuma
     GitHub[GitHub README] --&gt;|badge images| Caddy</code></pre>
 <ul>
 <li><strong>Prometheus</strong> scrapes node exporters across all VMs for system metrics</li>
-<li><strong>Grafana</strong> visualizes metrics from Prometheus with dashboards</li>
+<li><strong>Grafana</strong> visualizes metrics from both sites' Prometheus with dashboards</li>
 <li><strong>Homepage</strong> provides a service dashboard with status widgets and quick links</li>
 <li><strong>Uptime Kuma</strong> checks services from outside the lab and serves the README's status badges</li>
 </ul>
@@ -2640,7 +2663,7 @@
 <tr>
 <td>Grafana</td>
 <td><code>grafana/grafana</code></td>
-<td>3000</td>
+<td>3000 (127.0.0.1 on the dashboard VPS)</td>
 <td>Metrics visualization</td>
 </tr>
 <tr>
@@ -2690,7 +2713,7 @@
 </tr>
 <tr>
 <td>Dashboard</td>
-<td>OVH VPS (Homepage, Uptime Kuma)</td>
+<td>OVH VPS (Grafana, Homepage, Uptime Kuma)</td>
 <td><code>135.148.219.216</code>, tailnet <code>dashboard</code></td>
 </tr>
 </tbody>
@@ -2722,10 +2745,6 @@
 <td>Prometheus scrape config</td>
 </tr>
 <tr>
-<td><code>playbooks/infrastructure/monitoring/templates/grafana-datasources.yml.j2</code></td>
-<td>Grafana datasource provisioning</td>
-</tr>
-<tr>
 <td><code>playbooks/infrastructure/monitoring/handlers/main.yml</code></td>
 <td>Container lifecycle handlers</td>
 </tr>
@@ -2735,7 +2754,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="dashboard-homepage"><a class="toclink" href="#dashboard-homepage">Dashboard (Homepage)</a></h3>
+<h3 id="dashboard-vps-grafana-homepage-uptime-kuma"><a class="toclink" href="#dashboard-vps-grafana-homepage-uptime-kuma">Dashboard VPS (Grafana, Homepage, Uptime Kuma)</a></h3>
 <table>
 <thead>
 <tr>
@@ -2746,11 +2765,15 @@
 <tbody>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/deploy.yml</code></td>
-<td>Playbook: Tailscale, Docker, Uptime Kuma, Homepage</td>
+<td>Playbook: Tailscale, Docker, Uptime Kuma, Grafana, Homepage</td>
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/tasks/uptime-kuma.yml</code></td>
 <td>Uptime Kuma and Caddy directories, Caddyfile, tailnet port 3001</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/tasks/grafana.yml</code></td>
+<td>Grafana directories, provisioning and dashboards, tailnet port 3000</td>
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/tasks/homepage.yml</code></td>
@@ -2758,7 +2781,15 @@
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/templates/compose.yaml.j2</code></td>
-<td>Docker Compose definition (Homepage, Uptime Kuma, Caddy)</td>
+<td>Docker Compose definition (Homepage, Uptime Kuma, Grafana, Caddy)</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/files/grafana/provisioning/</code></td>
+<td>Grafana datasources (each site's Prometheus) and dashboard provider</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/files/grafana/dashboards/</code></td>
+<td>Grafana dashboards (JSON)</td>
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/files/Caddyfile</code></td>
@@ -2782,7 +2813,7 @@
 </tr>
 <tr>
 <td><code>inventory/group_vars/site_ovh/infra_dashboard/vars.yml</code></td>
-<td>Images and allowed hosts</td>
+<td>Images, allowed hosts, Grafana admin user and URL</td>
 </tr>
 <tr>
 <td><code>inventory/group_vars/site_wil/proxy/ext.5am.cloud.yml</code></td>
@@ -2794,21 +2825,20 @@
 </tr>
 <tr>
 <td><code>inventory/group_vars/site_ovh/secrets.sops.yml</code></td>
-<td>Widget API keys (section <code>infra_dashboard</code>)</td>
+<td>Widget API keys and Grafana admin password (section <code>infra_dashboard</code>)</td>
 </tr>
 </tbody>
 </table>
 <h2 id="deployment"><a class="toclink" href="#deployment">Deployment</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh<span class="w">    </span><span class="c1"># Homepage and Uptime Kuma on the OVH VPS (site ovh)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh<span class="w">    </span><span class="c1"># Grafana, Homepage, Uptime Kuma and Kanidm on the OVH VPS (site ovh)</span>
 </code></pre></div>
 <h3 id="monitoring-stack-deployment"><a class="toclink" href="#monitoring-stack-deployment">Monitoring Stack Deployment</a></h3>
 <p>The task file:</p>
 <ol>
-<li>Creates the directory structure: rendered config under <code>/opt/monitoring/</code>, Prometheus and Grafana state under <code>/var/lib/monitoring/</code></li>
+<li>Creates the directory structure: rendered config under <code>/opt/monitoring/</code>, Prometheus state under <code>/var/lib/monitoring/</code></li>
 <li>Sets ownership to <code>monitoring_uid:monitoring_gid</code></li>
 <li>Deploys Prometheus configuration</li>
-<li>Deploys Grafana datasource provisioning</li>
 <li>Deploys Docker Compose file</li>
 <li>Starts all containers and removes any that are no longer in <code>compose.yaml</code></li>
 </ol>
@@ -2900,22 +2930,35 @@
 <p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/prometheus.yml</code> · <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/containers.yml</code></small></p>
 <hr />
 <h2 id="grafana"><a class="toclink" href="#grafana">Grafana</a></h2>
-<p>Grafana connects to Prometheus as its default datasource and provides metric visualization dashboards.</p>
+<p>One Grafana covers both sites. It runs on the OVH VPS next to Homepage, in the same compose project (<code>/opt/dashboard</code>, state in <code>/var/lib/dashboard/grafana</code>), and reads each site's Prometheus over the tailnet, so it stays up when a site is down; that site's graphs are then empty.</p>
+<h3 id="access"><a class="toclink" href="#access">Access</a></h3>
+<p>Tailnet only: <strong>http://dashboard:3000</strong>. Grafana listens on <code>127.0.0.1:3000</code>, and <code>tailscale serve</code> puts it on the tailnet's port 3000. Anyone on the tailnet can view the dashboards without signing in; sign in as <code>admin</code> to edit. There is no <code>grafana.&lt;site&gt;.5am.cloud</code> name any more.</p>
 <h3 id="datasource-provisioning"><a class="toclink" href="#datasource-provisioning">Datasource Provisioning</a></h3>
-<p>Grafana auto-provisions a Prometheus datasource on startup via <code>grafana-datasources.yml.j2</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">datasources</span><span class="p">:</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prometheus</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">uid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">access</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proxy</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://prometheus:9090</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">isDefault</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">editable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</code></pre></div>
-<p>The datasource carries the fixed uid <code>prometheus</code> because the provisioned dashboards bind to it.</p>
+<p><code>files/grafana/provisioning/datasources/datasources.yml</code> provisions one Prometheus datasource per site:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>uid</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prometheus (wil)</td>
+<td><code>prometheus-wil</code> (default)</td>
+<td><code>http://10.2.20.30:9090</code></td>
+</tr>
+<tr>
+<td>Prometheus (ldn)</td>
+<td><code>prometheus-ldn</code></td>
+<td><code>http://10.3.20.30:9090</code></td>
+</tr>
+</tbody>
+</table>
+<p>The uids are fixed because the provisioned dashboards bind to them. Grafana reads datasources at start; the playbook restarts it when the file changes.</p>
 <h3 id="dashboard-provisioning"><a class="toclink" href="#dashboard-provisioning">Dashboard Provisioning</a></h3>
-<p>Dashboards are provisioned from files — any JSON dropped into <code>playbooks/infrastructure/monitoring/files/dashboards/</code> is deployed and picked up automatically (the file provider rescans every 30 s; UI edits to provisioned dashboards do not persist):</p>
+<p>Dashboards are provisioned from files — any JSON dropped into <code>playbooks/infrastructure/dashboard/files/grafana/dashboards/</code> is deployed and picked up automatically (the file provider rescans every 30 s; UI edits to provisioned dashboards do not persist):</p>
 <table>
 <thead>
 <tr>
@@ -2928,29 +2971,30 @@
 <tr>
 <td>Chrony Detail</td>
 <td><code>chrony_grafana_dashboard.json</code></td>
-<td><code>chrony</code> + <code>node</code> jobs (PTP grandmaster)</td>
+<td><code>chrony</code> + <code>node</code> jobs (PTP grandmaster), from <code>prometheus-ldn</code></td>
 </tr>
 <tr>
 <td>GPSD</td>
 <td><code>gpsd_grafana_dashboard.json</code></td>
-<td><code>gpsd</code> job (PTP grandmaster)</td>
+<td><code>gpsd</code> job (PTP grandmaster), from <code>prometheus-ldn</code></td>
 </tr>
 <tr>
 <td>Node Exporter Full</td>
 <td><code>node_exporter_full.json</code></td>
-<td>All <code>node-exporter</code>/<code>node</code> targets (<a href="https://grafana.com/grafana/dashboards/1860">grafana.com 1860</a>)</td>
+<td>All <code>node-exporter</code>/<code>node</code> targets, site picked with the Datasource variable (<a href="https://grafana.com/grafana/dashboards/1860">grafana.com 1860</a>)</td>
 </tr>
 <tr>
 <td>System Activity</td>
 <td><code>system_activity.json</code></td>
-<td>CPU, memory, network and disk I/O per <code>node-exporter</code> target; Homepage embeds its four panels</td>
+<td>CPU, memory, network and disk I/O per <code>node-exporter</code> target, site picked with the Site variable (<code>?var-ds=prometheus-wil</code> or <code>prometheus-ldn</code>); Homepage embeds its four panels</td>
 </tr>
 </tbody>
 </table>
+<p>A new dashboard either binds to one site's uid or gets a datasource variable (type <code>datasource</code>, query <code>prometheus</code>) and uses <code>${&lt;variable&gt;}</code> as each panel's datasource uid.</p>
 <h3 id="container-configuration_1"><a class="toclink" href="#container-configuration_1">Container Configuration</a></h3>
 <ul>
-<li><strong>Memory:</strong> 2GB limit, 1GB reservation</li>
-<li><strong>Depends on:</strong> Prometheus</li>
+<li><strong>Memory:</strong> 1GB limit, 256MB reservation</li>
+<li><strong>Ports:</strong> <code>127.0.0.1:3000</code> only</li>
 <li><strong>Provisioning:</strong> mounted read-only at <code>/etc/grafana/provisioning</code></li>
 <li><strong>Sign-up:</strong> disabled (<code>GF_USERS_ALLOW_SIGN_UP=false</code>)</li>
 <li><strong>Embedding:</strong> allowed, and anyone who is not signed in gets read-only access (<code>GF_SECURITY_ALLOW_EMBEDDING</code>, <code>GF_AUTH_ANONYMOUS_*</code>), so Homepage can show panels in iframes without a Grafana login</li>
@@ -2970,7 +3014,7 @@
 <td><code>grafana_image</code></td>
 <td><code>string</code></td>
 <td>Docker image for Grafana</td>
-<td>(per-env)</td>
+<td><code>grafana/grafana:13.3.0</code></td>
 </tr>
 <tr>
 <td><code>grafana_admin_user</code></td>
@@ -2981,24 +3025,24 @@
 <tr>
 <td><code>grafana_admin_password</code></td>
 <td><code>string</code></td>
-<td>Admin password (SOPS-encrypted)</td>
+<td>Admin password (SOPS-encrypted, <code>site_ovh/secrets.sops.yml</code>); only applied when Grafana creates its database</td>
 <td>(required)</td>
 </tr>
 <tr>
 <td><code>grafana_url</code></td>
 <td><code>string</code></td>
 <td>Root URL for links in notifications and dashboards</td>
-<td>(per-env)</td>
+<td><code>http://dashboard:3000</code></td>
 </tr>
 </tbody>
 </table>
-<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/grafana.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/monitoring/templates/grafana-datasources.yml.j2"><code>ansible/playbooks/infrastructure/monitoring/templates/grafana-datasources.yml.j2</code></a></small></p>
+<p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_ovh/infra_dashboard/vars.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/dashboard/files/grafana/provisioning/datasources/datasources.yml"><code>ansible/playbooks/infrastructure/dashboard/files/grafana/provisioning/datasources/datasources.yml</code></a></small></p>
 <hr />
 <h2 id="homepage"><a class="toclink" href="#homepage">Homepage</a></h2>
 <p>Homepage provides a service dashboard with status widgets, service health indicators, and quick links to all homelab services. One instance covers both sites and runs on an OVH VPS (<code>135.148.219.216</code>, Virginia), so it stays up when a site is down; its cards then show what is unreachable.</p>
-<h3 id="access"><a class="toclink" href="#access">Access</a></h3>
-<p>Tailnet only: <strong>http://dashboard/</strong> (needs Tailscale's DNS on the device, which adds the tailnet's search domain). Homepage listens on <code>127.0.0.1:3002</code>, and <code>tailscale serve</code> puts it on the tailnet's port 80. Besides SSH, the VPS's only public ports are 80 and 443, which serve Uptime Kuma's badges and nothing else (see <a href="#uptime-kuma">Uptime Kuma</a>). Plain HTTP, because the System Activity panels load from each monitoring VM's Grafana by IP over HTTP and an HTTPS page would block them; the tailnet encrypts the traffic anyway. Use the short name: for the full name <code>dashboard.tail1e494e.ts.net</code>, Chrome tries HTTPS first and warns or blocks, since the tailnet has HTTPS certificates off (single-label names are exempt).</p>
-<p><code>tailscale serve</code> cannot proxy to the sites' subnets itself (tailscaled's own connections don't use the subnet routes), so anything the browser needs from a site must be reachable from the browser directly, like the Grafana panels.</p>
+<h3 id="access_1"><a class="toclink" href="#access_1">Access</a></h3>
+<p>Tailnet only: <strong>http://dashboard/</strong> (needs Tailscale's DNS on the device, which adds the tailnet's search domain). Homepage listens on <code>127.0.0.1:3002</code>, and <code>tailscale serve</code> puts it on the tailnet's port 80. Besides SSH, the VPS's only public ports are 80 and 443, which serve Uptime Kuma's badges and nothing else (see <a href="#uptime-kuma">Uptime Kuma</a>). Plain HTTP, because the System Activity panels load from Grafana at <code>http://dashboard:3000</code> and an HTTPS page would block them; the tailnet encrypts the traffic anyway. Use the short name: for the full name <code>dashboard.tail1e494e.ts.net</code>, Chrome tries HTTPS first and warns or blocks, since the tailnet has HTTPS certificates off (single-label names are exempt).</p>
+<p><code>tailscale serve</code> cannot proxy to the sites' subnets itself (tailscaled's own connections don't use the subnet routes), so anything the browser needs from a site must be reachable from the browser directly. Grafana's panels don't need that: Grafana runs on the VPS and queries the sites from its container, which does use the routes.</p>
 <p>The VPS joins the tailnet as a client named <code>dashboard</code> that accepts the sites' subnet routes, which is how its widgets reach <code>10.2.x.x</code> and <code>10.3.x.x</code>. Its Tailscale values are in <code>site_ovh/infra_dashboard/tailscale.yml</code>. The VPS is its own site, <code>ovh</code>, so it inherits nothing from the lab sites (in <code>site_wil</code> it would pick up wil-gateway's subnet-router settings).</p>
 <h3 id="container-configuration_2"><a class="toclink" href="#container-configuration_2">Container Configuration</a></h3>
 <ul>
@@ -3062,7 +3106,7 @@
 <p><code>services.yaml.j2</code> is plain Homepage YAML; edit it directly. Four parts are less obvious:</p>
 <ul>
 <li><strong>Per-site groups:</strong> System Activity, Apps, Infrastructure, Monitoring and Node Exporters appear once per site, named <code>(wil)</code> and <code>(ldn)</code>. A new group needs a matching entry in the <code>layout</code> of <code>settings.yaml.j2</code>.</li>
-<li><strong>System Activity</strong> shows the four panels of each site's System Activity Grafana dashboard in iframes from <code>http://10.&lt;site&gt;.20.30:3000/d-solo/system-activity?panelId=1</code> to <code>4</code>. They use the IP because <code>grafana.&lt;site&gt;.5am.cloud</code> is behind Authelia, and a browser does not send that login cookie to a frame inside a page on another domain. Grafana allows anonymous viewing and embedding. The time range and refresh interval come from the dashboard JSON.</li>
+<li><strong>System Activity</strong> shows the four panels of the System Activity Grafana dashboard once per site, in iframes from <code>http://dashboard:3000/d-solo/system-activity?var-ds=prometheus-&lt;site&gt;&amp;panelId=1</code> to <code>4</code>. <code>var-ds</code> picks the site's Prometheus. Grafana allows anonymous viewing and embedding. The time range and refresh interval come from the dashboard JSON.</li>
 <li><strong>Node Exporters</strong> lists the targets of each site's <code>prometheus_node_targets</code> by hand; add a node there too.</li>
 <li><strong>SABnzbd</strong> has two widgets: Homepage's <code>sabnzbd</code> widget (speed, queue) and a <code>customapi</code> widget that reads the download totals for today, this week, this month and all time from SABnzbd's <code>server_stats</code> API once a minute.</li>
 </ul>
@@ -3070,7 +3114,7 @@
 <hr />
 <h2 id="uptime-kuma"><a class="toclink" href="#uptime-kuma">Uptime Kuma</a></h2>
 <p>Uptime Kuma runs next to Homepage on the OVH VPS, in the same compose project (<code>/opt/dashboard</code>, state in <code>/var/lib/dashboard/uptime-kuma</code>), so its checks keep running when a site is down. It reaches the sites over the tailnet like Homepage's widgets, and the internet directly. The status badges in the repository's README come from it.</p>
-<h3 id="access_1"><a class="toclink" href="#access_1">Access</a></h3>
+<h3 id="access_2"><a class="toclink" href="#access_2">Access</a></h3>
 <ul>
 <li><strong>Admin page:</strong> tailnet only, <strong>http://dashboard:3001</strong>. Uptime Kuma listens on <code>127.0.0.1:3001</code> and <code>tailscale serve</code> puts it on the tailnet's port 3001. The first visit asks for the admin account. <code>UPTIME_KUMA_DB_TYPE=sqlite</code> skips the database question that Uptime Kuma 2 asks first.</li>
 <li><strong>Badges:</strong> public, <strong>https://uptime.ext.5am.cloud/api/badge/...</strong>. Caddy (<code>files/Caddyfile</code>) passes <code>/api/badge/*</code> to Uptime Kuma and answers 404 for everything else, the login and status pages included. It gets its certificate from Let's Encrypt, so ports 80 and 443 are open on the VPS's public address (only there: <code>tailscale serve</code> holds port 80 on the tailnet address).</li>
@@ -3123,14 +3167,9 @@
 <td>Docker image for Uptime Kuma</td>
 <td><code>louislam/uptime-kuma:2.5.9</code></td>
 </tr>
-<tr>
-<td><code>caddy_image</code></td>
-<td><code>string</code></td>
-<td>Docker image for the badge proxy</td>
-<td><code>caddy:2.11.9</code></td>
-</tr>
 </tbody>
 </table>
+<p>The badge proxy is Caddy built from <code>networking/templates/Dockerfile.j2</code> (the sites' build, with the Cloudflare DNS plugin that Kanidm's <code>auth.5am.cloud</code> certificate needs), and its version is pinned there.</p>
 <p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_ovh/infra_dashboard/vars.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/dashboard/files/Caddyfile"><code>ansible/playbooks/infrastructure/dashboard/files/Caddyfile</code></a></small></p>
 <hr />
 <h2 id="shared-configuration"><a class="toclink" href="#shared-configuration">Shared Configuration</a></h2>
@@ -3170,14 +3209,14 @@
 <ol>
 <li>
 <p>Edit <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/prometheus.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">prometheus_node_targets</span><span class="p">:</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="c1"># ... existing targets</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"10.2.20.60:9100"</span><span class="w">   </span><span class="c1"># new VM</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">prometheus_node_targets</span><span class="p">:</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="c1"># ... existing targets</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"10.2.20.60:9100"</span><span class="w">   </span><span class="c1"># new VM</span>
 </code></pre></div>
 </li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 </li>
 </ol>
@@ -3185,12 +3224,12 @@
 <ol>
 <li>
 <p>Edit <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/prometheus.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">prometheus_retention</span><span class="p">:</span><span class="w"> </span><span class="s">"90d"</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">prometheus_retention</span><span class="p">:</span><span class="w"> </span><span class="s">"90d"</span>
 </code></pre></div>
 </li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 </li>
 </ol>
@@ -3201,7 +3240,7 @@
 <li>If the service requires an API key, add the key to the <code>infra_dashboard</code> section of <code>group_vars/site_ovh/secrets.sops.yml</code> and pass it through <code>dashboard/templates/compose.yaml.j2</code></li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh
 </code></pre></div>
 </li>
 </ol>
@@ -3211,7 +3250,7 @@
 <li>Note its ID from the address bar (<code>/dashboard/&lt;id&gt;</code>)</li>
 <li>
 <p>Add the badge to <code>README.md</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>![<span class="nt">wil</span>](<span class="na">https://uptime.ext.5am.cloud/api/badge/&lt;id&gt;/status?label=wil</span>)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>![<span class="nt">wil</span>](<span class="na">https://uptime.ext.5am.cloud/api/badge/&lt;id&gt;/status?label=wil</span>)
 </code></pre></div>
 </li>
 </ol>

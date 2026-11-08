@@ -27,7 +27,7 @@
     
     
       
-        <title>Single Sign-On (Authelia) - Homelab Infrastructure as Code</title>
+        <title>Single Sign-On (Kanidm) - Homelab Infrastructure as Code</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#single-sign-on-authelia" class="md-skip">
+        <a href="#single-sign-on-kanidm" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Single Sign-On (Authelia)
+              Single Sign-On (Kanidm)
             
           </span>
         </div>
@@ -1381,7 +1381,7 @@
   <span class="md-ellipsis">
     
   
-    Single Sign-On (Authelia)
+    Single Sign-On (Kanidm)
   
 
     
@@ -1399,7 +1399,7 @@
   <span class="md-ellipsis">
     
   
-    Single Sign-On (Authelia)
+    Single Sign-On (Kanidm)
   
 
     
@@ -1447,10 +1447,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-the-password" class="md-nav__link">
+  <a href="#admin-access" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Set the Password
+        Admin Access
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add a User
       
     </span>
   </a>
@@ -1469,6 +1480,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#proxmox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proxmox
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#kasm" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1480,10 +1502,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#proxmox" class="md-nav__link">
+  <a href="#upgrades-and-backups" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Proxmox
+        Upgrades and Backups
       
     </span>
   </a>
@@ -1837,10 +1859,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-the-password" class="md-nav__link">
+  <a href="#admin-access" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Set the Password
+        Admin Access
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add a User
       
     </span>
   </a>
@@ -1859,6 +1892,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#proxmox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proxmox
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#kasm" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1870,10 +1914,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#proxmox" class="md-nav__link">
+  <a href="#upgrades-and-backups" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Proxmox
+        Upgrades and Backups
       
     </span>
   </a>
@@ -1988,41 +2032,39 @@
   
 
 
-<h1 id="single-sign-on-authelia"><a class="toclink" href="#single-sign-on-authelia">Single Sign-On (Authelia)</a></h1>
-<p><a href="https://www.authelia.com">Authelia</a> is the one login page of a site. A proxied service opts in with <code>auth: true</code> in its <a href="../proxy/#auth">service definition</a>, on any domain. Authelia and a small helper, <a href="https://oauth2-proxy.github.io/oauth2-proxy/">oauth2-proxy</a>, run as containers next to Caddy on each site's networking VM.</p>
+<h1 id="single-sign-on-kanidm"><a class="toclink" href="#single-sign-on-kanidm">Single Sign-On (Kanidm)</a></h1>
+<p><a href="https://kanidm.com">Kanidm</a> on the OVH VPS is the one login for both sites, at <code>https://auth.5am.cloud</code>. It is reachable only over the tailnet. A proxied service opts in with <code>auth: true</code> in its <a href="../proxy/#auth">service definition</a>, on any domain. On each site's networking VM, <a href="https://oauth2-proxy.github.io/oauth2-proxy/">oauth2-proxy</a> runs next to Caddy as the login check.</p>
 <h2 id="how-it-works"><a class="toclink" href="#how-it-works">How It Works</a></h2>
 <ol>
 <li>Caddy asks oauth2-proxy before proxying a flagged service.</li>
-<li>No session for that domain: the browser is sent to the site's login page and comes back to the page it asked for.</li>
+<li>No session for that domain: the browser is sent to Kanidm and comes back to the page it asked for.</li>
 <li>oauth2-proxy then sets a cookie for the service's domain, so the other flagged services on that domain open directly.</li>
-<li>The first visit to a flagged service on another domain passes through the login page without asking for the password again.</li>
+<li>The first visit to a flagged service on another domain passes through Kanidm without asking for the password again.</li>
 </ol>
-<p>Authelia is a gate in front of a service, not a replacement for its login: a service that has its own (the NAS, for example) still asks for it. <a href="#kasm">Kasm</a> and <a href="#proxmox">Proxmox</a> are the exceptions: they log in through Authelia themselves.</p>
-<p>The login page is the service entry named <code>auth</code> in the site's proxy file:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">authelia</span><span class="w">   </span><span class="c1"># container name on the Caddy docker network</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9091</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</code></pre></div>
+<p>The login is a gate in front of a service, not a replacement for its own login: a service that has its own (the NAS, for example) still asks for it. Sonarr, Radarr, Prowlarr, SABnzbd and Pulsarr have theirs turned off. <a href="#proxmox">Proxmox</a> and <a href="#kasm">Kasm</a> log in to Kanidm themselves.</p>
 <table>
 <thead>
 <tr>
-<th>Site</th>
-<th>Login page</th>
+<th>Piece</th>
+<th>Where</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>WIL</td>
-<td><code>auth.wil.5am.cloud</code></td>
+<td>Kanidm</td>
+<td>OVH VPS, in the dashboard compose project: config <code>/opt/dashboard/kanidm/server.toml</code>, state <code>/var/lib/dashboard/kanidm</code></td>
 </tr>
 <tr>
-<td>LDN</td>
-<td><code>auth.ldn.5am.cloud</code></td>
+<td><code>auth.5am.cloud</code></td>
+<td><code>100.116.40.99</code>, the VPS's tailnet address. <code>tailscale serve --tcp=443</code> passes it to the VPS's Caddy on <code>127.0.0.1:8443</code>, which proxies to Kanidm</td>
+</tr>
+<tr>
+<td>oauth2-proxy</td>
+<td>Each networking VM, <code>/opt/oauth2-proxy</code>, client <code>oauth2-proxy-&lt;site&gt;</code></td>
 </tr>
 </tbody>
 </table>
-<p>Each site runs its own Authelia, so you log in once per site.</p>
+<p>The name is in wil's BIND (zone <code>5am.cloud</code>, copied to ldn) and in the tailnet's split DNS, never in Cloudflare. The VPS's public address closes any connection for it.</p>
 <h2 id="file-locations"><a class="toclink" href="#file-locations">File Locations</a></h2>
 <table>
 <thead>
@@ -2033,72 +2075,98 @@
 </thead>
 <tbody>
 <tr>
-<td><code>ansible/playbooks/infrastructure/networking/tasks/authelia.yml</code></td>
-<td>Deployment task</td>
+<td><code>ansible/playbooks/infrastructure/dashboard/tasks/kanidm.yml</code></td>
+<td>Kanidm on the VPS: folders, <code>server.toml</code>, backend certificate, tailnet address</td>
 </tr>
 <tr>
-<td><code>ansible/playbooks/infrastructure/networking/templates/authelia-configuration.yml.j2</code></td>
-<td>Authelia configuration</td>
+<td><code>ansible/playbooks/infrastructure/dashboard/templates/kanidm-server.toml.j2</code></td>
+<td>Kanidm's settings: domain, backups</td>
 </tr>
 <tr>
-<td><code>ansible/playbooks/infrastructure/networking/templates/authelia-users.yml.j2</code></td>
-<td>User and password hash</td>
+<td><code>ansible/playbooks/infrastructure/dashboard/files/Caddyfile</code></td>
+<td>The <code>auth.5am.cloud</code> site (Cloudflare DNS-01 certificate)</td>
 </tr>
 <tr>
-<td><code>ansible/playbooks/infrastructure/networking/templates/authelia-oauth2-proxy.env.j2</code></td>
+<td><code>ansible/inventory/group_vars/site_ovh/infra_dashboard/vars.yml</code></td>
+<td><code>kanidm_image</code></td>
+</tr>
+<tr>
+<td><code>ansible/playbooks/infrastructure/networking/tasks/oauth2-proxy.yml</code></td>
+<td>oauth2-proxy deployment</td>
+</tr>
+<tr>
+<td><code>ansible/playbooks/infrastructure/networking/templates/oauth2-proxy.env.j2</code></td>
 <td>oauth2-proxy settings</td>
 </tr>
 <tr>
-<td><code>ansible/playbooks/infrastructure/networking/templates/authelia-compose.yaml.j2</code></td>
-<td>Docker Compose definition of both containers</td>
+<td><code>ansible/playbooks/infrastructure/networking/tasks/kanidm_redirects.yml</code></td>
+<td>Registers each flagged service's login callback in Kanidm</td>
 </tr>
 <tr>
 <td><code>ansible/playbooks/infrastructure/networking/templates/Caddyfile.j2</code></td>
 <td>The <code>(login)</code> block every flagged service uses</td>
 </tr>
 <tr>
-<td><code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_networking/authelia.yml</code></td>
-<td>Images and user name</td>
+<td><code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_networking/oauth2-proxy.yml</code></td>
+<td>oauth2-proxy image and the names of its secrets</td>
 </tr>
 <tr>
 <td><code>ansible/inventory/group_vars/site_&lt;env&gt;/secrets.sops.yml</code></td>
-<td>Password hash and generated keys (section <code>infra_networking</code>)</td>
+<td>Client secrets and the redirect-sync token (section <code>infra_networking</code>)</td>
 </tr>
 </tbody>
 </table>
-<p>On the VM: config in <code>/opt/authelia</code>, database in <code>/var/lib/authelia</code>.</p>
-<h2 id="set-the-password"><a class="toclink" href="#set-the-password">Set the Password</a></h2>
-<p>Generate a hash (it asks for the password twice and prints a <code>Digest:</code> line):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>authelia/authelia:4.39.28<span class="w"> </span>authelia<span class="w"> </span>crypto<span class="w"> </span><span class="nb">hash</span><span class="w"> </span>generate<span class="w"> </span>argon2
+<p>People, groups and OAuth2 clients live in Kanidm's database, not in this repository.</p>
+<h2 id="admin-access"><a class="toclink" href="#admin-access">Admin Access</a></h2>
+<p>The admin account <code>idm_admin</code> has no stored password. Reset it when you need it (it prints a new one):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ssh<span class="w"> </span>-t<span class="w"> </span>ubuntu@dashboard<span class="w"> </span>sudo<span class="w"> </span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>kanidm<span class="w"> </span>kanidmd<span class="w"> </span>recover-account<span class="w"> </span>idm_admin
 </code></pre></div>
-<p>Store the digest in the environment's secrets, then deploy networking:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_password_hash"]'</span><span class="w"> </span><span class="s1">'"$argon2id$..."'</span>
+<p>Run the CLI from Kanidm's image, at the server's version (<code>kanidm_image</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">kanidm</span><span class="o">=</span><span class="s1">'docker run --rm -it -e KANIDM_URL=https://auth.5am.cloud -v kanidm-cli:/root/.cache kanidm/tools:1.12.0 kanidm'</span>
 </code></pre></div>
-<p>Use single quotes as shown: in double quotes the shell eats the <code>$</code> parts of the digest. After the deploy, <code>docker ps</code> on the networking VM should show <code>authelia</code> as <code>(healthy)</code> and <code>oauth2-proxy</code> as up.</p>
-<p>The password cannot be changed in Authelia itself; repeat these steps to change it.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kanidm<span class="w"> </span>login<span class="w"> </span>-D<span class="w"> </span>idm_admin
+</code></pre></div>
+<p>A session allows changes only for a while after login; <code>kanidm reauth -D idm_admin</code> renews it. Log out when done: <code>kanidm logout -D idm_admin</code>.</p>
+<h2 id="add-a-user"><a class="toclink" href="#add-a-user">Add a User</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kanidm<span class="w"> </span>person<span class="w"> </span>create<span class="w"> </span>&lt;user&gt;<span class="w"> </span><span class="s2">"&lt;Display Name&gt;"</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kanidm<span class="w"> </span>group<span class="w"> </span>add-members<span class="w"> </span>sso_users<span class="w"> </span>&lt;user&gt;
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kanidm<span class="w"> </span>person<span class="w"> </span>credential<span class="w"> </span>create-reset-token<span class="w"> </span>&lt;user&gt;<span class="w"> </span>--ttl<span class="w"> </span><span class="m">86400</span>
+</code></pre></div>
+<p>Send them the link or QR code. It lasts 24 hours and opens only from a site LAN or the tailnet. They set a password there, and a TOTP code or a passkey if they like. For a forgotten password, run the last command again.</p>
+<p>A password alone is enough: <code>idm_all_persons</code> has <code>credential-type-minimum</code> set to <code>any</code>, where Kanidm's default asks for a second factor. To require one, set it back with <code>kanidm group account-policy credential-type-minimum idm_all_persons mfa</code>.</p>
+<p>Every member of <code>sso_users</code> can open every flagged service; there are no per-user rules. Proxmox and Kasm keep their own permissions: create the Proxmox user and role on each host as in <a href="#proxmox">Proxmox</a>, and add the Kasm user to Administrators after their first login as in <a href="#kasm">Kasm</a>.</p>
 <h2 id="protect-a-service"><a class="toclink" href="#protect-a-service">Protect a Service</a></h2>
 <p>Add <code>auth: true</code> to the service entry (for registry apps, inside the <code>proxy:</code> block), then deploy networking:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grafana</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.30</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3000</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">auth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.30</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9090</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">auth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
-<p>Only browsers can log in. Leave <code>auth</code> off services that apps, devices or scripts talk to through the hostname (KOSync and MicroBin, for example). Anything else can still use a protected service's IP and port directly.</p>
-<p>Homepage (on the dashboard VPS, tailnet only, no Authelia) loads its Grafana panels from each monitoring VM's IP and port, so <code>auth</code> on <code>grafana</code> doesn't affect it.</p>
+<p>Kanidm has no wildcard redirect URLs, so the deploy registers the service's <code>/oauth2/callback</code> with the <code>oauth2-proxy-&lt;site&gt;</code> client before Caddy starts sending users to the login. It does that from the machine running the deploy, which must reach <code>auth.5am.cloud</code> (the tailnet or a site LAN). When a service loses <code>auth: true</code>, its callback stays in Kanidm until you remove it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kanidm<span class="w"> </span>system<span class="w"> </span>oauth2<span class="w"> </span>remove-redirect-url<span class="w"> </span>oauth2-proxy-wil<span class="w"> </span>https://&lt;name&gt;.&lt;domain&gt;/oauth2/callback
+</code></pre></div>
+<p>Only browsers can log in. Leave <code>auth</code> off services that apps, devices or scripts talk to through the hostname (Plex, KOSync and MicroBin, for example). Anything else can still use a protected service's IP and port directly.</p>
+<h2 id="proxmox"><a class="toclink" href="#proxmox">Proxmox</a></h2>
+<p>Each site's Proxmox logs in to Kanidm with realm <code>sso</code> (the default realm), as client <code>proxmox-wil</code> or <code>proxmox-ldn</code>. The realm's settings live in Proxmox. <code>vm</code> keeps <code>auth: true</code>, so the first visit passes the gate and then Proxmox's own sign-in, the second time without a password.</p>
+<p>The host must resolve <code>auth.5am.cloud</code>, which neither host's resolver does, so both have this in <code>/etc/hosts</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>100.116.40.99 auth.5am.cloud
+</code></pre></div>
+<p>The realm was added with this command (WIL shown; for LDN use <code>site_ldn</code>, <code>10.3.20.10</code> and <code>proxmox-ldn</code>). The client key comes from the site's secrets and is never printed:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sops<span class="w"> </span>decrypt<span class="w"> </span>--extract<span class="w"> </span><span class="s1">'["kanidm_proxmox_client_secret"]'</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/secrets.sops.yml<span class="w"> </span><span class="p">|</span><span class="w"> </span>ssh<span class="w"> </span>root@10.2.20.7<span class="w"> </span><span class="s1">'key=$(cat); pveum realm add sso --type openid --issuer-url https://auth.5am.cloud/oauth2/openid/proxmox-wil --client-id proxmox-wil --client-key "$key" --username-claim preferred_username --autocreate 0 --default 1'</span>
+</code></pre></div>
+<p>The username claim cannot be changed later. Then create each user and make it an admin:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>pveum<span class="w"> </span>user<span class="w"> </span>add<span class="w"> </span>&lt;user&gt;@sso
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>pveum<span class="w"> </span>acl<span class="w"> </span>modify<span class="w"> </span>/<span class="w"> </span>--users<span class="w"> </span>&lt;user&gt;@sso<span class="w"> </span>--roles<span class="w"> </span>Administrator
+</code></pre></div>
+<p>Keep <code>root@pam</code>. It is the way in through <code>https://&lt;host-ip&gt;:8006</code> when Kanidm or Caddy is down, and a few settings stay root-only, such as raw <code>args</code> or PCI passthrough without a mapping. The realm only works on the <code>vm</code> name, because that is its only redirect URL.</p>
 <h2 id="kasm"><a class="toclink" href="#kasm">Kasm</a></h2>
-<p>Kasm has no <code>auth: true</code>, so a desktop left open does not depend on a cookie that runs out. It logs in through LDN's Authelia as a second OpenID Connect client: the client is in <code>authelia-configuration.yml.j2</code>, and the settings on Kasm's side live in Kasm's database, not in this repository.</p>
-<p>Generate the client secret (it prints a <code>Random Password</code> and a <code>Digest:</code> line):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>authelia/authelia:4.39.28<span class="w"> </span>authelia<span class="w"> </span>crypto<span class="w"> </span><span class="nb">hash</span><span class="w"> </span>generate<span class="w"> </span>pbkdf2<span class="w"> </span>--variant<span class="w"> </span>sha512<span class="w"> </span>--random<span class="w"> </span>--random.length<span class="w"> </span><span class="m">72</span><span class="w"> </span>--random.charset<span class="w"> </span>rfc3986
-</code></pre></div>
-<p>Store the digest, then deploy networking:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_ldn/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_oidc_kasm_client_secret_hash"]'</span><span class="w"> </span><span class="s1">'"$pbkdf2-sha512$..."'</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn
-</code></pre></div>
-<p>In Kasm, add a config under <strong>Access Management &gt; Authentication &gt; OpenID</strong>:</p>
+<p>Kasm has no <code>auth: true</code>, so a desktop left open does not depend on a cookie that runs out. It logs in to Kanidm as client <code>kasm</code>, with PKCE off because Kasm cannot send it. The settings on Kasm's side live in Kasm's database, under <strong>Access Management &gt; Authentication &gt; OpenID</strong>:</p>
 <table>
 <thead>
 <tr>
@@ -2113,19 +2181,15 @@
 </tr>
 <tr>
 <td>Display Name</td>
-<td><code>Authelia</code></td>
+<td><code>Kanidm</code></td>
 </tr>
 <tr>
 <td>Auto Login</td>
-<td>Off until the first login works, then on</td>
+<td>On</td>
 </tr>
 <tr>
 <td>Hostname</td>
 <td><code>kasm.ldn.5am.cloud</code></td>
-</tr>
-<tr>
-<td>Default</td>
-<td>Off</td>
 </tr>
 <tr>
 <td>Client ID</td>
@@ -2133,19 +2197,19 @@
 </tr>
 <tr>
 <td>Client Secret</td>
-<td>The <code>Random Password</code></td>
+<td><code>kanidm_kasm_client_secret</code> from LDN's secrets</td>
 </tr>
 <tr>
 <td>Authorization URL</td>
-<td><code>https://auth.ldn.5am.cloud/api/oidc/authorization</code></td>
+<td><code>https://auth.5am.cloud/ui/oauth2</code></td>
 </tr>
 <tr>
 <td>Token URL</td>
-<td><code>https://auth.ldn.5am.cloud/api/oidc/token</code></td>
+<td><code>https://auth.5am.cloud/oauth2/token</code></td>
 </tr>
 <tr>
 <td>User Info URL</td>
-<td><code>https://auth.ldn.5am.cloud/api/oidc/userinfo</code></td>
+<td><code>https://auth.5am.cloud/oauth2/openid/kasm/userinfo</code></td>
 </tr>
 <tr>
 <td>Scope</td>
@@ -2157,7 +2221,7 @@
 </tr>
 <tr>
 <td>Groups Attribute</td>
-<td>Empty: the Authelia user has no groups, and the login fails if this is set</td>
+<td>Empty: the login fails if it is set</td>
 </tr>
 <tr>
 <td>Debug</td>
@@ -2169,82 +2233,31 @@
 </tr>
 </tbody>
 </table>
-<p>The first login creates a new Kasm user named after the Authelia user, in the default group. Add it to Administrators with the existing admin account; the membership stays as long as the group has no SSO mapping for this provider. Kasm does not link accounts: remove or rename a local user with the same name first, or the login is refused with <code>OIDC login rejected: Non OIDC user</code>.</p>
-<p>With Auto Login on, Kasm's own login page is at <code>https://kasm.ldn.5am.cloud/#/staticlogin</code>, which is also the way in when Authelia is down.</p>
-<h2 id="proxmox"><a class="toclink" href="#proxmox">Proxmox</a></h2>
-<p>Each site's Proxmox logs in through that site's Authelia as a client of its own: the client is in <code>authelia-configuration.yml.j2</code>, and the realm's settings live in Proxmox, not in this repository. Unlike Kasm, <code>vm</code> keeps <code>auth: true</code>: WIL's Caddy answers from the internet, and the gate keeps Proxmox's login page off it. The first visit therefore passes through the login page twice, the second time without asking for the password.</p>
-<p>Generate a client secret per site, using the same command as for <a href="#kasm">Kasm</a>. Store both values, because Proxmox's realm needs the password itself, then deploy networking:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_oidc_proxmox_client_secret"]'</span><span class="w"> </span><span class="s1">'"&lt;Random Password&gt;"'</span>
+<p>To copy the secret without showing it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sops<span class="w"> </span>decrypt<span class="w"> </span>--extract<span class="w"> </span><span class="s1">'["kanidm_kasm_client_secret"]'</span><span class="w"> </span>ansible/inventory/group_vars/site_ldn/secrets.sops.yml<span class="w"> </span><span class="p">|</span><span class="w"> </span>pbcopy
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sops<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/secrets.sops.yml<span class="w"> </span><span class="s1">'["authelia_oidc_proxmox_client_secret_hash"]'</span><span class="w"> </span><span class="s1">'"$pbkdf2-sha512$..."'</span>
-</code></pre></div>
-<p>Proxmox fetches Authelia's settings itself, so the host must resolve the login page, which is not in public DNS. Check from the host:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>getent<span class="w"> </span>hosts<span class="w"> </span>auth.wil.5am.cloud
-</code></pre></div>
-<p>If that prints nothing, as on both sites' hosts when this was set up, point the name at the site's networking VM (WIL <code>10.2.20.53</code>, LDN <code>10.3.20.53</code>) in the host's <code>/etc/hosts</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"10.2.20.53 auth.wil.5am.cloud"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/hosts
-</code></pre></div>
-<p>Add the realm under <strong>Datacenter &gt; Permissions &gt; Realms &gt; Add &gt; OpenID Connect Server</strong>:</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Issuer URL</td>
-<td><code>https://auth.wil.5am.cloud</code></td>
-</tr>
-<tr>
-<td>Realm</td>
-<td><code>authelia</code></td>
-</tr>
-<tr>
-<td>Client ID</td>
-<td><code>proxmox</code></td>
-</tr>
-<tr>
-<td>Client Key</td>
-<td><code>authelia_oidc_proxmox_client_secret</code> from the site's secrets</td>
-</tr>
-<tr>
-<td>Default</td>
-<td>On, so the realm is preselected at login</td>
-</tr>
-<tr>
-<td>Autocreate Users</td>
-<td>Off</td>
-</tr>
-<tr>
-<td>Username Claim</td>
-<td>Type <code>preferred_username</code>. It cannot be changed later, and the default gives a user named after an opaque ID</td>
-</tr>
-</tbody>
-</table>
-<p>Then, on the host, create the user and make it an admin:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>pveum<span class="w"> </span>user<span class="w"> </span>add<span class="w"> </span>sfcal@authelia
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>pveum<span class="w"> </span>acl<span class="w"> </span>modify<span class="w"> </span>/<span class="w"> </span>--users<span class="w"> </span>sfcal@authelia<span class="w"> </span>--roles<span class="w"> </span>Administrator
-</code></pre></div>
-<p>Keep <code>root@pam</code>. It is the way in through <code>https://&lt;host-ip&gt;:8006</code> when Authelia or Caddy is down, and a few settings stay root-only, such as raw <code>args</code> or PCI passthrough without a mapping. The <code>authelia</code> realm only works on the <code>vm</code> name, because that is its only registered redirect URL.</p>
+<p>The first login creates a Kasm user in the default group; add it to Administrators as <code>admin@kasm.local</code>. A Kasm user created through one OpenID config cannot log in through another (<code>OIDC login rejected: different OIDC ID expected for user</code>), and a local user of the same name is refused (<code>Non OIDC user</code>): delete the old user first.</p>
+<p>Kasm's own login page is at <code>https://kasm.ldn.5am.cloud/#/staticlogin</code>. It is the way in for <code>admin@kasm.local</code>, also when Kanidm is down.</p>
+<h2 id="upgrades-and-backups"><a class="toclink" href="#upgrades-and-backups">Upgrades and Backups</a></h2>
+<ul>
+<li>Renovate opens a pull request for <code>kanidm/server</code> but never merges it. Upgrade one minor version at a time and never back: run <code>ssh ubuntu@dashboard sudo docker exec kanidm kanidmd domain upgrade-check</code>, deploy the dashboard with the new tag (<code>task ansible:deploy-dashboard ENV=ovh</code>), and move the CLI alias to the same tag.</li>
+<li>Kanidm backs up its database every night at 22:00 UTC and keeps the last 7, in <code>/var/lib/dashboard/kanidm/backups</code> on the VPS. Nothing copies them elsewhere yet.</li>
+<li>Kanidm's domain, <code>auth.5am.cloud</code>, is permanent: changing it breaks passkeys and every client's tokens.</li>
+</ul>
 <h2 id="good-to-know"><a class="toclink" href="#good-to-know">Good to Know</a></h2>
 <ul>
-<li>A login lasts 12 hours, or a month if you tick <strong>Remember me</strong>. Each domain's cookie also lasts 12 hours and is renewed without asking while the login lasts.</li>
-<li>When a cookie has ended, an open app does not renew it by itself: it shows errors or its own login box (Proxmox says "Login failed"). Reload the page.</li>
-<li>To log out of a domain, open <code>/oauth2/sign_out</code> on any flagged name of that domain. Logging out on the login page only stops new domains from being opened.</li>
-<li>Three wrong passwords lock out the address they came from for 5 minutes.</li>
-<li>If oauth2-proxy is down, flagged services answer <code>502</code>. If only Authelia is down, domains that already have a cookie keep working. Unflagged services are not affected.</li>
-<li>To require a second factor, change <code>authorization_policy</code> to <code>two_factor</code> in <code>authelia-configuration.yml.j2</code>. There is no mail server, so the one-time code Authelia asks for when you add a device is written to <code>/var/lib/authelia/notification.txt</code> on the networking VM.</li>
+<li>Each domain's cookie lasts 12 hours. When it has ended, an open app does not renew it by itself: it shows errors or its own login box (Proxmox says "Login failed"). Reload the page.</li>
+<li>To log out of a domain, open <code>/oauth2/sign_out</code> on any flagged name of that domain.</li>
+<li>If oauth2-proxy is down, flagged services answer <code>502</code>. If Kanidm is down, domains that already have a cookie keep working and new logins fail. Unflagged services are not affected.</li>
+<li>A site's LAN reaches <code>100.116.40.99</code> through a static route on its UDM to the site's networking VM. A tailnet device away from home finds the name through the tailnet's split DNS route for <code>auth.5am.cloud</code>.</li>
 </ul>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>Deploy stops with <code>'authelia_password_hash' is undefined</code></strong> — the password has not been set for that environment. See <a href="#set-the-password">Set the Password</a>.</p>
-<p><strong>Deploy stops with <code>'authelia_oidc_kasm_client_secret_hash' is undefined</code></strong> — the Kasm client secret has not been set for LDN. See <a href="#kasm">Kasm</a>.</p>
-<p><strong>Deploy stops with <code>'authelia_oidc_proxmox_client_secret_hash' is undefined</code></strong> — the Proxmox client secret has not been set for that environment. See <a href="#proxmox">Proxmox</a>.</p>
-<p><strong>Kasm's login ends in <code>Internal Error</code></strong> — Kasm's log has the reason: <code>ssh 10.3.20.50 'docker exec kasm docker logs --since 10m kasm_api 2&gt;&amp;1' | grep -E 'Failed to find|\(invalid_'</code>. <code>Failed to find groups attribute</code> means Groups Attribute is not empty. <code>invalid_client</code> means the Client Secret does not match. <code>The authorization code has already been used</code> means the error page was reloaded: start again from the login page.</p>
-<p><strong>Every flagged service answers <code>502</code> after a deploy</strong> — one of the two containers is not running: <code>ssh &lt;networking-ip&gt; docker ps</code>, then <code>docker logs authelia</code> (usually a malformed password hash) or <code>docker logs oauth2-proxy</code> (it restarts until it can reach the login page, which takes up to a minute after the first deploy).</p>
-<p><strong>A new password is not accepted</strong> — Authelia reads its files only when it starts. If the deploy that changed the password failed part-way, restart it: <code>ssh &lt;networking-ip&gt; docker restart authelia</code>.</p>
+<p><strong>Kanidm says the redirect URL is not valid</strong> — the service's callback is not in the client's list yet. Run the networking deploy for that site.</p>
+<p><strong>Every flagged service answers <code>502</code> after a deploy</strong> — oauth2-proxy is not running: <code>ssh &lt;networking-ip&gt; docker ps</code>, then <code>docker logs oauth2-proxy</code>. It must reach <code>auth.5am.cloud</code>, which the container's <code>extra_hosts</code> pins to the VPS.</p>
+<p><strong><code>auth.5am.cloud</code> does not resolve</strong> — on a LAN it comes from the site's BIND; away from home, from the tailnet's split DNS route. Hosts that use neither need a pin: the Proxmox hosts have the <code>/etc/hosts</code> line, and oauth2-proxy's container has it in <code>extra_hosts</code>.</p>
+<p><strong>Kasm's login ends in <code>Internal Error</code></strong> — Kasm's log has the reason: <code>ssh 10.3.20.50 'docker exec kasm docker logs --since 10m kasm_api 2&gt;&amp;1' | grep -E 'Failed to find|\(invalid_'</code>. <code>Failed to find groups attribute</code> means Groups Attribute is not empty. <code>The authorization code has already been used</code> means the error page was reloaded: start again from the login page.</p>
+<p><strong>Check a client secret without a login</strong> — send Kanidm's token endpoint a fake code with the client's ID and secret. <code>401</code> means the secret is wrong; <code>400</code> with <code>invalid_request</code> means the secret is right and only the code was rejected.</p>
+<p><strong>Kanidm's own log</strong> — <code>ssh ubuntu@dashboard sudo docker logs kanidm</code>.</p>
 
 
 
