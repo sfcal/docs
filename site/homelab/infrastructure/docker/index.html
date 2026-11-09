@@ -1634,6 +1634,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#kasm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kasm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kasm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deluge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deluge
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#data-driven-apps" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1644,6 +1672,17 @@
   
     <nav class="md-nav" aria-label="Data-Driven Apps">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ignis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ignis
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#isponsorblocktv" class="md-nav__link">
@@ -1854,6 +1893,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#kasm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kasm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kasm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deluge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deluge
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#data-driven-apps" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1864,6 +1931,17 @@
   
     <nav class="md-nav" aria-label="Data-Driven Apps">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ignis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ignis
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#isponsorblocktv" class="md-nav__link">
@@ -2037,6 +2115,12 @@
 <p>Terraria (wil) and Wolf with RomM (ldn) share one playbook on the <code>app_gaming</code> host; each environment gets the stacks its group_vars define. Deploy with <code>task ansible:deploy-gaming ENV=&lt;env&gt;</code>; see <a href="../gaming/">Gaming</a>.</p>
 <h2 id="hermes-agent"><a class="toclink" href="#hermes-agent">Hermes Agent</a></h2>
 <p>Hermes Agent (ldn) has its own playbook, which also installs Claude Code and the Claude subscription plugin in the container. Deploy with <code>task ansible:deploy-hermes ENV=ldn</code>; see <a href="../hermes/">Hermes Agent</a>.</p>
+<h2 id="kasm"><a class="toclink" href="#kasm">Kasm</a></h2>
+<p>Kasm (ldn, on the <code>work</code> VM, <code>https://kasm.ldn.5am.cloud</code>) is the LinuxServer image, which runs Kasm's own Docker daemon inside the container. Its state is under <code>/var/lib/kasm/</code>. Deploy with <code>task ansible:deploy-kasm ENV=ldn</code>.</p>
+<p>Custom workspace images live in <code>ansible/playbooks/apps/kasm/files/</code>, one folder per image with a <code>Dockerfile</code> (folder names lowercase: they become the image name). Each deploy copies them to <code>/opt/kasm/images/</code> and builds every folder inside Kasm's Docker as <code>localhost/&lt;folder&gt;:latest</code>, pulling newer base images first. To use one, add a workspace with that image name and restrict it to the work VM's agent (<code>85a6c3</code>): the VPS agent (<a href="../kasm-agent/">Kasm Agent</a>) doesn't have it. The work VM's agent prunes images in Aggressive mode: within 30 s it deletes any image no workspace uses, so save the workspace first, then deploy.</p>
+<h3 id="deluge"><a class="toclink" href="#deluge">Deluge</a></h3>
+<p>The Deluge workspace runs <code>localhost/deluge:latest</code> (<code>files/deluge/</code>) on the work VM, with no volume mappings. When a torrent finishes, Deluge's Execute plugin runs <code>torrent-archive</code>, which writes it as one uncompressed <code>&lt;torrent name&gt;.zip</code> into <code>~/Downloads</code>, so Kasm's download panel can fetch it in one go (written as <code>.zip.part</code> first, then renamed; <code>zip -0</code>, since media doesn't compress). Torrents download to <code>~/torrents</code>. Both folders, and Deluge's settings, last only as long as the session: fetch the archives before ending it. The settings come from the image (<code>core.conf</code>, <code>execute.conf</code>), which Kasm copies into each new session's home; mapping <code>~/.config</code> to a host folder would overwrite what's saved there each time. The base stays on the Kasm server's version. Deluge 2.0.3 with libtorrent 2.0 logs a harmless <code>KeyError: 'disk.num_blocks_cache_hits'</code> every few seconds.</p>
+<p>Workspace settings (Kasm's admin, not this repo): Docker Image <code>localhost/deluge:latest</code>, Docker Registry empty, Restrict Image to Kasm Agent <code>85a6c3</code>, Volume Mappings <code>{}</code>.</p>
 <h2 id="data-driven-apps"><a class="toclink" href="#data-driven-apps">Data-Driven Apps</a></h2>
 <p>Most applications use the shared <code>deploy-app.yml</code> playbook and are defined in the registry of the site that hosts them, <code>ansible/inventory/group_vars/site_&lt;env&gt;/apps.yml</code>. See <a href="../../guides/deploy-service/">Deploy a Service</a> for the full workflow.</p>
 <table>
@@ -2059,14 +2143,14 @@
 <td>8074</td>
 </tr>
 <tr>
+<td>Ignis (Obsidian)</td>
+<td><code>nobbe/ignis</code></td>
+<td>8082</td>
+</tr>
+<tr>
 <td>iSponsorBlockTV</td>
 <td><code>ghcr.io/dmunozv04/isponsorblocktv</code></td>
 <td>—</td>
-</tr>
-<tr>
-<td>Kasm</td>
-<td><code>lscr.io/linuxserver/kasm</code></td>
-<td>4443</td>
 </tr>
 <tr>
 <td>KOReader Sync</td>
@@ -2090,6 +2174,8 @@
 </tr>
 </tbody>
 </table>
+<h3 id="ignis"><a class="toclink" href="#ignis">Ignis</a></h3>
+<p><a href="https://github.com/Nystik-gh/ignis">Ignis</a> (ldn, on the <code>work</code> VM) runs Obsidian in the browser at <code>https://ignis.ldn.5am.cloud</code>, behind the Kanidm login: it has no login of its own. Everything it keeps is on the VM's own disk under <code>/var/lib/work/ignis/</code>: <code>vaults/</code> (one folder per vault, plain Markdown), <code>data/</code> (Ignis settings and sync state) and <code>obsidian-app/</code> (the Obsidian download, fetched again when missing). A rebuilt VM starts with no vaults.</p>
 <h3 id="isponsorblocktv"><a class="toclink" href="#isponsorblocktv">iSponsorBlockTV</a></h3>
 <p><a href="https://github.com/dmunozv04/iSponsorBlockTV">iSponsorBlockTV</a> (ldn, on the <code>web</code> VM) skips SponsorBlock segments and ads on YouTube TV apps. It has no web UI and only needs to reach youtube.com, so it has no port or proxy entry. Paired TVs and settings are in <code>/var/lib/isponsorblocktv/data/config.json</code> on the VM, written by the setup wizard, not by Ansible; a rebuilt VM needs its TVs paired again. Until a TV is paired the container exits every 10 seconds and restarts.</p>
 <p>To pair a TV (also to add another one or change settings), open YouTube on the TV, go to Settings → Link with TV code, then on the VM:</p>

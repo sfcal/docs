@@ -1859,7 +1859,7 @@
 
 
 <h1 id="kasm-agent-ovh-vps"><a class="toclink" href="#kasm-agent-ovh-vps">Kasm Agent (OVH VPS)</a></h1>
-<p>ldn's Kasm (the LinuxServer image on the <code>work</code> VM, <code>10.3.20.50</code>) has a second Docker agent on the OVH VPS (site <code>ovh</code>, <code>135.148.219.216</code>, tailnet <code>100.116.40.99</code>). The <strong>Deluge</strong> workspace runs there, so its torrent traffic leaves from the VPS's IP, and its downloads stay on the VPS's disk. You still open it from Kasm (<code>https://kasm.ldn.5am.cloud</code>) as before.</p>
+<p>ldn's Kasm (the LinuxServer image on the <code>work</code> VM, <code>10.3.20.50</code>) has a second Docker agent on the OVH VPS (site <code>ovh</code>, <code>135.148.219.216</code>, tailnet <code>100.116.40.99</code>). It was set up for the <strong>Deluge</strong> workspace, so its torrent traffic would leave from the VPS's IP. Since 2026-11-09 Deluge runs on the work VM instead, with a custom image (<a href="../docker/#deluge">Docker Services → Kasm</a>); the agent and its Deluge folders on the VPS stay in place.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-kasm-agent<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh
 </code></pre></div>
 <p>The playbook (<code>playbooks/apps/kasm-agent/</code>) installs the official Kasm 1.18.1 agent, the same version as the work VM's Kasm, with its release checked against a pinned sha256. It runs the installer once, and Kasm's own <code>upgrade.sh</code> handles later versions. It also:</p>
@@ -1896,11 +1896,6 @@
 <td>Each agent's proxy checks the login at this address. <code>proxy</code> only resolves inside the work VM's Kasm; on the VPS it is the agent's own proxy, so sessions there failed with a 404 on <code>/api/internal_auth/</code></td>
 </tr>
 <tr>
-<td>Workspaces → Deluge</td>
-<td>Restrict Image to Kasm Agent: <code>a67ee6</code> (the VPS agent)</td>
-<td>Deluge runs only on the VPS</td>
-</tr>
-<tr>
 <td>Workspaces → FileZilla, Tor-Browser</td>
 <td>Restrict Image to Kasm Agent: <code>85a6c3</code> (the work VM)</td>
 <td>Keeps them off the VPS. A new agent pulls the image of every unrestricted workspace, so restrict any new container workspace too</td>
@@ -1911,20 +1906,15 @@
 <td>See Sessions below</td>
 </tr>
 <tr>
-<td>Workspaces → Deluge</td>
-<td>Memory 2048 MB (was 2768)</td>
-<td>The VPS has 3.7 GB, and Homepage runs there too</td>
-</tr>
-<tr>
-<td>Workspaces → Deluge</td>
-<td>Volume Mappings: <code>/var/lib/kasm-agent/deluge/downloads</code> → <code>/home/kasm-user/Downloads</code>, <code>/var/lib/kasm-agent/deluge/config</code> → <code>/home/kasm-user/.config</code> (uid/gid 1000)</td>
-<td>Torrents and settings outlive a session. Map all of <code>~/.config</code>, not <code>~/.config/deluge</code>: Docker would create <code>~/.config</code> as root, and the image's startup script then fails copying its default profile there (the container exits at once)</td>
+<td>Workspaces → Deluge (until 2026-11-09)</td>
+<td>Restrict Image to Kasm Agent <code>a67ee6</code>, Memory 2048 MB, Volume Mappings <code>/var/lib/kasm-agent/deluge/downloads</code> → <code>/home/kasm-user/Downloads</code> and <code>/var/lib/kasm-agent/deluge/config</code> → <code>/home/kasm-user/.config</code> (uid/gid 1000)</td>
+<td>How Deluge ran on the VPS. Map all of <code>~/.config</code>, not <code>~/.config/deluge</code>: Docker would create <code>~/.config</code> as root, and the image's startup script then fails copying its default profile there (the container exits at once). Not for the custom image, which keeps its settings in the image</td>
 </tr>
 </tbody>
 </table>
 <h2 id="sessions"><a class="toclink" href="#sessions">Sessions</a></h2>
 <p>Deluge only downloads while its session exists. Kasm deletes a session <code>keepalive_expiration</code> seconds after its browser tab last sent a keepalive (<code>keepalive_expiration_action: delete</code>). Group <strong>All Users</strong> has it at <strong>604800 (one week)</strong>, raised from 3600 on 2026-11-07 so Deluge keeps downloading with the tab closed. Kasm group settings can't be limited to one workspace, so every session of the group lasts that long; your account falls back to All Users because Administrators sets nothing here. A session picks up a new value at its next keepalive, which reopening it sends.</p>
-<p>If a Deluge session does expire, launch it again: torrent state and settings are in <code>config/deluge/</code>, so Deluge resumes the torrents.</p>
+<p>With the custom image on the work VM, an expired Deluge session takes its torrents and archives with it (nothing is mapped to the host).</p>
 
 
 

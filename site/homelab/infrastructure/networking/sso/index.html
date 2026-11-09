@@ -1469,6 +1469,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#password-reset-by-email" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password Reset by Email
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#protect-a-service" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1881,6 +1892,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#password-reset-by-email" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password Reset by Email
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#protect-a-service" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2062,6 +2084,10 @@
 <td>oauth2-proxy</td>
 <td>Each networking VM, <code>/opt/oauth2-proxy</code>, client <code>oauth2-proxy-&lt;site&gt;</code></td>
 </tr>
+<tr>
+<td>kanidm-mail-sender</td>
+<td>OVH VPS, next to Kanidm: sends its mail through Fastmail as <code>noreply@5am.cloud</code> (<a href="#password-reset-by-email">Password Reset by Email</a>)</td>
+</tr>
 </tbody>
 </table>
 <p>The name is in wil's BIND (zone <code>5am.cloud</code>, copied to ldn) and in the tailnet's split DNS, never in Cloudflare. The VPS's public address closes any connection for it.</p>
@@ -2083,12 +2109,24 @@
 <td>Kanidm's settings: domain, backups</td>
 </tr>
 <tr>
+<td><code>ansible/playbooks/infrastructure/dashboard/templates/kanidm-mail-sender.toml.j2</code></td>
+<td>The mail sender's settings: sender address, Fastmail</td>
+</tr>
+<tr>
+<td><code>ansible/playbooks/infrastructure/dashboard/templates/kanidm-client.toml.j2</code></td>
+<td>How the mail sender reaches Kanidm</td>
+</tr>
+<tr>
 <td><code>ansible/playbooks/infrastructure/dashboard/files/Caddyfile</code></td>
 <td>The <code>auth.5am.cloud</code> site (Cloudflare DNS-01 certificate)</td>
 </tr>
 <tr>
 <td><code>ansible/inventory/group_vars/site_ovh/infra_dashboard/vars.yml</code></td>
-<td><code>kanidm_image</code></td>
+<td><code>kanidm_image</code>, <code>kanidm_tools_image</code></td>
+</tr>
+<tr>
+<td><code>ansible/inventory/group_vars/site_ovh/secrets.sops.yml</code></td>
+<td>The mail sender's token and Fastmail login (section <code>infra_kanidm_email</code>)</td>
 </tr>
 <tr>
 <td><code>ansible/playbooks/infrastructure/networking/tasks/oauth2-proxy.yml</code></td>
@@ -2130,39 +2168,56 @@
 <h2 id="add-a-user"><a class="toclink" href="#add-a-user">Add a User</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kanidm<span class="w"> </span>person<span class="w"> </span>create<span class="w"> </span>&lt;user&gt;<span class="w"> </span><span class="s2">"&lt;Display Name&gt;"</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kanidm<span class="w"> </span>group<span class="w"> </span>add-members<span class="w"> </span>sso_users<span class="w"> </span>&lt;user&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kanidm<span class="w"> </span>person<span class="w"> </span>update<span class="w"> </span>&lt;user&gt;<span class="w"> </span>--mail<span class="w"> </span>&lt;address&gt;
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kanidm<span class="w"> </span>person<span class="w"> </span>credential<span class="w"> </span>create-reset-token<span class="w"> </span>&lt;user&gt;<span class="w"> </span>--ttl<span class="w"> </span><span class="m">86400</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kanidm<span class="w"> </span>group<span class="w"> </span>add-members<span class="w"> </span>sso_users<span class="w"> </span>&lt;user&gt;
 </code></pre></div>
-<p>Send them the link or QR code. It lasts 24 hours and opens only from a site LAN or the tailnet. They set a password there, and a TOTP code or a passkey if they like. For a forgotten password, run the last command again.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kanidm<span class="w"> </span>person<span class="w"> </span>credential<span class="w"> </span>create-reset-token<span class="w"> </span>&lt;user&gt;<span class="w"> </span>--ttl<span class="w"> </span><span class="m">86400</span>
+</code></pre></div>
+<p>Send them the link or QR code. It lasts 24 hours and opens only from a site LAN or the tailnet. They set a password there, and a TOTP code or a passkey if they like. For a forgotten password they use <strong>Recover Account</strong> on the login page (<a href="#password-reset-by-email">Password Reset by Email</a>), or you run the last command again.</p>
 <p>A password alone is enough: <code>idm_all_persons</code> has <code>credential-type-minimum</code> set to <code>any</code>, where Kanidm's default asks for a second factor. To require one, set it back with <code>kanidm group account-policy credential-type-minimum idm_all_persons mfa</code>.</p>
 <p>Every member of <code>sso_users</code> can open every flagged service; there are no per-user rules. Proxmox and Kasm keep their own permissions: create the Proxmox user and role on each host as in <a href="#proxmox">Proxmox</a>, and add the Kasm user to Administrators after their first login as in <a href="#kasm">Kasm</a>.</p>
+<h2 id="password-reset-by-email"><a class="toclink" href="#password-reset-by-email">Password Reset by Email</a></h2>
+<p><strong>Recover Account</strong> on the login page asks for an email address. When it matches a person's address in Kanidm, Kanidm emails them a reset link from <code>noreply@5am.cloud</code>. The page answers the same either way, so it gives away no addresses. The link lasts an hour and, like the login, opens only from a site LAN or the tailnet. To email someone a link yourself (this one lasts 24 hours):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kanidm<span class="w"> </span>person<span class="w"> </span>credential<span class="w"> </span>send-reset-token<span class="w"> </span>&lt;user&gt;<span class="w"> </span>--ttl<span class="w"> </span><span class="m">86400</span>
+</code></pre></div>
+<p>Kanidm only queues the mail. <code>kanidm-mail-sender</code>, next to Kanidm in the dashboard compose project, checks the queue every 5 seconds and sends through Fastmail (<code>smtps://smtp.fastmail.com</code>), logged in with an app password that has SMTP access only. <code>5am.cloud</code> is a domain in that Fastmail account, with <code>noreply@5am.cloud</code> as an alias and Fastmail's SPF and DKIM records in Cloudflare.</p>
+<p>These parts live in Kanidm's database:</p>
+<ul>
+<li>each person's address: <code>kanidm person update &lt;user&gt; --mail &lt;address&gt;</code></li>
+<li>service account <code>mail-sender</code>, a member of <code>idm_message_senders</code> and nothing else, with a read-write API token (<code>kanidm_mail_sender_token</code>): <code>kanidm service-account create mail-sender "Mail Sender" idm_admins</code>, <code>kanidm group add-members idm_message_senders mail-sender</code>, <code>kanidm service-account api-token generate mail-sender "mail sender" --readwrite</code></li>
+<li>the <strong>Recover Account</strong> link: <code>kanidm system domain set-allow-account-recovery true</code>, as <code>admin</code>, because <code>idm_admin</code> can't change domain settings (<code>admin</code> has no stored password either: <code>kanidmd recover-account admin</code>, then <code>kanidm login -D admin</code>)</li>
+</ul>
+<p><code>kanidm system message-queue list</code> shows each message as <code>queued</code>, or with the time it went out. To test sending on its own, the mail sender can mail any address; it ends with <code>Success!</code> (<code>kanidm system message-queue send-test-message</code> is refused in 1.12.0, even for <code>admin</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ssh<span class="w"> </span>ubuntu@dashboard<span class="w"> </span>sudo<span class="w"> </span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">RUST_LOG</span><span class="o">=</span>info<span class="w"> </span>kanidm-mail-sender<span class="w"> </span>/sbin/kanidm-mail-sender<span class="w"> </span>-c<span class="w"> </span>/etc/kanidm/config<span class="w"> </span>-m<span class="w"> </span>/etc/kanidm/mail-sender<span class="w"> </span>-t<span class="w"> </span>&lt;address&gt;
+</code></pre></div>
+<p>The sender logs only warnings and errors (<code>RUST_LOG=warn</code>), so its log stays empty while all is well.</p>
 <h2 id="protect-a-service"><a class="toclink" href="#protect-a-service">Protect a Service</a></h2>
 <p>Add <code>auth: true</code> to the service entry (for registry apps, inside the <code>proxy:</code> block), then deploy networking:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.30</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9090</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">auth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">backend_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.2.20.30</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">backend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9090</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="nt">auth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 <p>Kanidm has no wildcard redirect URLs, so the deploy registers the service's <code>/oauth2/callback</code> with the <code>oauth2-proxy-&lt;site&gt;</code> client before Caddy starts sending users to the login. It does that from the machine running the deploy, which must reach <code>auth.5am.cloud</code> (the tailnet or a site LAN). When a service loses <code>auth: true</code>, its callback stays in Kanidm until you remove it:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kanidm<span class="w"> </span>system<span class="w"> </span>oauth2<span class="w"> </span>remove-redirect-url<span class="w"> </span>oauth2-proxy-wil<span class="w"> </span>https://&lt;name&gt;.&lt;domain&gt;/oauth2/callback
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kanidm<span class="w"> </span>system<span class="w"> </span>oauth2<span class="w"> </span>remove-redirect-url<span class="w"> </span>oauth2-proxy-wil<span class="w"> </span>https://&lt;name&gt;.&lt;domain&gt;/oauth2/callback
 </code></pre></div>
 <p>Only browsers can log in. Leave <code>auth</code> off services that apps, devices or scripts talk to through the hostname (Plex, KOSync and MicroBin, for example). Anything else can still use a protected service's IP and port directly.</p>
 <h2 id="proxmox"><a class="toclink" href="#proxmox">Proxmox</a></h2>
 <p>Each site's Proxmox logs in to Kanidm with realm <code>sso</code> (the default realm), as client <code>proxmox-wil</code> or <code>proxmox-ldn</code>. The realm's settings live in Proxmox. <code>vm</code> keeps <code>auth: true</code>, so the first visit passes the gate and then Proxmox's own sign-in, the second time without a password.</p>
 <p>The host must resolve <code>auth.5am.cloud</code>, which neither host's resolver does, so both have this in <code>/etc/hosts</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>100.116.40.99 auth.5am.cloud
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>100.116.40.99 auth.5am.cloud
 </code></pre></div>
 <p>The realm was added with this command (WIL shown; for LDN use <code>site_ldn</code>, <code>10.3.20.10</code> and <code>proxmox-ldn</code>). The client key comes from the site's secrets and is never printed:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sops<span class="w"> </span>decrypt<span class="w"> </span>--extract<span class="w"> </span><span class="s1">'["kanidm_proxmox_client_secret"]'</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/secrets.sops.yml<span class="w"> </span><span class="p">|</span><span class="w"> </span>ssh<span class="w"> </span>root@10.2.20.7<span class="w"> </span><span class="s1">'key=$(cat); pveum realm add sso --type openid --issuer-url https://auth.5am.cloud/oauth2/openid/proxmox-wil --client-id proxmox-wil --client-key "$key" --username-claim preferred_username --autocreate 0 --default 1'</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sops<span class="w"> </span>decrypt<span class="w"> </span>--extract<span class="w"> </span><span class="s1">'["kanidm_proxmox_client_secret"]'</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/secrets.sops.yml<span class="w"> </span><span class="p">|</span><span class="w"> </span>ssh<span class="w"> </span>root@10.2.20.7<span class="w"> </span><span class="s1">'key=$(cat); pveum realm add sso --type openid --issuer-url https://auth.5am.cloud/oauth2/openid/proxmox-wil --client-id proxmox-wil --client-key "$key" --username-claim preferred_username --autocreate 0 --default 1'</span>
 </code></pre></div>
 <p>The username claim cannot be changed later. Then create each user and make it an admin:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>pveum<span class="w"> </span>user<span class="w"> </span>add<span class="w"> </span>&lt;user&gt;@sso
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>pveum<span class="w"> </span>user<span class="w"> </span>add<span class="w"> </span>&lt;user&gt;@sso
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>pveum<span class="w"> </span>acl<span class="w"> </span>modify<span class="w"> </span>/<span class="w"> </span>--users<span class="w"> </span>&lt;user&gt;@sso<span class="w"> </span>--roles<span class="w"> </span>Administrator
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>pveum<span class="w"> </span>acl<span class="w"> </span>modify<span class="w"> </span>/<span class="w"> </span>--users<span class="w"> </span>&lt;user&gt;@sso<span class="w"> </span>--roles<span class="w"> </span>Administrator
 </code></pre></div>
 <p>Keep <code>root@pam</code>. It is the way in through <code>https://&lt;host-ip&gt;:8006</code> when Kanidm or Caddy is down, and a few settings stay root-only, such as raw <code>args</code> or PCI passthrough without a mapping. The realm only works on the <code>vm</code> name, because that is its only redirect URL.</p>
 <h2 id="kasm"><a class="toclink" href="#kasm">Kasm</a></h2>
@@ -2234,13 +2289,13 @@
 </tbody>
 </table>
 <p>To copy the secret without showing it:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sops<span class="w"> </span>decrypt<span class="w"> </span>--extract<span class="w"> </span><span class="s1">'["kanidm_kasm_client_secret"]'</span><span class="w"> </span>ansible/inventory/group_vars/site_ldn/secrets.sops.yml<span class="w"> </span><span class="p">|</span><span class="w"> </span>pbcopy
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sops<span class="w"> </span>decrypt<span class="w"> </span>--extract<span class="w"> </span><span class="s1">'["kanidm_kasm_client_secret"]'</span><span class="w"> </span>ansible/inventory/group_vars/site_ldn/secrets.sops.yml<span class="w"> </span><span class="p">|</span><span class="w"> </span>pbcopy
 </code></pre></div>
 <p>The first login creates a Kasm user in the default group; add it to Administrators as <code>admin@kasm.local</code>. A Kasm user created through one OpenID config cannot log in through another (<code>OIDC login rejected: different OIDC ID expected for user</code>), and a local user of the same name is refused (<code>Non OIDC user</code>): delete the old user first.</p>
 <p>Kasm's own login page is at <code>https://kasm.ldn.5am.cloud/#/staticlogin</code>. It is the way in for <code>admin@kasm.local</code>, also when Kanidm is down.</p>
 <h2 id="upgrades-and-backups"><a class="toclink" href="#upgrades-and-backups">Upgrades and Backups</a></h2>
 <ul>
-<li>Renovate opens a pull request for <code>kanidm/server</code> but never merges it. Upgrade one minor version at a time and never back: run <code>ssh ubuntu@dashboard sudo docker exec kanidm kanidmd domain upgrade-check</code>, deploy the dashboard with the new tag (<code>task ansible:deploy-dashboard ENV=ovh</code>), and move the CLI alias to the same tag.</li>
+<li>Renovate opens one pull request for <code>kanidm/server</code> and <code>kanidm/tools</code> (the mail sender) but never merges it. Upgrade one minor version at a time and never back: run <code>ssh ubuntu@dashboard sudo docker exec kanidm kanidmd domain upgrade-check</code>, deploy the dashboard with the new tag (<code>task ansible:deploy-dashboard ENV=ovh</code>), and move the CLI alias to the same tag.</li>
 <li>Kanidm backs up its database every night at 22:00 UTC and keeps the last 7, in <code>/var/lib/dashboard/kanidm/backups</code> on the VPS. Nothing copies them elsewhere yet.</li>
 <li>Kanidm's domain, <code>auth.5am.cloud</code>, is permanent: changing it breaks passkeys and every client's tokens.</li>
 </ul>
@@ -2256,6 +2311,7 @@
 <p><strong>Every flagged service answers <code>502</code> after a deploy</strong> — oauth2-proxy is not running: <code>ssh &lt;networking-ip&gt; docker ps</code>, then <code>docker logs oauth2-proxy</code>. It must reach <code>auth.5am.cloud</code>, which the container's <code>extra_hosts</code> pins to the VPS.</p>
 <p><strong><code>auth.5am.cloud</code> does not resolve</strong> — on a LAN it comes from the site's BIND; away from home, from the tailnet's split DNS route. Hosts that use neither need a pin: the Proxmox hosts have the <code>/etc/hosts</code> line, and oauth2-proxy's container has it in <code>extra_hosts</code>.</p>
 <p><strong>Kasm's login ends in <code>Internal Error</code></strong> — Kasm's log has the reason: <code>ssh 10.3.20.50 'docker exec kasm docker logs --since 10m kasm_api 2&gt;&amp;1' | grep -E 'Failed to find|\(invalid_'</code>. <code>Failed to find groups attribute</code> means Groups Attribute is not empty. <code>The authorization code has already been used</code> means the error page was reloaded: start again from the login page.</p>
+<p><strong>No reset email arrives</strong> — <code>kanidm system message-queue list</code> shows whether Kanidm queued it. Nothing queued: the address typed is not the person's <code>mail</code>, or <strong>Recover Account</strong> is off. Still <code>queued</code>: the mail sender is down or Fastmail refused it: <code>ssh ubuntu@dashboard sudo docker logs kanidm-mail-sender</code>.</p>
 <p><strong>Check a client secret without a login</strong> — send Kanidm's token endpoint a fake code with the client's ID and secret. <code>401</code> means the secret is wrong; <code>400</code> with <code>invalid_request</code> means the secret is right and only the code was rejected.</p>
 <p><strong>Kanidm's own log</strong> — <code>ssh ubuntu@dashboard sudo docker logs kanidm</code>.</p>
 
