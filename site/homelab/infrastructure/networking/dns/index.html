@@ -2202,6 +2202,7 @@
 <li>Serial number from the current epoch (auto-increments on each deploy)</li>
 <li>TTL of 300 seconds (5 minutes)</li>
 </ul>
+<p>Because of the serial, the zone files change on every deploy; BIND reloads them (<code>rndc reload</code>) and is restarted only when <code>named.conf</code> itself changes. Each file is checked before it replaces the live one, <code>named.conf</code> with <code>named-checkconf</code> and a zone with <code>named-checkzone</code>: a file BIND would refuse fails the deploy at that task and DNS keeps running on the old one.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">WIL</label><label for="__tabbed_1_2">LDN</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2489,10 +2490,10 @@
 <a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>dig<span class="w"> </span>AXFR<span class="w"> </span>5am.video<span class="w"> </span>@10.2.20.53
 </code></pre></div>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>Service not resolving</strong> — Check BIND9 is running: <code>ssh &lt;networking-ip&gt; docker logs bind9</code>. Verify the service has an entry in the correct domain file under <code>group_vars/site_&lt;env&gt;/proxy/</code> (or a <code>proxy:</code> block on the app's entry in <code>group_vars/site_&lt;env&gt;/apps.yml</code>) and redeploy: <code>task ansible:deploy-networking ENV=wil</code>.</p>
+<p><strong>Service not resolving</strong> — Check BIND9 is running: <code>ssh &lt;networking-ip&gt; systemctl status named</code>. Verify the service has an entry in the correct domain file under <code>group_vars/site_&lt;env&gt;/proxy/</code> (or a <code>proxy:</code> block on the app's entry in <code>group_vars/site_&lt;env&gt;/apps.yml</code>) and redeploy: <code>task ansible:deploy-networking ENV=wil</code>.</p>
 <p><strong>Wrong IP returned</strong> — If a proxied service resolves to <code>backend_host</code> instead of <code>reverse_proxy_ip</code>, check that <code>proxied: true</code> is set. If a non-proxied service resolves to the Caddy IP, check that <code>proxied: false</code> is set.</p>
 <p><strong>Zone transfer not working</strong> — Verify Tailscale connectivity between sites. Check that <code>dns_transfer_clients</code> (derived from <code>group_vars/all/sites.yml</code>) includes the remote DNS server IP and the CGNAT range. Test with <code>dig AXFR &lt;zone&gt; @&lt;primary-dns&gt;</code>.</p>
-<p><strong>Serial number not incrementing</strong> — Zone serials use the current epoch. If BIND9 doesn't pick up changes, restart the container: <code>ssh &lt;networking-ip&gt; docker restart bind9</code>.</p>
+<p><strong>Serial number not incrementing</strong> — Zone serials use the current epoch. If BIND9 doesn't pick up changes, reload it: <code>ssh &lt;networking-ip&gt; sudo rndc reload</code>.</p>
 
 
 

@@ -2902,8 +2902,8 @@
 <tr>
 <td><code>prometheus_node_targets</code></td>
 <td><code>list[string]</code></td>
-<td>Node exporter endpoints to scrape (<code>host:port</code>)</td>
-<td>(per-env)</td>
+<td>Node exporter endpoints to scrape (<code>host:port</code>): every host of the site in the inventory (<code>[site_&lt;env&gt;]</code>) on <code>:9100</code>, without the Proxmox host</td>
+<td>(derived)</td>
 </tr>
 <tr>
 <td><code>prometheus_chrony_targets</code></td>
@@ -2922,12 +2922,6 @@
 <td><code>list[string]</code></td>
 <td>PTP grandmaster node_exporter endpoints (job <code>node</code>, <code>:9100</code>)</td>
 <td><code>[]</code></td>
-</tr>
-<tr>
-<td><code>node_exporter_image</code></td>
-<td><code>string</code></td>
-<td>Docker image for Node Exporter sidecar</td>
-<td>(per-env)</td>
 </tr>
 </tbody>
 </table>
@@ -3146,7 +3140,7 @@
 <li><strong>Status dots:</strong> <code>siteMonitor</code> requests the URL from the VPS and counts any answer up to 403 as up. KOSync's small card has none: it answers 412 to a request without KOReader's <code>Accept</code> header, so only its full card checks it, with a <code>customapi</code> widget that sends the header.</li>
 <li><strong>Tile colours:</strong> a widget's <code>highlight</code> rules mark tiles good, warn or danger, and <code>custom.css</code> tints them lime, orange or pink (Homepage's own tints lose to the tile background). Used for Prometheus targets down, Uptime Kuma sites down, Tdarr errors, Prowlarr failed grabs and KOSync health.</li>
 <li><strong>System Activity</strong> shows the four panels of the System Activity Grafana dashboard on each site's tab, in iframes from <code>http://dashboard:3000/d-solo/system-activity?var-ds=prometheus-&lt;site&gt;&amp;panelId=1</code> to <code>4</code>, in Grafana's light theme (<code>theme=light</code>). <code>var-ds</code> picks the site's Prometheus. Grafana allows anonymous viewing and embedding. The time range and refresh interval come from the dashboard JSON.</li>
-<li><strong>Node exporters</strong> follow Prometheus in each site's Monitoring group: the targets of the site's <code>prometheus_node_targets</code>, listed by hand; add a node there too.</li>
+<li><strong>Node exporters</strong> follow Prometheus in each site's Monitoring group: four VMs per site, listed by hand in <code>services.yaml.j2</code>. Prometheus itself scrapes every host of the site (<code>prometheus_node_targets</code>); a new VM gets a tile only when it is added to that list.</li>
 <li><strong>Five cards in a row</strong> (<code>columns: 5</code>: the Overview groups and the Monitoring groups) become four in a window 1024px to 1279px wide, where five are too narrow (<code>custom.css</code>). Narrower windows get Homepage's own two in a row, then one.</li>
 <li><strong>SABnzbd</strong> has two widgets: Homepage's <code>sabnzbd</code> widget (speed, queue) and a <code>customapi</code> widget that reads the download totals for today, this week, this month and all time from SABnzbd's <code>server_stats</code> API once a minute.</li>
 </ul>
@@ -3236,27 +3230,18 @@
 <td>Container file ownership GID</td>
 <td><code>"1000"</code></td>
 </tr>
-<tr>
-<td><code>backup_targets</code></td>
-<td><code>list[string]</code></td>
-<td>Service directories under <code>/var/lib/monitoring/</code> to back up</td>
-<td>(per-env)</td>
-</tr>
 </tbody>
 </table>
 <h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
 <h3 id="add-a-new-prometheus-scrape-target"><a class="toclink" href="#add-a-new-prometheus-scrape-target">Add a new Prometheus scrape target</a></h3>
+<p>Node exporter targets come from the inventory: every host under <code>[site_&lt;env&gt;]</code> in <code>ansible/inventory/hosts.ini</code> is scraped on <code>:9100</code> (the Packer template installs node-exporter on every clone). A host that is in the inventory but down shows as a target that is down.</p>
 <ol>
 <li>
-<p>Edit <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/prometheus.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">prometheus_node_targets</span><span class="p">:</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="c1"># ... existing targets</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"10.2.20.60:9100"</span><span class="w">   </span><span class="c1"># new VM</span>
-</code></pre></div>
+<p>Add the host to <code>[site_&lt;env&gt;]</code> (and to its role group) in <code>ansible/inventory/hosts.ini</code>. For an exporter that is not node-exporter, add its endpoint to the matching list in <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/prometheus.yml</code> instead.</p>
 </li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 </li>
 </ol>
@@ -3264,12 +3249,12 @@
 <ol>
 <li>
 <p>Edit <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_monitoring/prometheus.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">prometheus_retention</span><span class="p">:</span><span class="w"> </span><span class="s">"90d"</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">prometheus_retention</span><span class="p">:</span><span class="w"> </span><span class="s">"90d"</span>
 </code></pre></div>
 </li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>task<span class="w"> </span>ansible:deploy-monitoring<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 </li>
 </ol>
@@ -3280,7 +3265,7 @@
 <li>If the service requires an API key, add the key to the <code>infra_dashboard</code> section of <code>group_vars/site_ovh/secrets.sops.yml</code> and pass it through <code>dashboard/templates/compose.yaml.j2</code></li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh
 </code></pre></div>
 </li>
 </ol>
@@ -3290,7 +3275,7 @@
 <li>Note its ID from the address bar (<code>/dashboard/&lt;id&gt;</code>)</li>
 <li>
 <p>Add the badge to <code>README.md</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>![<span class="nt">wil</span>](<span class="na">https://uptime.ext.5am.cloud/api/badge/&lt;id&gt;/status?label=wil</span>)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>![<span class="nt">wil</span>](<span class="na">https://uptime.ext.5am.cloud/api/badge/&lt;id&gt;/status?label=wil</span>)
 </code></pre></div>
 </li>
 </ol>

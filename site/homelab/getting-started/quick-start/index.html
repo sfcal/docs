@@ -1958,7 +1958,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:sfcal/homelab.git
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>homelab
 </code></pre></div>
-<p>Set your environment (defaults to <code>dev</code>):</p>
+<p>Set your environment once for the shell, or pass <code>ENV=</code> to every task (there is no default):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 <h2 id="2-build-vm-templates"><a class="toclink" href="#2-build-vm-templates">2. Build VM Templates</a></h2>
@@ -2007,7 +2007,7 @@
 <li><a href="../../reference/tasks/">Task Commands</a> — full command reference</li>
 </ul>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>Packer build fails with 401</strong> — Check Proxmox API token credentials in <code>packer/environments/wil/credentials.wil.pkrvars.hcl</code>. Ensure the token has <code>VM.Allocate</code> and <code>Datastore.AllocateSpace</code> permissions.</p>
+<p><strong>Packer build fails with 401</strong> — Check Proxmox API token credentials in <code>packer/environments/wil/credentials.wil.pkrvars.hcl.sops</code> (open it with <code>sops</code>). Ensure the token has <code>VM.Allocate</code> and <code>Datastore.AllocateSpace</code> permissions.</p>
 <p><strong>Terraform can't find template</strong> — The template name must match what Packer created. Check with <code>qm list</code> on the Proxmox host. Template names follow the pattern <code>ubuntu-server-&lt;env&gt;-base</code>.</p>
 <p><strong>Ansible can't connect</strong> — Verify the VM is running (<code>qm status &lt;vmid&gt;</code>), the IP is correct in <code>hosts.ini</code>, and your SSH key is authorized.</p>
 <p><strong>DNS not resolving</strong> — The networking VM must be deployed first. Other VMs use it as their nameserver (<code>10.2.20.53</code> in WIL).</p>

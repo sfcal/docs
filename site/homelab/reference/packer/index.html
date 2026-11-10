@@ -2082,14 +2082,11 @@
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Build Debian Bookworm template</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>task<span class="w"> </span>packer:build-debian<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Build Netboot VM template</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>task<span class="w"> </span>packer:build-netboot<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Build Windows template (needs the Windows and virtio-win ISOs on Proxmox, see below)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>task<span class="w"> </span>packer:build-windows<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># Build Windows template (needs the Windows and virtio-win ISOs on Proxmox, see below)</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>task<span class="w"> </span>packer:build-windows<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c1"># Clean up logs and ISOs</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>task<span class="w"> </span>packer:clean
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># Clean up logs and ISOs</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>task<span class="w"> </span>packer:clean
 </code></pre></div>
 <h2 id="templates"><a class="toclink" href="#templates">Templates</a></h2>
 <table>
@@ -2157,7 +2154,7 @@
 <a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    │   ├── ubuntu-desktop-variables.pkrvars.hcl  # Ubuntu Desktop build variables
 <a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    │   ├── debian-variables.pkrvars.hcl     # Debian build variables
 <a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    │   ├── windows-variables.pkrvars.hcl    # Windows build variables
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    │   └── credentials.wil.pkrvars.hcl      # Proxmox API tokens (encrypted)
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    │   └── credentials.wil.pkrvars.hcl.sops # Proxmox API tokens (encrypted)
 <a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    └── ldn/
 </code></pre></div>
 <h2 id="ubuntu-desktop-template"><a class="toclink" href="#ubuntu-desktop-template">Ubuntu Desktop Template</a></h2>
@@ -2263,10 +2260,11 @@
 <h2 id="credentials"><a class="toclink" href="#credentials">Credentials</a></h2>
 <p>Proxmox API credentials (and, for the Windows template, the <code>ssh_password</code> of the local administrator and the optional <code>smb_password</code> NAS password) are stored in SOPS-encrypted files:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Edit credentials</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sops<span class="w"> </span>packer/environments/wil/credentials.wil.pkrvars.hcl
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sops<span class="w"> </span>packer/environments/wil/credentials.wil.pkrvars.hcl.sops
 </code></pre></div>
+<p>A build decrypts the file for the one <code>packer build</code> command (<code>sops exec-file</code>), so no plain-text <code>credentials.&lt;env&gt;.pkrvars.hcl</code> is needed.</p>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>401 Unauthorized</strong> — The Proxmox API token is invalid or lacks permissions. Verify the token in <code>credentials.&lt;env&gt;.pkrvars.hcl</code> (decrypt with <code>sops</code>). The token needs <code>VM.Allocate</code>, <code>VM.Clone</code>, <code>Datastore.AllocateSpace</code>, and related permissions.</p>
+<p><strong>401 Unauthorized</strong> — The Proxmox API token is invalid or lacks permissions. Verify the token in <code>credentials.&lt;env&gt;.pkrvars.hcl.sops</code> (open it with <code>sops</code>). The token needs <code>VM.Allocate</code>, <code>VM.Clone</code>, <code>Datastore.AllocateSpace</code>, and related permissions.</p>
 <p><strong>Template name conflict</strong> — A template with the same name already exists. Delete the old template from Proxmox first: <code>qm destroy &lt;vmid&gt;</code>.</p>
 <p><strong>ISO not found</strong> — The <code>iso_file</code> path must match an ISO uploaded to Proxmox storage. Check with <code>pvesm list &lt;storage&gt;</code> on the Proxmox host.</p>
 <p><strong>Build hangs at SSH</strong> — The VM can't reach the internet for package installation, or cloud-init hasn't configured networking. Check Proxmox network bridge and VLAN settings.</p>

@@ -2188,16 +2188,6 @@
 <td>infrastructure</td>
 </tr>
 <tr>
-<td><code>ntp_server</code></td>
-<td>ntp</td>
-<td>1002</td>
-<td>10.2.20.123</td>
-<td>1</td>
-<td>1GB</td>
-<td>20G</td>
-<td>infrastructure</td>
-</tr>
-<tr>
 <td><code>monitoring_server</code></td>
 <td>monitoring</td>
 <td>1107</td>
@@ -2231,7 +2221,7 @@
 </table>
 <h2 id="implementation-details"><a class="toclink" href="#implementation-details">Implementation Details</a></h2>
 <ul>
-<li><strong>Provider</strong> — <a href="https://registry.terraform.io/providers/bpg/proxmox/latest/docs">bpg/proxmox</a>, pinned in <code>versions.tf</code>. It takes the endpoint and API token from the same <code>terraform.tfvars</code> variables (<code>proxmox_api_url</code> without <code>/api2/json</code>, <code>&lt;token id&gt;=&lt;secret&gt;</code>).</li>
+<li><strong>Provider</strong> — <a href="https://registry.terraform.io/providers/bpg/proxmox/latest/docs">bpg/proxmox</a>, pinned in <code>versions.tf</code>. It takes the endpoint and API token from the variables in the site's <code>terraform.tfvars.sops</code> (<code>proxmox_api_url</code> without <code>/api2/json</code>, <code>&lt;token id&gt;=&lt;secret&gt;</code>), which each task decrypts for its one command (<code>sops exec-file</code>).</li>
 <li><strong>Full clones</strong> — VMs are full clones, not linked. Independent of templates after creation. The template is looked up by name on every plan, so a missing or duplicated template name fails the plan (it never destroys anything).</li>
 <li><strong>Cloud-init</strong> — Static IP via the <code>initialization</code> block (<code>ipconfig0: ip=&lt;address&gt;/24,gw=&lt;gateway&gt;</code>, drive on <code>ide0</code>). Assumes /24 subnets. bpg keeps cloud-init values of the template that the module does not set, such as a <code>cipassword</code> set by hand on the template; telmate removed them.</li>
 <li><strong>State</strong> — Per-environment state files at <code>terraform/environments/&lt;env&gt;/terraform.tfstate</code>. Import a VM with <code>terraform import 'module.infrastructure.module.vms["&lt;key&gt;"].proxmox_virtual_environment_vm.vm' &lt;node&gt;/&lt;vmid&gt;</code>.</li>
@@ -2240,8 +2230,8 @@
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
 <p><strong>Plan error at <code>clone.vm_id</code></strong> — "Attempt to get attribute from null value" means no template named <code>template_name</code> exists on <code>proxmox_node</code>; "must be a list, set, or tuple value with either zero or one elements" means two templates share the name. Check with <code>qm list</code> on the Proxmox host. Names follow <code>ubuntu-server-&lt;env&gt;-base</code>.</p>
 <p><strong>"VMID already exists"</strong> — Another VM uses that ID. Check <code>qm list</code> or the existing entries in <code>vms.auto.tfvars</code>.</p>
-<p><strong>State out of sync</strong> — If a VM was deleted outside Terraform, clean state with <code>task terraform:clean ENV=wil</code> and redeploy.</p>
-<p><strong>Provider authentication error</strong> — Verify Proxmox API credentials in the encrypted <code>terraform.tfvars</code> file. Decrypt with <code>sops terraform/environments/&lt;env&gt;/terraform.tfvars</code>.</p>
+<p><strong>State out of sync</strong> — If a VM was deleted outside Terraform, it is still in the state. Drop it with <code>terraform state rm 'module.infrastructure.module.vms["&lt;key&gt;"]'</code> in <code>terraform/environments/&lt;env&gt;/</code> and redeploy. (<code>task terraform:clean</code> only removes the plugin cache.)</p>
+<p><strong>Provider authentication error</strong> — Verify the Proxmox API credentials in the encrypted <code>terraform.tfvars.sops</code>. Open it with <code>sops terraform/environments/&lt;env&gt;/terraform.tfvars.sops</code>. The tasks decrypt it themselves and pass it with <code>-var-file</code>, which wins over a plain-text <code>terraform.tfvars</code> left in the folder, so that copy is no longer needed.</p>
 
 
 

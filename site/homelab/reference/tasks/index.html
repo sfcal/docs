@@ -2039,7 +2039,7 @@
 <td>Kasm agent for Deluge on the OVH VPS</td>
 </tr>
 <tr>
-<td><code>task ansible:deploy-netboot ENV=wil</code></td>
+<td><code>task ansible:deploy-netboot ENV=ldn</code></td>
 <td>netboot.xyz PXE re-imaging</td>
 </tr>
 <tr>
@@ -2049,10 +2049,6 @@
 <tr>
 <td><code>task ansible:deploy-media ENV=wil</code></td>
 <td>Plex and *arr stack</td>
-</tr>
-<tr>
-<td><code>task ansible:deploy-homeassistant ENV=wil</code></td>
-<td>Home Assistant</td>
 </tr>
 <tr>
 <td><code>task ansible:deploy-frigate ENV=wil</code></td>
@@ -2115,10 +2111,11 @@
 </tr>
 <tr>
 <td><code>task terraform:clean ENV=wil</code></td>
-<td>Clean <code>.terraform</code>, state, and lock files</td>
+<td>Remove the plugin cache (<code>.terraform</code>); the state file stays</td>
 </tr>
 </tbody>
 </table>
+<p>Each command decrypts the site's <code>terraform.tfvars.sops</code> for itself (<code>sops exec-file</code>), so no plain-text <code>terraform.tfvars</code> has to sit in the folder.</p>
 <h2 id="packer"><a class="toclink" href="#packer">Packer</a></h2>
 <table>
 <thead>
@@ -2141,10 +2138,6 @@
 <td>Build Debian Bookworm template</td>
 </tr>
 <tr>
-<td><code>task packer:build-netboot ENV=wil</code></td>
-<td>Build Netboot VM template</td>
-</tr>
-<tr>
 <td><code>task packer:build-windows ENV=ldn</code></td>
 <td>Build Windows template (UEFI/TPM, unattended install)</td>
 </tr>
@@ -2154,6 +2147,7 @@
 </tr>
 </tbody>
 </table>
+<p>A build decrypts <code>credentials.&lt;env&gt;.pkrvars.hcl.sops</code> for the one <code>packer build</code> command, the same way.</p>
 <h2 id="ca"><a class="toclink" href="#ca">CA</a></h2>
 <table>
 <thead>
@@ -2211,8 +2205,8 @@
 </thead>
 <tbody>
 <tr>
-<td><code>task docker:exe</code></td>
-<td>Build the homelab execution environment container</td>
+<td><code>task docker:ipxe-builder</code></td>
+<td>Build the custom iPXE ISO for the Haivision template (<code>packer:build-haivision</code> runs it first)</td>
 </tr>
 </tbody>
 </table>
@@ -2225,10 +2219,6 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>task tui</code></td>
-<td>Launch the homelab management TUI</td>
-</tr>
 <tr>
 <td><code>task --list-all</code></td>
 <td>List all available tasks</td>
@@ -2249,8 +2239,8 @@
 <tr>
 <td><code>ENV</code></td>
 <td>All</td>
-<td><code>ldn</code></td>
-<td>Target environment (e.g., <code>wil</code>, <code>ldn</code>)</td>
+<td>—</td>
+<td>Target site (<code>wil</code>, <code>ldn</code>, <code>ovh</code>). Required: there is no default</td>
 </tr>
 <tr>
 <td><code>VM</code></td>
@@ -2280,7 +2270,7 @@
 </table>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
 <p><strong>"task: Task not found"</strong> — Check the exact task name with <code>task --list-all</code>. Namespace and command are separated by <code>:</code>.</p>
-<p><strong>Wrong environment</strong> — <code>ENV</code> defaults to <code>ldn</code> (production). Always pass <code>ENV=wil</code> (or your environment) explicitly.</p>
+<p><strong>"Pass ENV=<site>"</strong> — <code>ENV</code> has no default. A task that needs it stops before it runs anything when <code>ENV</code> is missing; add <code>ENV=wil</code>, <code>ENV=ldn</code> or <code>ENV=ovh</code>.</p>
 <p><strong>Ansible timeout</strong> — Add <code>-vvv</code> for verbose output: edit the task in <code>.taskfiles/ansible/Taskfile.yaml</code> and add <code>-vvv</code> to <code>EXTRA_ARGS</code>.</p>
 
 

@@ -1983,7 +1983,7 @@
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>└── environments/
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    ├── wil/
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    │   ├── ubuntu-variables.pkrvars.hcl
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    │   └── credentials.wil.pkrvars.hcl  # Encrypted
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    │   └── credentials.wil.pkrvars.hcl.sops  # Encrypted
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    └── ldn/
 </code></pre></div>
 </div>
@@ -2012,7 +2012,7 @@
 </code></pre></div>
 <p>To add a site, or move a site's DNS server or zones, edit its row, then deploy networking at every site. A site without DNS (ovh) changes nothing at the others.</p>
 <h2 id="how-env-works"><a class="toclink" href="#how-env-works">How <code>ENV=</code> Works</a></h2>
-<p>The root <code>Taskfile.yaml</code> defines <code>ENV</code> as a variable (defaults to <code>ldn</code>). Terraform and Packer use it to resolve paths; Ansible uses it to limit the run to the site's group:</p>
+<p><code>ENV</code> names the site and has no default: a task that reads it stops with "Pass ENV=<site>" when it is missing. Terraform and Packer use it to resolve paths; Ansible uses it to limit the run to the site's group:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># .taskfiles/ansible/Taskfile.yaml</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">vars</span><span class="p">:</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">HOSTS_FILE</span><span class="p">:</span><span class="w"> </span><span class="s">'inventory/hosts.ini'</span>
@@ -2040,11 +2040,11 @@
 <ul>
 <li>Group variables (<code>group_vars/site_&lt;env&gt;/</code>, including the app registry and proxy lists)</li>
 <li>VM definitions (<code>vms.auto.tfvars</code>)</li>
-<li>Secrets (<code>secrets.sops.yml</code>, <code>credentials.*.pkrvars.hcl</code>)</li>
+<li>Secrets (<code>secrets.sops.yml</code>, <code>terraform.tfvars.sops</code>, <code>credentials.*.pkrvars.hcl.sops</code>)</li>
 <li>Terraform state (<code>terraform.tfstate</code>)</li>
 </ul>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
-<p><strong>Wrong environment deployed</strong> — Double-check <code>ENV=</code> in your command. The default is <code>ldn</code> (production), not <code>wil</code>. Run <code>task ansible:ping ENV=&lt;env&gt;</code> to verify you're targeting the right hosts.</p>
+<p><strong>Wrong environment deployed</strong> — Double-check <code>ENV=</code> in your command (there is no default). Run <code>task ansible:ping ENV=&lt;env&gt;</code> to verify you're targeting the right hosts.</p>
 <p><strong>Missing environment directory</strong> — Each new environment needs a <code>[site_&lt;env&gt;]</code> group in <code>ansible/inventory/hosts.ini</code>, a row in <code>group_vars/all/sites.yml</code>, a <code>group_vars/site_&lt;env&gt;/</code> folder (with <code>site: &lt;env&gt;</code> in its <code>vars.yml</code>, and an <code>apps.yml</code>, at least <code>apps: {}</code>, which the Taskfile passes to <code>deploy-app</code> and <code>deploy-all</code>), and a <code>terraform/environments/&lt;env&gt;/</code> directory with the required files.</p>
 <p><strong>Cross-site access</strong> — WIL and LDN communicate over Tailscale. Ensure the subnet router VM is deployed and advertising routes. See <a href="../../infrastructure/networking/tailscale/">Tailscale</a>.</p>
 

@@ -2098,7 +2098,7 @@
 <p><strong>Template not found</strong> — The <code>template_name</code> must match exactly one Packer template on the node; otherwise the plan fails at <code>clone.vm_id</code>. Check with <code>qm list</code> on the Proxmox host. Build one with <code>task packer:build-ubuntu ENV=wil</code>.</p>
 <p><strong>VMID conflict</strong> — Each VM needs a unique VMID. Check existing IDs in <code>vms.auto.tfvars</code> or with <code>qm list</code>.</p>
 <p><strong>Can't SSH after provisioning</strong> — Cloud-init may still be running. Wait 30 seconds, then retry. Verify the IP is correct and the VM is on the right network bridge.</p>
-<p><strong>State conflict</strong> — If a VM was manually deleted, Terraform state is stale. Run <code>task terraform:clean ENV=wil</code> and redeploy.</p>
+<p><strong>State conflict</strong> — If a VM was deleted by hand, it is still in the Terraform state. Drop it there with <code>terraform state rm 'module.infrastructure.module.vms["&lt;key&gt;"]'</code> in <code>terraform/environments/&lt;env&gt;/</code>, then redeploy. (<code>task terraform:clean</code> only removes the plugin cache.)</p>
 
 
 

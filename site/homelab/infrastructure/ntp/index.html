@@ -2138,6 +2138,7 @@
 </tr>
 </tbody>
 </table>
+<p>These are the addresses set aside for a time server. Neither is in the inventory at the moment (wil's VM is gone), so <code>[infra_ntp]</code> is empty and <code>deploy-ntp</code> matches no host. To bring one back, add its address under <code>[infra_ntp]</code> and its <code>[site_&lt;env&gt;]</code> group in <code>ansible/inventory/hosts.ini</code>.</p>
 <h2 id="deployment"><a class="toclink" href="#deployment">Deployment</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-ntp<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>

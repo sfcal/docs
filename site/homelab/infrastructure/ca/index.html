@@ -2194,7 +2194,7 @@
 <li>Starts the Step-CA container</li>
 <li>Waits 10 seconds for initialization</li>
 <li>Runs a health check against <code>https://127.0.0.1:9000/health</code></li>
-<li>Configures certificate duration claims in <code>ca.json</code> via <code>jq</code></li>
+<li>Sets the certificate duration claims and the ACME provisioner in <code>ca.json</code> via <code>jq</code> (rewritten, and the CA restarted, only when a value differs)</li>
 <li>Exports the root CA certificate to <code>/opt/step-ca/root_ca.crt</code></li>
 <li>Displays status output</li>
 </ol>
@@ -2314,7 +2314,7 @@
 </code></pre></div>
 </li>
 </ol>
-<p>The task applies duration changes to <code>ca.json</code> via <code>jq</code> on each run.</p>
+<p>The task compares <code>ca.json</code> with these values on each run. It rewrites the file and restarts the CA only when they differ, so a deploy that changes nothing leaves the CA running.</p>
 <h3 id="restart-the-ca"><a class="toclink" href="#restart-the-ca">Restart the CA</a></h3>
 <p>The playbook handlers support lifecycle management:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Full redeploy (will restart automatically if config changes)</span>
