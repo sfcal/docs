@@ -1972,11 +1972,12 @@
 </code></pre></div>
 <p>Caddy handles certificate issuance, renewal, and OCSP stapling automatically.</p>
 <h2 id="private-ca-step-ca"><a class="toclink" href="#private-ca-step-ca">Private CA (Step-CA)</a></h2>
-<p><a href="../../infrastructure/ca/">Step-CA</a> provides a private certificate authority for internal services that need TLS but aren't behind Caddy.</p>
+<p><a href="../../infrastructure/ca/">Step-CA</a> provides a private certificate authority for internal services that need TLS but aren't behind Caddy. Both sites chain to one root whose key is on a YubiKey; each site's CA can only issue for its own <code>&lt;site&gt;.5am.cloud</code> names and LAN addresses.</p>
 <h3 id="check-ca-health"><a class="toclink" href="#check-ca-health">Check CA Health</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>task<span class="w"> </span>ca:health<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 <h3 id="fetch-the-root-certificate"><a class="toclink" href="#fetch-the-root-certificate">Fetch the Root Certificate</a></h3>
+<p>The root is the same for both sites and is in the repo: <code>ansible/playbooks/infrastructure/ca/files/root_ca.crt</code>. To fetch the copy a CA is serving:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>task<span class="w"> </span>ca:root<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 <h3 id="sign-a-certificate"><a class="toclink" href="#sign-a-certificate">Sign a Certificate</a></h3>

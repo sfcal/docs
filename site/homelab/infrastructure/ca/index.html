@@ -1525,6 +1525,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#root-and-intermediates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root and intermediates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1862,6 +1879,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#root-and-intermediates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root and intermediates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2056,17 +2090,30 @@
 </div>
 <h2 id="architecture"><a class="toclink" href="#architecture">Architecture</a></h2>
 <pre class="mermaid"><code>graph TD
-    StepCA[Step-CA Server]
-    Service1[Service A]
-    Service2[Service B]
-    RootCert[Root CA Certificate]
+    Root[5am Root CA&lt;br/&gt;key on the YubiKey]
+    WIL[WIL intermediate&lt;br/&gt;wil.5am.cloud, 10.2.0.0/16]
+    LDN[LDN intermediate&lt;br/&gt;ldn.5am.cloud, 10.3.0.0/16]
+    Service1[Services at wil]
+    Service2[Services at ldn]
 
-    StepCA --&gt;|issues cert| Service1
-    StepCA --&gt;|issues cert| Service2
-    StepCA --&gt;|exports| RootCert
-    RootCert --&gt;|trusted by| Service1
-    RootCert --&gt;|trusted by| Service2</code></pre>
-<p>Step-CA initializes on first run with a root CA certificate and an admin provisioner. Services request certificates via the ACME protocol or the <code>step</code> CLI. The root CA certificate is exported and can be distributed to clients for trust.</p>
+    Root --&gt;|signs| WIL
+    Root --&gt;|signs| LDN
+    WIL --&gt;|issues certs| Service1
+    LDN --&gt;|issues certs| Service2</code></pre>
+<p>There is one root for both sites. Its key was generated on a YubiKey (PIV slot 9c) and cannot be copied off it; every signature needs the PIN and a touch. There is no backup: if the YubiKey is lost, the intermediates keep working until they expire, but a new root has to be made and trusted everywhere.</p>
+<p>Each site's Step-CA holds an intermediate signed by that root. The intermediate carries name constraints, so it can only issue for its own site's domain (<code>&lt;site&gt;.5am.cloud</code> and anything under it), its LAN range and <code>127.0.0.1</code>. Step-CA refuses other names, and clients reject such a certificate even if one were made with a stolen intermediate key. Services request certificates via the ACME protocol or the <code>step</code> CLI. Devices only need to trust the one root, <code>ansible/playbooks/infrastructure/ca/files/root_ca.crt</code>.</p>
+<h3 id="root-and-intermediates"><a class="toclink" href="#root-and-intermediates">Root and intermediates</a></h3>
+<p>Needs <code>ykman</code>, <code>step</code> and the <code>step-kms-plugin</code> on the machine with the YubiKey.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Once, ever: change the PIN and PUK, then make the root on the YubiKey</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ykman<span class="w"> </span>piv<span class="w"> </span>access<span class="w"> </span>change-pin
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ykman<span class="w"> </span>piv<span class="w"> </span>access<span class="w"> </span>change-puk
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>task<span class="w"> </span>ca:root-init
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Per site, and again before an intermediate expires (5 years)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>task<span class="w"> </span>ca:sign-intermediate<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+</code></pre></div>
+<p><code>ca:sign-intermediate</code> makes a new intermediate key on the site's CA (it never leaves the VM), signs it on the YubiKey and saves the certificate as <code>files/intermediate_ca_&lt;site&gt;.crt</code>. The deploy installs the root and the intermediate, switches to the new key only if it matches the certificate, deletes the key of the root Step-CA made for itself on first start, and restarts the CA. A site with no signed intermediate in <code>files/</code> keeps Step-CA's self-made chain.</p>
 <h2 id="file-locations"><a class="toclink" href="#file-locations">File Locations</a></h2>
 <table>
 <thead>
@@ -2091,6 +2138,18 @@
 <tr>
 <td><code>playbooks/infrastructure/ca/handlers/main.yml</code></td>
 <td>Container lifecycle handlers</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/ca/files/root_ca.crt</code></td>
+<td>The root certificate (public)</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/ca/files/intermediate_ca_&lt;site&gt;.crt</code></td>
+<td>Each site's intermediate certificate (public)</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/ca/files/intermediate.tpl</code></td>
+<td>Template for intermediates (name constraints)</td>
 </tr>
 <tr>
 <td><code>inventory/group_vars/site_&lt;env&gt;/infra_ca/vars.yml</code></td>
@@ -2125,7 +2184,7 @@
 </tbody>
 </table>
 <h2 id="deployment"><a class="toclink" href="#deployment">Deployment</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 <p>The task file performs these steps in order:</p>
 <ol>
@@ -2232,34 +2291,34 @@
 <p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_ca/vars.yml</code> · <code>ansible/inventory/group_vars/site_&lt;env&gt;/secrets.sops.yml</code></small></p>
 <h2 id="common-tasks"><a class="toclink" href="#common-tasks">Common Tasks</a></h2>
 <h3 id="verify-ca-health"><a class="toclink" href="#verify-ca-health">Verify CA health</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>task<span class="w"> </span>ca:health<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>task<span class="w"> </span>ca:health<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 <p>Or manually:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>https://ca.wil.5am.cloud:9000/health
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>https://ca.wil.5am.cloud:9000/health
 </code></pre></div>
 <h3 id="export-the-root-ca-certificate"><a class="toclink" href="#export-the-root-ca-certificate">Export the root CA certificate</a></h3>
 <p>The root certificate is automatically exported during deployment to <code>/opt/step-ca/root_ca.crt</code>. To retrieve it:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ssh<span class="w"> </span>sfcal@10.2.20.9<span class="w"> </span>cat<span class="w"> </span>/opt/step-ca/root_ca.crt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ssh<span class="w"> </span>sfcal@10.2.20.9<span class="w"> </span>cat<span class="w"> </span>/opt/step-ca/root_ca.crt
 </code></pre></div>
 <h3 id="change-certificate-duration"><a class="toclink" href="#change-certificate-duration">Change certificate duration</a></h3>
 <ol>
 <li>
 <p>Edit <code>ansible/inventory/group_vars/site_&lt;env&gt;/infra_ca/vars.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">step_ca_default_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">"2160h"</span><span class="w">   </span><span class="c1"># 90 days</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">step_ca_max_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">"17520h"</span><span class="w">      </span><span class="c1"># 2 years</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">step_ca_default_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">"2160h"</span><span class="w">   </span><span class="c1"># 90 days</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">step_ca_max_cert_duration</span><span class="p">:</span><span class="w"> </span><span class="s">"17520h"</span><span class="w">      </span><span class="c1"># 2 years</span>
 </code></pre></div>
 </li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 </li>
 </ol>
 <p>The task applies duration changes to <code>ca.json</code> via <code>jq</code> on each run.</p>
 <h3 id="restart-the-ca"><a class="toclink" href="#restart-the-ca">Restart the CA</a></h3>
 <p>The playbook handlers support lifecycle management:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Full redeploy (will restart automatically if config changes)</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Full redeploy (will restart automatically if config changes)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 
 

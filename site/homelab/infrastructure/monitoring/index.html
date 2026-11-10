@@ -1951,10 +1951,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#add-a-homepage-service-widget" class="md-nav__link">
+  <a href="#add-a-service-to-homepage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Add a Homepage service widget
+        Add a service to Homepage
       
     </span>
   </a>
@@ -2510,10 +2510,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#add-a-homepage-service-widget" class="md-nav__link">
+  <a href="#add-a-service-to-homepage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Add a Homepage service widget
+        Add a service to Homepage
       
     </span>
   </a>
@@ -2797,11 +2797,11 @@
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></td>
-<td>Homepage services dashboard</td>
+<td>Homepage service cards, for all four tabs</td>
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/templates/homepage/bookmarks.yaml.j2</code></td>
-<td>Homepage bookmarks</td>
+<td>Homepage bookmarks (none)</td>
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/templates/homepage/settings.yaml.j2</code></td>
@@ -3091,15 +3091,15 @@
 <tbody>
 <tr>
 <td><code>services.yaml.j2</code></td>
-<td>Service cards with status widgets (Grafana graphs, media, apps, infrastructure, monitoring, node exporters)</td>
+<td>Service cards: a small card per service for the Overview tab, and the full cards with widgets for the site tabs (Grafana graphs, media, apps, infrastructure, monitoring)</td>
 </tr>
 <tr>
 <td><code>bookmarks.yaml.j2</code></td>
-<td>Quick links (TrueNAS, Proxmox)</td>
+<td>Empty: every link is a card on the Overview tab. The file stays, because Homepage writes its example bookmarks when it is missing</td>
 </tr>
 <tr>
 <td><code>settings.yaml.j2</code></td>
-<td>Theme (light, gray), status dots, tabs (Overview, Media, Apps), group icons, layout (row style, column counts)</td>
+<td>Theme (light, gray), status dots, tabs (Overview, wil, ldn, ovh), group icons, layout (row style, column counts)</td>
 </tr>
 <tr>
 <td><code>widgets.yaml.j2</code></td>
@@ -3111,12 +3111,43 @@
 </tr>
 </tbody>
 </table>
+<p>The dashboard has four tabs:</p>
+<table>
+<thead>
+<tr>
+<th>Tab</th>
+<th>Shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Overview</td>
+<td>Every service of all three sites as a small card (icon, link, status dot), in the groups Media, Apps, Infrastructure and Monitoring. Opens first</td>
+</tr>
+<tr>
+<td>wil</td>
+<td>wil in full: System Activity graphs, the media stack's cards with their widgets, apps, infrastructure, Prometheus and the node exporters</td>
+</tr>
+<tr>
+<td>ldn</td>
+<td>The same for ldn</td>
+</tr>
+<tr>
+<td>ovh</td>
+<td>The VPS's own services: Grafana, Uptime Kuma, Kanidm</td>
+</tr>
+</tbody>
+</table>
 <p><code>services.yaml.j2</code> is plain Homepage YAML; edit it directly. These parts are less obvious:</p>
 <ul>
-<li><strong>Per-site groups:</strong> System Activity, Apps, Infrastructure, Monitoring and Node Exporters appear once per site, named <code>(wil)</code> and <code>(ldn)</code>. A new group needs a matching entry in the <code>layout</code> of <code>settings.yaml.j2</code>, with the <code>tab</code> it belongs on; a group left out of <code>layout</code> shows on every tab.</li>
+<li><strong>Two cards per service:</strong> Homepage shows a group on one tab only, so each service is written twice: a small card (<code>icon</code>, <code>href</code>, <code>siteMonitor</code>) in an Overview group, and its full card (with <code>description</code> and widgets) in its site's group. Change a link or a status URL in both.</li>
+<li><strong>Links:</strong> a small card's <code>href</code> ends in <code>/</code> and its full card's doesn't. Quick launch (start typing on the page) lists both cards, and two entries with the same name and the same link make it show results that no longer match what was typed.</li>
+<li><strong>Group names</strong> are unique across the file, because Homepage finds a card by its group's name. That is why most groups on the site tabs carry their site: <code>Apps (wil)</code>, <code>Apps (ldn)</code>, <code>Services (ovh)</code>. A new group needs a matching entry in the <code>layout</code> of <code>settings.yaml.j2</code>, with the <code>tab</code> it belongs on; a group left out of <code>layout</code> shows on every tab.</li>
+<li><strong>Status dots:</strong> <code>siteMonitor</code> requests the URL from the VPS and counts any answer up to 403 as up. KOSync's small card has none: it answers 412 to a request without KOReader's <code>Accept</code> header, so only its full card checks it, with a <code>customapi</code> widget that sends the header.</li>
 <li><strong>Tile colours:</strong> a widget's <code>highlight</code> rules mark tiles good, warn or danger, and <code>custom.css</code> tints them lime, orange or pink (Homepage's own tints lose to the tile background). Used for Prometheus targets down, Uptime Kuma sites down, Tdarr errors, Prowlarr failed grabs and KOSync health.</li>
-<li><strong>System Activity</strong> shows the four panels of the System Activity Grafana dashboard once per site, in iframes from <code>http://dashboard:3000/d-solo/system-activity?var-ds=prometheus-&lt;site&gt;&amp;panelId=1</code> to <code>4</code>, in Grafana's light theme (<code>theme=light</code>). <code>var-ds</code> picks the site's Prometheus. Grafana allows anonymous viewing and embedding. The time range and refresh interval come from the dashboard JSON.</li>
-<li><strong>Node Exporters</strong> lists the targets of each site's <code>prometheus_node_targets</code> by hand; add a node there too.</li>
+<li><strong>System Activity</strong> shows the four panels of the System Activity Grafana dashboard on each site's tab, in iframes from <code>http://dashboard:3000/d-solo/system-activity?var-ds=prometheus-&lt;site&gt;&amp;panelId=1</code> to <code>4</code>, in Grafana's light theme (<code>theme=light</code>). <code>var-ds</code> picks the site's Prometheus. Grafana allows anonymous viewing and embedding. The time range and refresh interval come from the dashboard JSON.</li>
+<li><strong>Node exporters</strong> follow Prometheus in each site's Monitoring group: the targets of the site's <code>prometheus_node_targets</code>, listed by hand; add a node there too.</li>
+<li><strong>Five cards in a row</strong> (<code>columns: 5</code>: the Overview groups and the Monitoring groups) become four in a window 1024px to 1279px wide, where five are too narrow (<code>custom.css</code>). Narrower windows get Homepage's own two in a row, then one.</li>
 <li><strong>SABnzbd</strong> has two widgets: Homepage's <code>sabnzbd</code> widget (speed, queue) and a <code>customapi</code> widget that reads the download totals for today, this week, this month and all time from SABnzbd's <code>server_stats</code> API once a minute.</li>
 </ul>
 <p><small><strong>Sources:</strong> <code>ansible/inventory/group_vars/site_ovh/infra_dashboard/vars.yml</code> · <a href="https://github.com/sfcal/homelab/blob/main/ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2"><code>ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></a></small></p>
@@ -3242,10 +3273,10 @@
 </code></pre></div>
 </li>
 </ol>
-<h3 id="add-a-homepage-service-widget"><a class="toclink" href="#add-a-homepage-service-widget">Add a Homepage service widget</a></h3>
+<h3 id="add-a-service-to-homepage"><a class="toclink" href="#add-a-service-to-homepage">Add a service to Homepage</a></h3>
 <ol>
 <li>Edit <code>ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></li>
-<li>Add a new service entry under the appropriate section</li>
+<li>Add the service twice: its full card (description, widget) to a group of its site, and a small card (<code>icon</code>, <code>href</code> ending in <code>/</code>, <code>siteMonitor</code>) to the matching Overview group</li>
 <li>If the service requires an API key, add the key to the <code>infra_dashboard</code> section of <code>group_vars/site_ovh/secrets.sops.yml</code> and pass it through <code>dashboard/templates/compose.yaml.j2</code></li>
 <li>
 <p>Deploy:</p>
