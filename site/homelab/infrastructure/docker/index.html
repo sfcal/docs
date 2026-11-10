@@ -2117,10 +2117,35 @@
 <p>Hermes Agent (ldn) has its own playbook, which also installs Claude Code and the Claude subscription plugin in the container. Deploy with <code>task ansible:deploy-hermes ENV=ldn</code>; see <a href="../hermes/">Hermes Agent</a>.</p>
 <h2 id="kasm"><a class="toclink" href="#kasm">Kasm</a></h2>
 <p>Kasm (ldn, on the <code>work</code> VM, <code>https://kasm.ldn.5am.cloud</code>) is the LinuxServer image, which runs Kasm's own Docker daemon inside the container. Its state is under <code>/var/lib/kasm/</code>. Deploy with <code>task ansible:deploy-kasm ENV=ldn</code>.</p>
-<p>Custom workspace images live in <code>ansible/playbooks/apps/kasm/files/</code>, one folder per image with a <code>Dockerfile</code> (folder names lowercase: they become the image name). Each deploy copies them to <code>/opt/kasm/images/</code> and builds every folder inside Kasm's Docker as <code>localhost/&lt;folder&gt;:latest</code>, pulling newer base images first. To use one, add a workspace with that image name and restrict it to the work VM's agent (<code>85a6c3</code>): the VPS agent (<a href="../kasm-agent/">Kasm Agent</a>) doesn't have it. The work VM's agent prunes images in Aggressive mode: within 30 s it deletes any image no workspace uses, so save the workspace first, then deploy.</p>
+<p>Custom workspace images live in <code>ansible/playbooks/apps/kasm/files/</code>, one folder per image with a <code>Dockerfile</code> (folder names lowercase: they become the image name). Each image is built on one machine only, the one whose agent runs its workspace, listed in <code>kasm_workspace_images</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Machine</th>
+<th>List</th>
+<th>Built by</th>
+<th>Agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>work VM</td>
+<td><code>site_ldn/app_kasm/vars.yml</code> (none now)</td>
+<td><code>task ansible:deploy-kasm ENV=ldn</code>, inside Kasm's Docker</td>
+<td><code>85a6c3</code></td>
+</tr>
+<tr>
+<td>OVH VPS</td>
+<td><code>site_ovh/app_kasm_agent/vars.yml</code> (<code>deluge</code>)</td>
+<td><code>task ansible:deploy-kasm-agent ENV=ovh</code>, in the VPS's Docker (<a href="../kasm-agent/">Kasm Agent</a>)</td>
+<td><code>a67ee6</code></td>
+</tr>
+</tbody>
+</table>
+<p>Each deploy copies the build files over and builds <code>localhost/&lt;folder&gt;:latest</code>, pulling newer base images first. To use one, add a workspace with that image name and restrict it to that machine's agent: the other agent doesn't have the image. To move one, move its name to the other list, change the workspace's agent, then deploy the machine that now builds it. Agents prune images in Aggressive mode: within 30 s they delete any image no workspace of theirs uses, so save the workspace first, then deploy.</p>
 <h3 id="deluge"><a class="toclink" href="#deluge">Deluge</a></h3>
-<p>The Deluge workspace runs <code>localhost/deluge:latest</code> (<code>files/deluge/</code>) on the work VM, with no volume mappings. When a torrent finishes, Deluge's Execute plugin runs <code>torrent-archive</code>, which writes it as one uncompressed <code>&lt;torrent name&gt;.zip</code> into <code>~/Downloads</code>, so Kasm's download panel can fetch it in one go (written as <code>.zip.part</code> first, then renamed; <code>zip -0</code>, since media doesn't compress). Torrents download to <code>~/torrents</code>. Both folders, and Deluge's settings, last only as long as the session: fetch the archives before ending it. The settings come from the image (<code>core.conf</code>, <code>execute.conf</code>), which Kasm copies into each new session's home; mapping <code>~/.config</code> to a host folder would overwrite what's saved there each time. The base stays on the Kasm server's version. Deluge 2.0.3 with libtorrent 2.0 logs a harmless <code>KeyError: 'disk.num_blocks_cache_hits'</code> every few seconds.</p>
-<p>Workspace settings (Kasm's admin, not this repo): Docker Image <code>localhost/deluge:latest</code>, Docker Registry empty, Restrict Image to Kasm Agent <code>85a6c3</code>, Volume Mappings <code>{}</code>.</p>
+<p>The Deluge workspace runs <code>localhost/deluge:latest</code> (<code>files/deluge/</code>) on the OVH VPS agent, so torrent traffic leaves from the VPS's IP, with no volume mappings. When a torrent finishes, Deluge's Execute plugin runs <code>torrent-archive</code>, which writes it as one uncompressed <code>&lt;torrent name&gt;.zip</code> into <code>~/Downloads</code>, so Kasm's download panel can fetch it in one go (written as <code>.zip.part</code> first, then renamed; <code>zip -0</code>, since media doesn't compress). Torrents download to <code>~/torrents</code>. Both folders, and Deluge's settings, last only as long as the session: fetch the archives before ending it. The settings come from the image (<code>core.conf</code>, <code>execute.conf</code>), which Kasm copies into each new session's home; mapping <code>~/.config</code> to a host folder would overwrite what's saved there each time. The base stays on the Kasm server's version. Deluge 2.0.3 with libtorrent 2.0 logs a harmless <code>KeyError: 'disk.num_blocks_cache_hits'</code> every few seconds.</p>
+<p>Workspace settings (Kasm's admin, not this repo): Docker Image <code>localhost/deluge:latest</code>, Docker Registry empty, Restrict Image to Kasm Agent <code>a67ee6</code> (the VPS), Volume Mappings <code>{}</code>.</p>
 <h2 id="data-driven-apps"><a class="toclink" href="#data-driven-apps">Data-Driven Apps</a></h2>
 <p>Most applications use the shared <code>deploy-app.yml</code> playbook and are defined in the registry of the site that hosts them, <code>ansible/inventory/group_vars/site_&lt;env&gt;/apps.yml</code>. See <a href="../../guides/deploy-service/">Deploy a Service</a> for the full workflow.</p>
 <table>

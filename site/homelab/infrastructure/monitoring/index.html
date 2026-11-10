@@ -2805,11 +2805,15 @@
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/templates/homepage/settings.yaml.j2</code></td>
-<td>Homepage theme and layout</td>
+<td>Homepage theme, tabs and layout</td>
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/templates/homepage/widgets.yaml.j2</code></td>
 <td>Homepage widgets</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/files/homepage/custom.css</code></td>
+<td>Homepage colours, type and card styles</td>
 </tr>
 <tr>
 <td><code>inventory/group_vars/site_ovh/infra_dashboard/vars.yml</code></td>
@@ -3076,11 +3080,11 @@
 </tbody>
 </table>
 <h3 id="dashboard-configuration"><a class="toclink" href="#dashboard-configuration">Dashboard Configuration</a></h3>
-<p>Homepage is configured via four YAML template files:</p>
+<p>Homepage is configured via four YAML template files and a stylesheet:</p>
 <table>
 <thead>
 <tr>
-<th>Template</th>
+<th>File</th>
 <th>Purpose</th>
 </tr>
 </thead>
@@ -3095,18 +3099,23 @@
 </tr>
 <tr>
 <td><code>settings.yaml.j2</code></td>
-<td>Theme (dark, slate), layout (row style, column counts)</td>
+<td>Theme (light, gray), status dots, tabs (Overview, Media, Apps), group icons, layout (row style, column counts)</td>
 </tr>
 <tr>
 <td><code>widgets.yaml.j2</code></td>
-<td>Global widgets (search bar, datetime)</td>
+<td>Global widgets (the VPS's resources, search bar, datetime)</td>
+</tr>
+<tr>
+<td><code>files/homepage/custom.css</code></td>
+<td>The look: the layout of a dashboard shared in <a href="https://github.com/gethomepage/homepage/discussions/473#discussioncomment-18831380">Homepage's "Share your homepage" thread</a> in the colours of <a href="https://samuel.computer">samuel.computer</a> (sky page, frosted-glass header, white cards, olive accents, Inter)</td>
 </tr>
 </tbody>
 </table>
-<p><code>services.yaml.j2</code> is plain Homepage YAML; edit it directly. Four parts are less obvious:</p>
+<p><code>services.yaml.j2</code> is plain Homepage YAML; edit it directly. These parts are less obvious:</p>
 <ul>
-<li><strong>Per-site groups:</strong> System Activity, Apps, Infrastructure, Monitoring and Node Exporters appear once per site, named <code>(wil)</code> and <code>(ldn)</code>. A new group needs a matching entry in the <code>layout</code> of <code>settings.yaml.j2</code>.</li>
-<li><strong>System Activity</strong> shows the four panels of the System Activity Grafana dashboard once per site, in iframes from <code>http://dashboard:3000/d-solo/system-activity?var-ds=prometheus-&lt;site&gt;&amp;panelId=1</code> to <code>4</code>. <code>var-ds</code> picks the site's Prometheus. Grafana allows anonymous viewing and embedding. The time range and refresh interval come from the dashboard JSON.</li>
+<li><strong>Per-site groups:</strong> System Activity, Apps, Infrastructure, Monitoring and Node Exporters appear once per site, named <code>(wil)</code> and <code>(ldn)</code>. A new group needs a matching entry in the <code>layout</code> of <code>settings.yaml.j2</code>, with the <code>tab</code> it belongs on; a group left out of <code>layout</code> shows on every tab.</li>
+<li><strong>Tile colours:</strong> a widget's <code>highlight</code> rules mark tiles good, warn or danger, and <code>custom.css</code> tints them lime, orange or pink (Homepage's own tints lose to the tile background). Used for Prometheus targets down, Uptime Kuma sites down, Tdarr errors, Prowlarr failed grabs and KOSync health.</li>
+<li><strong>System Activity</strong> shows the four panels of the System Activity Grafana dashboard once per site, in iframes from <code>http://dashboard:3000/d-solo/system-activity?var-ds=prometheus-&lt;site&gt;&amp;panelId=1</code> to <code>4</code>, in Grafana's light theme (<code>theme=light</code>). <code>var-ds</code> picks the site's Prometheus. Grafana allows anonymous viewing and embedding. The time range and refresh interval come from the dashboard JSON.</li>
 <li><strong>Node Exporters</strong> lists the targets of each site's <code>prometheus_node_targets</code> by hand; add a node there too.</li>
 <li><strong>SABnzbd</strong> has two widgets: Homepage's <code>sabnzbd</code> widget (speed, queue) and a <code>customapi</code> widget that reads the download totals for today, this week, this month and all time from SABnzbd's <code>server_stats</code> API once a minute.</li>
 </ul>

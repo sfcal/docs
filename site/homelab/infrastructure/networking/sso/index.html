@@ -1502,6 +1502,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#proxmox-backup-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proxmox Backup Server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#kasm" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1925,6 +1936,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#proxmox-backup-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proxmox Backup Server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#kasm" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2063,7 +2085,7 @@
 <li>oauth2-proxy then sets a cookie for the service's domain, so the other flagged services on that domain open directly.</li>
 <li>The first visit to a flagged service on another domain passes through Kanidm without asking for the password again.</li>
 </ol>
-<p>The login is a gate in front of a service, not a replacement for its own login: a service that has its own (the NAS, for example) still asks for it. Sonarr, Radarr, Prowlarr, SABnzbd and Pulsarr have theirs turned off. <a href="#proxmox">Proxmox</a> and <a href="#kasm">Kasm</a> log in to Kanidm themselves.</p>
+<p>The login is a gate in front of a service, not a replacement for its own login: a service that has its own (the NAS, for example) still asks for it. Sonarr, Radarr, Prowlarr, SABnzbd and Pulsarr have theirs turned off. <a href="#proxmox">Proxmox</a>, the <a href="#proxmox-backup-server">backup server</a> and <a href="#kasm">Kasm</a> log in to Kanidm themselves.</p>
 <table>
 <thead>
 <tr>
@@ -2176,7 +2198,7 @@
 </code></pre></div>
 <p>Send them the link or QR code. It lasts 24 hours and opens only from a site LAN or the tailnet. They set a password there, and a TOTP code or a passkey if they like. For a forgotten password they use <strong>Recover Account</strong> on the login page (<a href="#password-reset-by-email">Password Reset by Email</a>), or you run the last command again.</p>
 <p>A password alone is enough: <code>idm_all_persons</code> has <code>credential-type-minimum</code> set to <code>any</code>, where Kanidm's default asks for a second factor. To require one, set it back with <code>kanidm group account-policy credential-type-minimum idm_all_persons mfa</code>.</p>
-<p>Every member of <code>sso_users</code> can open every flagged service; there are no per-user rules. Proxmox and Kasm keep their own permissions: create the Proxmox user and role on each host as in <a href="#proxmox">Proxmox</a>, and add the Kasm user to Administrators after their first login as in <a href="#kasm">Kasm</a>.</p>
+<p>Every member of <code>sso_users</code> can open every flagged service; there are no per-user rules. Proxmox, PBS and Kasm keep their own permissions: create the Proxmox user and role on each host as in <a href="#proxmox">Proxmox</a> and on WIL's backup server as in <a href="#proxmox-backup-server">Proxmox Backup Server</a>, and add the Kasm user to Administrators after their first login as in <a href="#kasm">Kasm</a>.</p>
 <h2 id="password-reset-by-email"><a class="toclink" href="#password-reset-by-email">Password Reset by Email</a></h2>
 <p><strong>Recover Account</strong> on the login page asks for an email address. When it matches a person's address in Kanidm, Kanidm emails them a reset link from <code>noreply@5am.cloud</code>. The page answers the same either way, so it gives away no addresses. The link lasts an hour and, like the login, opens only from a site LAN or the tailnet. To email someone a link yourself (this one lasts 24 hours):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kanidm<span class="w"> </span>person<span class="w"> </span>credential<span class="w"> </span>send-reset-token<span class="w"> </span>&lt;user&gt;<span class="w"> </span>--ttl<span class="w"> </span><span class="m">86400</span>
@@ -2220,6 +2242,25 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>pveum<span class="w"> </span>acl<span class="w"> </span>modify<span class="w"> </span>/<span class="w"> </span>--users<span class="w"> </span>&lt;user&gt;@sso<span class="w"> </span>--roles<span class="w"> </span>Administrator
 </code></pre></div>
 <p>Keep <code>root@pam</code>. It is the way in through <code>https://&lt;host-ip&gt;:8006</code> when Kanidm or Caddy is down, and a few settings stay root-only, such as raw <code>args</code> or PCI passthrough without a mapping. The realm only works on the <code>vm</code> name, because that is its only redirect URL.</p>
+<h2 id="proxmox-backup-server"><a class="toclink" href="#proxmox-backup-server">Proxmox Backup Server</a></h2>
+<p>WIL's backup server (<code>10.2.20.75</code>, <code>https://pbs.wil.5am.cloud</code>) logs in the same way: realm <code>sso</code> (the default realm), client <code>pbs-wil</code>, <code>pbs</code> keeps <code>auth: true</code>. It resolves <code>auth.5am.cloud</code> through wil's BIND, so it needs no <code>/etc/hosts</code> line. The client was created as <code>idm_admin</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kanidm<span class="w"> </span>system<span class="w"> </span>oauth2<span class="w"> </span>create<span class="w"> </span>pbs-wil<span class="w"> </span><span class="s2">"Proxmox Backup (wil)"</span><span class="w"> </span>https://pbs.wil.5am.cloud
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kanidm<span class="w"> </span>system<span class="w"> </span>oauth2<span class="w"> </span>add-redirect-url<span class="w"> </span>pbs-wil<span class="w"> </span>https://pbs.wil.5am.cloud
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>kanidm<span class="w"> </span>system<span class="w"> </span>oauth2<span class="w"> </span>update-scope-map<span class="w"> </span>pbs-wil<span class="w"> </span>sso_users<span class="w"> </span>openid<span class="w"> </span>profile<span class="w"> </span>email
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>kanidm<span class="w"> </span>system<span class="w"> </span>oauth2<span class="w"> </span>prefer-short-username<span class="w"> </span>pbs-wil
+</code></pre></div>
+<p>Its secret is <code>kanidm_pbs_client_secret</code> in WIL's secrets. The realm, with the key piped from there:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>sops<span class="w"> </span>decrypt<span class="w"> </span>--extract<span class="w"> </span><span class="s1">'["kanidm_pbs_client_secret"]'</span><span class="w"> </span>ansible/inventory/group_vars/site_wil/secrets.sops.yml<span class="w"> </span><span class="p">|</span><span class="w"> </span>ssh<span class="w"> </span>root@10.2.20.75<span class="w"> </span><span class="s1">'key=$(cat); proxmox-backup-manager openid create sso --issuer-url https://auth.5am.cloud/oauth2/openid/pbs-wil --client-id pbs-wil --client-key "$key" --username-claim preferred_username --autocreate false --default true'</span>
+</code></pre></div>
+<p>Then each user, made an admin:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>ssh<span class="w"> </span>root@10.2.20.75<span class="w"> </span>proxmox-backup-manager<span class="w"> </span>user<span class="w"> </span>create<span class="w"> </span>&lt;user&gt;@sso
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>ssh<span class="w"> </span>root@10.2.20.75<span class="w"> </span>proxmox-backup-manager<span class="w"> </span>acl<span class="w"> </span>update<span class="w"> </span>/<span class="w"> </span>Admin<span class="w"> </span>--auth-id<span class="w"> </span>&lt;user&gt;@sso
+</code></pre></div>
+<p>Keep <code>root@pam</code>: it is the way in through <code>https://10.2.20.75:8007</code> when Kanidm or Caddy is down. Proxmox VE and backup clients reach PBS by IP and fingerprint, not through the <code>pbs</code> name, so the gate does not affect them.</p>
 <h2 id="kasm"><a class="toclink" href="#kasm">Kasm</a></h2>
 <p>Kasm has no <code>auth: true</code>, so a desktop left open does not depend on a cookie that runs out. It logs in to Kanidm as client <code>kasm</code>, with PKCE off because Kasm cannot send it. The settings on Kasm's side live in Kasm's database, under <strong>Access Management &gt; Authentication &gt; OpenID</strong>:</p>
 <table>
@@ -2289,7 +2330,7 @@
 </tbody>
 </table>
 <p>To copy the secret without showing it:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sops<span class="w"> </span>decrypt<span class="w"> </span>--extract<span class="w"> </span><span class="s1">'["kanidm_kasm_client_secret"]'</span><span class="w"> </span>ansible/inventory/group_vars/site_ldn/secrets.sops.yml<span class="w"> </span><span class="p">|</span><span class="w"> </span>pbcopy
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>sops<span class="w"> </span>decrypt<span class="w"> </span>--extract<span class="w"> </span><span class="s1">'["kanidm_kasm_client_secret"]'</span><span class="w"> </span>ansible/inventory/group_vars/site_ldn/secrets.sops.yml<span class="w"> </span><span class="p">|</span><span class="w"> </span>pbcopy
 </code></pre></div>
 <p>The first login creates a Kasm user in the default group; add it to Administrators as <code>admin@kasm.local</code>. A Kasm user created through one OpenID config cannot log in through another (<code>OIDC login rejected: different OIDC ID expected for user</code>), and a local user of the same name is refused (<code>Non OIDC user</code>): delete the old user first.</p>
 <p>Kasm's own login page is at <code>https://kasm.ldn.5am.cloud/#/staticlogin</code>. It is the way in for <code>admin@kasm.local</code>, also when Kanidm is down.</p>
