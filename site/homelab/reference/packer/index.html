@@ -1761,7 +1761,7 @@
   <span class="md-ellipsis">
     
   
-    Gaming (Terraria, Wolf, RomM)
+    Gaming (Wolf, RomM)
   
 
     
@@ -2079,14 +2079,11 @@
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Build Ubuntu Desktop template</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>task<span class="w"> </span>packer:build-ubuntu-desktop<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Build Debian Bookworm template</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>task<span class="w"> </span>packer:build-debian<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Build Windows template (needs the Windows and virtio-win ISOs on Proxmox, see below)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>task<span class="w"> </span>packer:build-windows<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Build Windows template (needs the Windows and virtio-win ISOs on Proxmox, see below)</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>task<span class="w"> </span>packer:build-windows<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># Clean up logs and ISOs</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>task<span class="w"> </span>packer:clean
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Clean up logs and ISOs</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>task<span class="w"> </span>packer:clean
 </code></pre></div>
 <h2 id="templates"><a class="toclink" href="#templates">Templates</a></h2>
 <table>
@@ -2107,16 +2104,6 @@
 <td>Ubuntu Desktop</td>
 <td><code>ubuntu-desktop-base.pkr.hcl</code></td>
 <td>Ubuntu Server install with <code>ubuntu-desktop-minimal</code> on top (GNOME, no browser), KasmVNC, NAS share at <code>/mnt/data</code>, mDNS (avahi); no Docker or Node Exporter</td>
-</tr>
-<tr>
-<td>Debian Bookworm</td>
-<td><code>debian-bookworm-base.pkr.hcl</code></td>
-<td>Debian base with Docker</td>
-</tr>
-<tr>
-<td>Netboot</td>
-<td>—</td>
-<td>PXE boot template</td>
 </tr>
 <tr>
 <td>Windows</td>
@@ -2141,21 +2128,19 @@
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── templates/
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│   ├── ubuntu-server-base.pkr.hcl      # Ubuntu template definition
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   ├── ubuntu-desktop-base.pkr.hcl     # Ubuntu Desktop template definition
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   ├── debian-bookworm-base.pkr.hcl    # Debian template definition
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│   └── windows-base.pkr.hcl            # Windows template definition
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>├── files/windows/
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│   ├── autounattend.xml.pkrtpl         # Windows answer file (rendered by the template)
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│   ├── setup.ps1                       # First-logon bootstrap: WinRM, VirtIO drivers, guest agent
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│   └── smb-share.ps1                   # Optional: NAS share as a persistent Z: drive
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>├── files/kasmvnc/                      # Ubuntu Desktop: KasmVNC service and config, lock screen off
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>└── environments/
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    ├── wil/
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    │   ├── ubuntu-variables.pkrvars.hcl     # Ubuntu build variables
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    │   ├── ubuntu-desktop-variables.pkrvars.hcl  # Ubuntu Desktop build variables
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    │   ├── debian-variables.pkrvars.hcl     # Debian build variables
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    │   ├── windows-variables.pkrvars.hcl    # Windows build variables
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    │   └── credentials.wil.pkrvars.hcl.sops # Proxmox API tokens (encrypted)
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    └── ldn/
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   └── windows-base.pkr.hcl            # Windows template definition
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>├── files/windows/
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│   ├── autounattend.xml.pkrtpl         # Windows answer file (rendered by the template)
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│   ├── setup.ps1                       # First-logon bootstrap: WinRM, VirtIO drivers, guest agent
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│   └── smb-share.ps1                   # Optional: NAS share as a persistent Z: drive
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>├── files/kasmvnc/                      # Ubuntu Desktop: KasmVNC service and config, lock screen off
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>└── environments/
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    ├── wil/
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    │   ├── ubuntu-variables.pkrvars.hcl     # Ubuntu build variables
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    │   ├── ubuntu-desktop-variables.pkrvars.hcl  # Ubuntu Desktop build variables
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    │   ├── windows-variables.pkrvars.hcl    # Windows build variables
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    │   └── credentials.wil.pkrvars.hcl.sops # Proxmox API tokens (encrypted)
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    └── ldn/
 </code></pre></div>
 <h2 id="ubuntu-desktop-template"><a class="toclink" href="#ubuntu-desktop-template">Ubuntu Desktop Template</a></h2>
 <p>Built the same way as the Ubuntu Server template: same ISO, same autoinstall (<code>http/user-data</code>), same mDNS setup. Instead of Docker and Node Exporter the build then installs <code>ubuntu-desktop-minimal</code>, the default selection of the Ubuntu Desktop installer (GNOME, basic utilities), and KasmVNC. It leaves out the Firefox snap, whose downloads took over an hour of the build, so clones have no browser, and the first-login welcome wizard. The prompt to upgrade to the next Ubuntu release is turned off. No separate Desktop ISO is needed.</p>

@@ -1609,6 +1609,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#change-the-advertised-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change the advertised routes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add-a-new-site" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1817,7 +1828,7 @@
   <span class="md-ellipsis">
     
   
-    Gaming (Terraria, Wolf, RomM)
+    Gaming (Wolf, RomM)
   
 
     
@@ -2077,6 +2088,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#change-the-advertised-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change the advertised routes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add-a-new-site" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2254,6 +2276,7 @@
 <p><img alt="Tailscale subnet router with approved routes" src="../../../assets/tailscale-subnets.png" /></p>
 <h2 id="configuration-reference"><a class="toclink" href="#configuration-reference">Configuration Reference</a></h2>
 <p>All variables are set in the host or group vars for machines running Tailscale. Defaults are defined in <code>ansible/roles/tailscale/defaults/main.yml</code>.</p>
+<p>The role joins a node with <code>tailscale up</code> once. On every later deploy it reads the node's settings (<code>tailscale debug prefs</code>) and, when the routes, <code>tailscale_accept_routes</code>, <code>tailscale_accept_dns</code> or <code>tailscale_hostname</code> differ from the vars, applies them with <code>tailscale set</code>. A settings change needs no re-authentication.</p>
 <table>
 <thead>
 <tr>
@@ -2390,6 +2413,12 @@
 <li>
 <p>Approve the advertised routes in the <a href="https://login.tailscale.com/admin/machines">Tailscale admin console</a></p>
 </li>
+</ol>
+<h3 id="change-the-advertised-routes"><a class="toclink" href="#change-the-advertised-routes">Change the advertised routes</a></h3>
+<p><code>tailscale_advertise_routes</code> is derived: the site's <code>cidr</code> in <code>group_vars/all/sites.yml</code>, plus the <code>routed_subnets</code> of every VPN client enabled on the VM (<code>vpn_clients.yml</code>). Change the source, then:</p>
+<ol>
+<li>Deploy networking at that site: <code>task ansible:deploy-networking ENV=&lt;env&gt;</code>. The task "Apply changed Tailscale settings" reports <code>changed</code> when the node's routes differed.</li>
+<li>Approve any new route in the <a href="https://login.tailscale.com/admin/machines">Tailscale admin console</a>. A removed route needs no approval.</li>
 </ol>
 <h3 id="add-a-new-site"><a class="toclink" href="#add-a-new-site">Add a new site</a></h3>
 <ol>

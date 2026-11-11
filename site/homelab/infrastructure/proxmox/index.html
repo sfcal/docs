@@ -1678,7 +1678,7 @@
   <span class="md-ellipsis">
     
   
-    Gaming (Terraria, Wolf, RomM)
+    Gaming (Wolf, RomM)
   
 
     
@@ -1953,12 +1953,13 @@
 <p>Expect <code>0b:00.0</code> on <code>xe</code>, <code>0b:00.1</code> to <code>0b:00.3</code> on <code>vfio-pci</code>, and no <code>checks</code> on the mappings. After a reboot <code>qm status 3005</code> should be <code>running</code> without manual action.</p>
 <h2 id="terraform-notes"><a class="toclink" href="#terraform-notes">Terraform notes</a></h2>
 <p>The GPU VM <code>game_server</code> is defined in <code>terraform/environments/ldn/vms.auto.tfvars</code> with <code>bios = "ovmf"</code>, <code>machine = "q35"</code> and <code>pci_mapping</code>. <code>work_server</code> keeps <code>bios</code> and <code>machine</code> but no longer maps a VF; VMs 118 and 121 are hand-made clones outside Terraform, given their VF with <code>qm set &lt;vmid&gt; --hostpci0 mapping=b50-vfN,pcie=1</code>. The provider is bpg/proxmox (<code>proxmox_virtual_environment_vm</code>). The module sets <code>rombar = true</code> on the mapped device because bpg sends <code>rombar=0</code> when it is left out. On apply the provider also starts a stopped VM (<code>started</code> defaults to true), so a stopped GPU VM is started and needs its VF free.</p>
-<p>Since November 2026 the ldn state holds all eight ldn VMs as <code>proxmox_virtual_environment_vm</code> (imported when the provider changed from telmate). A VM made outside Terraform is imported with <code>&lt;node&gt;/&lt;vmid&gt;</code> as the ID:</p>
+<p>Since November 2026 the ldn state holds all eight ldn VMs as <code>proxmox_virtual_environment_vm</code> (imported when the provider changed from telmate), and the wil state holds wil's three (<code>networking</code>, <code>ca_server</code>, <code>monitoring_server</code>; wil's node is named <code>proxmox</code>). A VM made outside Terraform is imported with <code>&lt;node&gt;/&lt;vmid&gt;</code> as the ID. The import needs the site's variables, decrypted for the one command the way the tasks do it:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>terraform/environments/ldn
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>terraform<span class="w"> </span>import<span class="w"> </span><span class="s1">'module.infrastructure.module.vms["&lt;key&gt;"].proxmox_virtual_environment_vm.vm'</span><span class="w"> </span>pve-ldn/&lt;vmid&gt;
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>terraform<span class="w"> </span>plan
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sops<span class="w"> </span>exec-file<span class="w"> </span>--filename<span class="w"> </span>terraform.tfvars<span class="w"> </span>terraform.tfvars.sops<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="s1">'terraform import -var-file={} "module.infrastructure.module.vms[\"&lt;key&gt;\"].proxmox_virtual_environment_vm.vm" pve-ldn/&lt;vmid&gt;'</span>
 </code></pre></div>
-<p>The VM module ignores <code>clone</code> changes so an imported VM does not plan as a replacement. Always read the plan before applying (<code>task terraform:deploy ENV=ldn</code> applies with <code>-auto-approve</code>): anything marked <code>forces replacement</code> would destroy the VM.</p>
+<p>Then read the plan from the repo root: <code>task terraform:plan ENV=ldn</code>. An import changes only the state file, never the VM.</p>
+<p>The VM module ignores <code>clone</code> changes so an imported VM does not plan as a replacement, and changes to the login keys (<code>ssh_public_key</code>): on an existing VM the provider would rewrite the cloud-init drive and reboot the VM, which then sets itself up as a new instance (new SSH host keys). wil's three VMs were made with one key and have the second in <code>authorized_keys</code>. Always read the plan before applying (<code>task terraform:deploy ENV=ldn</code> applies with <code>-auto-approve</code>): anything marked <code>forces replacement</code> would destroy the VM.</p>
 
 
 

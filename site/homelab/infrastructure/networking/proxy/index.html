@@ -1419,6 +1419,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#applying-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Applying Changes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tls-certificate-management" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2005,7 +2016,7 @@
   <span class="md-ellipsis">
     
   
-    Gaming (Terraria, Wolf, RomM)
+    Gaming (Wolf, RomM)
   
 
     
@@ -2124,6 +2135,17 @@
     <span class="md-ellipsis">
       
         Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#applying-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Applying Changes
       
     </span>
   </a>
@@ -2639,6 +2661,14 @@
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    }
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>}
 </code></pre></div>
+<h2 id="applying-changes"><a class="toclink" href="#applying-changes">Applying Changes</a></h2>
+<p>A networking deploy that changes the Caddyfile reloads Caddy, it does not restart it (handler <code>Reload caddy</code>: <code>caddy reload</code> inside the container, fed the new file):</p>
+<ul>
+<li>No request is refused, and the ones in flight finish on the old config.</li>
+<li>Open websockets (Kasm desktops, Proxmox consoles, live views) are closed and reconnect.</li>
+<li>A Caddyfile that Caddy refuses fails the deploy at that handler, with Caddy's message naming the line. The old config keeps serving: fix the entry and deploy again.</li>
+</ul>
+<p>The container itself restarts only when its image or <code>compose.yaml</code> changes (handler <code>Rebuild caddy</code>). The proxy is then away for a moment, or for up to 10 seconds if a long request (a stream, a download) is in flight: Caddy waits for it and Docker stops waiting after 10 seconds.</p>
 <h2 id="tls-certificate-management"><a class="toclink" href="#tls-certificate-management">TLS Certificate Management</a></h2>
 <p>Caddy obtains wildcard certificates for each domain using the Cloudflare DNS-01 ACME challenge. This means:</p>
 <ul>
@@ -2981,6 +3011,7 @@
 <p><strong>Certificate not issuing</strong> — Check Caddy logs: <code>ssh &lt;networking-ip&gt; docker logs caddy</code>. Common causes: Cloudflare API token expired, domain not on Cloudflare, or Let's Encrypt rate limit hit.</p>
 <p><strong>Service accessible via IP but not hostname</strong> — The DNS record is missing or pointing to the wrong IP. Check with <code>dig &lt;service&gt;.&lt;domain&gt; @10.2.20.53</code> and verify the service entry in the domain file (or the app's <code>proxy:</code> block in <code>apps.yml</code> for registry apps).</p>
 <p><strong>Headers not forwarded</strong> — Ensure <code>forward_headers: true</code> is set on the service entry and redeploy networking.</p>
+<p><strong>Deploy fails at <code>Reload caddy</code></strong> — Caddy refused the new Caddyfile and is still serving the old one. The error names the line of <code>/opt/caddy/Caddyfile</code> on the networking VM; fix the service entry it came from and redeploy networking.</p>
 
 
 

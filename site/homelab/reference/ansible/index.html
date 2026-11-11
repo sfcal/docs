@@ -1756,7 +1756,7 @@
   <span class="md-ellipsis">
     
   
-    Gaming (Terraria, Wolf, RomM)
+    Gaming (Wolf, RomM)
   
 
     
@@ -2070,7 +2070,7 @@
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Deploy a data-driven app</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>task<span class="w"> </span>ansible:deploy-app<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w"> </span><span class="nv">APP</span><span class="o">=</span>birdle
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>task<span class="w"> </span>ansible:deploy-app<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn<span class="w"> </span><span class="nv">APP</span><span class="o">=</span>kosync
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Test connectivity</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>task<span class="w"> </span>ansible:ping<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
@@ -2126,7 +2126,7 @@
 </tr>
 <tr>
 <td><code>deploy-gaming</code></td>
-<td>Gaming stacks defined for the environment: Terraria (wil), Wolf and RomM (ldn)</td>
+<td>Gaming stacks: Wolf and RomM (ldn)</td>
 </tr>
 <tr>
 <td><code>deploy-hermes</code></td>
@@ -2225,14 +2225,14 @@
 </table>
 <h3 id="data-driven-apps"><a class="toclink" href="#data-driven-apps">Data-Driven Apps</a></h3>
 <p>Most applications use the shared <code>deploy-app.yml</code> playbook. Apps are defined in the registry of the site that hosts them, <code>ansible/inventory/group_vars/site_&lt;env&gt;/apps.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">birdle</span><span class="p">:</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_birdle</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">kosync</span><span class="p">:</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">host_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app_kosync</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="c1"># renovate: datasource=docker</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">"ghcr.io/sfcal/new-birdle:latest"</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8091</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">"koreader/kosync:v2.1.1"</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">17200</span>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">proxy</span><span class="p">:</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">birdle</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sfc.al</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kosync</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ldn.5am.cloud</span>
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">proxied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p>The <code>deploy-app.yml</code> playbook reads the app config, includes the <code>docker_service</code> role, and deploys the Docker Compose template from <code>ansible/playbooks/apps/&lt;name&gt;/templates/compose.yaml.j2</code>. The image pre-pull list is derived from every registry key ending in <code>image</code> (top level and one nesting level down) — there is no manual <code>images:</code> list. See <a href="../config/#app-registry">Config Reference — App Registry</a> for the full schema.</p>
@@ -2256,7 +2256,7 @@
 </tr>
 <tr>
 <td>Gaming</td>
-<td>Stacks selected per environment (Terraria; Wolf and RomM), kernel modules and udev rules, GPU render-node check, Wolf config seeded once, optional NFS</td>
+<td>Stacks selected per environment (Wolf and RomM), kernel modules and udev rules, GPU render-node check, Wolf config seeded once, optional NFS</td>
 </tr>
 <tr>
 <td>Hermes Agent</td>
@@ -2341,7 +2341,7 @@
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>│   │   ├── netboot/deploy.yml
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>│   │   └── proxmox/deploy.yml       # Hypervisor: SR-IOV GPU VFs, PCI mappings
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>│   └── apps/
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>│       ├── birdle/templates/compose.yaml.j2
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>│       ├── kosync/templates/compose.yaml.j2
 <a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>│       ├── media/deploy.yml
 <a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>│       └── ... (one directory per app)
 <a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>├── roles/
@@ -2355,7 +2355,7 @@
 </code></pre></div>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>
 <p><strong>Connection refused</strong> — Verify the VM is running and the IP in <code>hosts.ini</code> is correct. Test with <code>ssh sfcal@&lt;ip&gt;</code>.</p>
-<p><strong>"No hosts matched"</strong> — The host group in the playbook doesn't match any group in <code>hosts.ini</code>, or none of its hosts are in the site group <code>ENV=</code> picks (<code>site_&lt;env&gt;</code>). Check group names match (e.g., <code>infra_networking</code>, <code>app_birdle</code>).</p>
+<p><strong>"No hosts matched"</strong> — The host group in the playbook doesn't match any group in <code>hosts.ini</code>, or none of its hosts are in the site group <code>ENV=</code> picks (<code>site_&lt;env&gt;</code>). Check group names match (e.g., <code>infra_networking</code>, <code>app_kosync</code>).</p>
 <p><strong>Handler not triggered</strong> — Handlers only run when a task reports <code>changed</code>. If you need to force a restart, use <code>--force-handlers</code> or run the service command directly.</p>
 <p><strong>Secrets decryption failure</strong> — Ensure the Age key is at <code>~/.config/sops/age/keys.txt</code> and <code>community.sops</code> is installed.</p>
 

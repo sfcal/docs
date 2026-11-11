@@ -1700,7 +1700,7 @@
   <span class="md-ellipsis">
     
   
-    Gaming (Terraria, Wolf, RomM)
+    Gaming (Wolf, RomM)
   
 
     
@@ -2197,34 +2197,14 @@
 <td>50G</td>
 <td>infrastructure</td>
 </tr>
-<tr>
-<td><code>web_server</code></td>
-<td>web</td>
-<td>1109</td>
-<td>10.2.20.45</td>
-<td>2</td>
-<td>4GB</td>
-<td>20G</td>
-<td>application</td>
-</tr>
-<tr>
-<td><code>games_server</code></td>
-<td>games</td>
-<td>1111</td>
-<td>10.2.20.50</td>
-<td>1</td>
-<td>8GB</td>
-<td>50G</td>
-<td>application</td>
-</tr>
 </tbody>
 </table>
 <h2 id="implementation-details"><a class="toclink" href="#implementation-details">Implementation Details</a></h2>
 <ul>
 <li><strong>Provider</strong> — <a href="https://registry.terraform.io/providers/bpg/proxmox/latest/docs">bpg/proxmox</a>, pinned in <code>versions.tf</code>. It takes the endpoint and API token from the variables in the site's <code>terraform.tfvars.sops</code> (<code>proxmox_api_url</code> without <code>/api2/json</code>, <code>&lt;token id&gt;=&lt;secret&gt;</code>), which each task decrypts for its one command (<code>sops exec-file</code>).</li>
 <li><strong>Full clones</strong> — VMs are full clones, not linked. Independent of templates after creation. The template is looked up by name on every plan, so a missing or duplicated template name fails the plan (it never destroys anything).</li>
-<li><strong>Cloud-init</strong> — Static IP via the <code>initialization</code> block (<code>ipconfig0: ip=&lt;address&gt;/24,gw=&lt;gateway&gt;</code>, drive on <code>ide0</code>). Assumes /24 subnets. bpg keeps cloud-init values of the template that the module does not set, such as a <code>cipassword</code> set by hand on the template; telmate removed them.</li>
-<li><strong>State</strong> — Per-environment state files at <code>terraform/environments/&lt;env&gt;/terraform.tfstate</code>. Import a VM with <code>terraform import 'module.infrastructure.module.vms["&lt;key&gt;"].proxmox_virtual_environment_vm.vm' &lt;node&gt;/&lt;vmid&gt;</code>.</li>
+<li><strong>Cloud-init</strong> — Static IP via the <code>initialization</code> block (<code>ipconfig0: ip=&lt;address&gt;/24,gw=&lt;gateway&gt;</code>, drive on <code>ide0</code>). Assumes /24 subnets. bpg keeps cloud-init values of the template that the module does not set, such as a <code>cipassword</code> set by hand on the template; telmate removed them. The login keys (<code>ssh_public_key</code> in <code>terraform.tfvars.sops</code>) are written when a VM is created and ignored afterwards: add a key to a running VM in its <code>authorized_keys</code>.</li>
+<li><strong>State</strong> — Per-environment state files at <code>terraform/environments/&lt;env&gt;/terraform.tfstate</code> (not in git). Both sites have one. To import a VM made outside Terraform, see <a href="../../infrastructure/proxmox/#terraform-notes">Proxmox — Terraform notes</a>.</li>
 <li><strong>QEMU agent</strong> — Enabled on all VMs (installed in Packer templates).</li>
 </ul>
 <h2 id="troubleshooting"><a class="toclink" href="#troubleshooting">Troubleshooting</a></h2>

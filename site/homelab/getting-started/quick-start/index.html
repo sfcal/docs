@@ -1700,7 +1700,7 @@
   <span class="md-ellipsis">
     
   
-    Gaming (Terraria, Wolf, RomM)
+    Gaming (Wolf, RomM)
   
 
     
@@ -1966,10 +1966,6 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>task<span class="w"> </span>packer:build-ubuntu<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
 </code></pre></div>
 <p>This creates a cloud-init-enabled Ubuntu Server template with Docker, Node Exporter, and Lazydocker pre-installed.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Debian templates are also available: <code>task packer:build-debian ENV=wil</code></p>
-</div>
 <h2 id="3-provision-vms"><a class="toclink" href="#3-provision-vms">3. Provision VMs</a></h2>
 <p>Deploy all VMs defined in <code>terraform/environments/wil/vms.auto.tfvars</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>task<span class="w"> </span>terraform:deploy<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil

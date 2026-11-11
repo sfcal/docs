@@ -27,7 +27,7 @@
     
     
       
-        <title>Gaming (Terraria, Wolf, RomM) - Homelab Infrastructure as Code</title>
+        <title>Gaming (Wolf, RomM) - Homelab Infrastructure as Code</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#gaming-terraria-wolf-romm" class="md-skip">
+        <a href="#gaming-wolf-romm" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Gaming (Terraria, Wolf, RomM)
+              Gaming (Wolf, RomM)
             
           </span>
         </div>
@@ -1585,7 +1585,7 @@
   <span class="md-ellipsis">
     
   
-    Gaming (Terraria, Wolf, RomM)
+    Gaming (Wolf, RomM)
   
 
     
@@ -1603,7 +1603,7 @@
   <span class="md-ellipsis">
     
   
-    Gaming (Terraria, Wolf, RomM)
+    Gaming (Wolf, RomM)
   
 
     
@@ -1633,17 +1633,6 @@
     <span class="md-ellipsis">
       
         Files
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#terraria" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Terraria
       
     </span>
   </a>
@@ -1826,17 +1815,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#terraria" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Terraria
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#wolf-and-romm" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1970,8 +1948,8 @@
   
 
 
-<h1 id="gaming-terraria-wolf-romm"><a class="toclink" href="#gaming-terraria-wolf-romm">Gaming (Terraria, Wolf, RomM)</a></h1>
-<p>One playbook, <code>ansible/playbooks/apps/gaming/deploy.yml</code>, deploys every game stack on an environment's <code>app_gaming</code> host. A stack runs only where that environment's <code>group_vars/site_&lt;env&gt;/app_gaming/vars.yml</code> defines its image (<code>terraria_image</code>, <code>romm_image</code>, <code>wolf_image</code>), so the same command deploys different stacks per environment:</p>
+<h1 id="gaming-wolf-romm"><a class="toclink" href="#gaming-wolf-romm">Gaming (Wolf, RomM)</a></h1>
+<p>One playbook, <code>ansible/playbooks/apps/gaming/deploy.yml</code>, deploys every game stack on an environment's <code>app_gaming</code> host. A stack runs only where that environment's <code>group_vars/site_&lt;env&gt;/app_gaming/vars.yml</code> defines its image (<code>romm_image</code>, <code>wolf_image</code>). Both run at ldn:</p>
 <table>
 <thead>
 <tr>
@@ -1982,19 +1960,13 @@
 </thead>
 <tbody>
 <tr>
-<td>wil</td>
-<td><code>games</code> (<code>10.2.20.50</code>, VM 1111)</td>
-<td><a href="#terraria">Terraria</a></td>
-</tr>
-<tr>
 <td>ldn</td>
 <td><code>gaming</code> (<code>10.3.20.55</code>, VM 3005)</td>
 <td><a href="#wolf-and-romm">Wolf and RomM</a></td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-gaming<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">   </span><span class="c1"># Terraria</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-gaming<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn<span class="w">   </span><span class="c1"># Wolf and RomM</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-gaming<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn<span class="w">   </span><span class="c1"># Wolf and RomM</span>
 </code></pre></div>
 <p>To run a stack in another environment, copy its vars into that environment's <code>group_vars/site_&lt;env&gt;/app_gaming/vars.yml</code>, along with its secrets.</p>
 <h2 id="files"><a class="toclink" href="#files">Files</a></h2>
@@ -2009,10 +1981,6 @@
 <tr>
 <td><code>ansible/playbooks/apps/gaming/deploy.yml</code></td>
 <td>Playbook (group <code>app_gaming</code>)</td>
-</tr>
-<tr>
-<td><code>ansible/playbooks/apps/gaming/templates/terraria-compose.yaml.j2</code></td>
-<td>Terraria server</td>
 </tr>
 <tr>
 <td><code>ansible/playbooks/apps/gaming/templates/wolf-compose.yaml.j2</code></td>
@@ -2035,14 +2003,6 @@
 <td>Upstream udev rules (<code>/dev/uinput</code>, <code>/dev/uhid</code>, virtual pads off the host seat)</td>
 </tr>
 <tr>
-<td><code>ansible/inventory/group_vars/site_wil/app_gaming/vars.yml</code></td>
-<td>Terraria image, paths, world settings</td>
-</tr>
-<tr>
-<td><code>ansible/inventory/group_vars/site_wil/secrets.sops.yml</code></td>
-<td>Terraria join password (<code>terraria_server_password</code>)</td>
-</tr>
-<tr>
 <td><code>ansible/inventory/group_vars/site_ldn/app_gaming/vars.yml</code></td>
 <td>Wolf and RomM images, paths, render node</td>
 </tr>
@@ -2052,13 +2012,6 @@
 </tr>
 </tbody>
 </table>
-<h2 id="terraria"><a class="toclink" href="#terraria">Terraria</a></h2>
-<p>A dedicated Terraria server (<code>ryshe/terraria</code>) on port 7777, with no DNS or proxy entry.</p>
-<ul>
-<li>Compose lives in <code>/opt/games-server</code> and the world in <code>/var/lib/games-server/terraria/worlds</code> (<code>terraria_deploy_path</code>, <code>terraria_data_path</code>), the paths it had as the <code>games-server</code> registry app. To rename them, run <code>docker compose down</code> in the old directory and move the world first: the container is always named <code>terraria</code>, so a second compose project would clash with the running one.</li>
-<li>The image tag floats (<code>latest</code>), so every deploy pulls it and recreates the container when a newer image arrived.</li>
-<li>World settings (<code>terraria_worldname</code>, <code>terraria_worldsize</code>, <code>terraria_difficulty</code>, <code>terraria_seed</code>, ...) become server flags in <code>terraria-compose.yaml.j2</code>. An empty <code>terraria_server_password</code> runs an open server.</li>
-</ul>
 <h2 id="wolf-and-romm"><a class="toclink" href="#wolf-and-romm">Wolf and RomM</a></h2>
 <p><a href="https://games-on-whales.github.io/wolf/stable/">Wolf</a> streams games and desktops to Moonlight clients from the <code>gaming</code> VM (ldn, <code>10.3.20.55</code>, VM 3005) using an Intel Arc Pro B50 SR-IOV virtual function. <a href="https://docs.romm.app">RomM</a> manages the ROM library the Wolf emulator apps read.</p>
 <p>Prerequisite: the VF must be visible in the guest, which depends on the <a href="../proxmox/">Proxmox host play</a>. The playbook aborts if the render node (<code>wolf_render_node</code>, <code>/dev/dri/renderD128</code>) is missing.</p>

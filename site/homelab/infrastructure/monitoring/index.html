@@ -2028,7 +2028,7 @@
   <span class="md-ellipsis">
     
   
-    Gaming (Terraria, Wolf, RomM)
+    Gaming (Wolf, RomM)
   
 
     
@@ -2627,10 +2627,9 @@
         NE1[Node Exporter\nmonitoring VM]
         NE2[Node Exporter\nmedia-stack]
         NE3[Node Exporter\nnetworking]
-        NE4[Node Exporter\nwebsite]
     end
 
-    NE1 &amp; NE2 &amp; NE3 &amp; NE4 --&gt;|metrics| Prometheus
+    NE1 &amp; NE2 &amp; NE3 --&gt;|metrics| Prometheus
     Grafana --&gt;|datasource, over the tailnet| Prometheus
     Homepage --&gt;|widgets, over the tailnet| Prometheus
     Homepage --&gt;|panels| Grafana
@@ -3136,11 +3135,11 @@
 <ul>
 <li><strong>Two cards per service:</strong> Homepage shows a group on one tab only, so each service is written twice: a small card (<code>icon</code>, <code>href</code>, <code>siteMonitor</code>) in an Overview group, and its full card (with <code>description</code> and widgets) in its site's group. Change a link or a status URL in both.</li>
 <li><strong>Links:</strong> a small card's <code>href</code> ends in <code>/</code> and its full card's doesn't. Quick launch (start typing on the page) lists both cards, and two entries with the same name and the same link make it show results that no longer match what was typed.</li>
-<li><strong>Group names</strong> are unique across the file, because Homepage finds a card by its group's name. That is why most groups on the site tabs carry their site: <code>Apps (wil)</code>, <code>Apps (ldn)</code>, <code>Services (ovh)</code>. A new group needs a matching entry in the <code>layout</code> of <code>settings.yaml.j2</code>, with the <code>tab</code> it belongs on; a group left out of <code>layout</code> shows on every tab.</li>
+<li><strong>Group names</strong> are unique across the file, because Homepage finds a card by its group's name. That is why most groups on the site tabs carry their site: <code>Infrastructure (wil)</code>, <code>Apps (ldn)</code>, <code>Services (ovh)</code>. A new group needs a matching entry in the <code>layout</code> of <code>settings.yaml.j2</code>, with the <code>tab</code> it belongs on; a group left out of <code>layout</code> shows on every tab.</li>
 <li><strong>Status dots:</strong> <code>siteMonitor</code> requests the URL from the VPS and counts any answer up to 403 as up. KOSync's small card has none: it answers 412 to a request without KOReader's <code>Accept</code> header, so only its full card checks it, with a <code>customapi</code> widget that sends the header.</li>
 <li><strong>Tile colours:</strong> a widget's <code>highlight</code> rules mark tiles good, warn or danger, and <code>custom.css</code> tints them lime, orange or pink (Homepage's own tints lose to the tile background). Used for Prometheus targets down, Uptime Kuma sites down, Tdarr errors, Prowlarr failed grabs and KOSync health.</li>
 <li><strong>System Activity</strong> shows the four panels of the System Activity Grafana dashboard on each site's tab, in iframes from <code>http://dashboard:3000/d-solo/system-activity?var-ds=prometheus-&lt;site&gt;&amp;panelId=1</code> to <code>4</code>, in Grafana's light theme (<code>theme=light</code>). <code>var-ds</code> picks the site's Prometheus. Grafana allows anonymous viewing and embedding. The time range and refresh interval come from the dashboard JSON.</li>
-<li><strong>Node exporters</strong> follow Prometheus in each site's Monitoring group: four VMs per site, listed by hand in <code>services.yaml.j2</code>. Prometheus itself scrapes every host of the site (<code>prometheus_node_targets</code>); a new VM gets a tile only when it is added to that list.</li>
+<li><strong>Node exporters</strong> follow Prometheus in each site's Monitoring group: a few VMs per site, listed by hand in <code>services.yaml.j2</code>. Prometheus itself scrapes every host of the site (<code>prometheus_node_targets</code>); a new VM gets a tile only when it is added to that list.</li>
 <li><strong>Five cards in a row</strong> (<code>columns: 5</code>: the Overview groups and the Monitoring groups) become four in a window 1024px to 1279px wide, where five are too narrow (<code>custom.css</code>). Narrower windows get Homepage's own two in a row, then one.</li>
 <li><strong>SABnzbd</strong> has two widgets: Homepage's <code>sabnzbd</code> widget (speed, queue) and a <code>customapi</code> widget that reads the download totals for today, this week, this month and all time from SABnzbd's <code>server_stats</code> API once a minute.</li>
 </ul>
