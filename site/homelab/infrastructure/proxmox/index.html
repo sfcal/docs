@@ -1905,8 +1905,13 @@
 
 
 <h1 id="proxmox-hosts-sr-iov-gpu"><a class="toclink" href="#proxmox-hosts-sr-iov-gpu">Proxmox Hosts (SR-IOV GPU)</a></h1>
-<p>The hypervisor is managed by <code>ansible/playbooks/infrastructure/proxmox/deploy.yml</code>, group <code>infra_proxmox</code>. Its one job: create the Intel Arc Pro B50's SR-IOV virtual functions (VFs) at every boot, before Proxmox starts the VMs that use them.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-proxmox<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn
+<p>The hypervisors are managed by <code>ansible/playbooks/infrastructure/proxmox/deploy.yml</code>, group <code>infra_proxmox</code>: wil's host (<code>10.2.20.7</code>) and pve-ldn (<code>10.3.20.10</code>), both reached as <code>root</code>. The play does two things:</p>
+<ul>
+<li><strong>On both hosts</strong> it installs node-exporter (Debian's package <code>prometheus-node-exporter</code>, which enables and starts its own service on port 9100), so the site's Prometheus has the host's CPU, memory and disks and the alert rules cover it (see <a href="../monitoring/#node-exporters">Monitoring</a>). Deploy the site's monitoring afterwards; the host is a scrape target because it is in <code>[site_&lt;env&gt;]</code>.</li>
+<li><strong>On pve-ldn only</strong> it creates the Intel Arc Pro B50's SR-IOV virtual functions (VFs) at every boot, before Proxmox starts the VMs that use them. These tasks run where <code>b50_num_vfs</code> is set, and the rest of this page is about them.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-proxmox<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-proxmox<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn
 </code></pre></div>
 <h2 id="why"><a class="toclink" href="#why">Why</a></h2>
 <p>A GPU VM references its VF through a resource mapping (<code>hostpci0: mapping=b50-vf1</code>, <code>pci_mapping</code> in Terraform). At VM start Proxmox resolves the mapping against sysfs and refuses to start if the device is missing or its IOMMU group changed:</p>

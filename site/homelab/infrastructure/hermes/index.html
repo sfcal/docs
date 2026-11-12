@@ -1679,6 +1679,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#web-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Web UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#telegram" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1837,6 +1848,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#web-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Web UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#telegram" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1986,7 +2008,17 @@
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>hermes<span class="w"> </span>hermes<span class="w"> </span>model<span class="w">           </span><span class="c1"># Change the model (the first deploy sets Opus 5.5)</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>hermes<span class="w"> </span>hermes<span class="w"> </span>gateway<span class="w"> </span>setup<span class="w">   </span><span class="c1"># Connect Telegram, Discord and so on</span>
 </code></pre></div>
-<p>No ports are published, so there is no web UI and no DNS or Caddy entry. The agent's terminal and file tools run inside the container as UID 10000, with no access to the Docker socket.</p>
+<p>The agent's terminal and file tools run inside the container as UID 10000, with no access to the Docker socket.</p>
+<h2 id="web-ui"><a class="toclink" href="#web-ui">Web UI</a></h2>
+<p><a href="https://github.com/nesquena/hermes-webui">Hermes WebUI</a> is a second container in the same compose project, at <a href="https://hermes.ldn.5am.cloud">https://hermes.ldn.5am.cloud</a> behind the <a href="../networking/sso/">login</a>. It shows the same chats, skills, scheduled jobs and memory as the agent, because both containers mount <code>/var/lib/hermes/data</code> at <code>/opt/data</code>.</p>
+<p>A chat typed in the browser runs in the <code>hermes</code> container, not in the web UI's (<code>HERMES_WEBUI_CHAT_BACKEND=gateway</code>): the web UI passes it to the agent's API server on port 8642, which only the compose network can reach. So browser chats use the same Claude login, plugin, skills and tools as Telegram, and draw from the same usage limits. The API server's key is the <code>API_SERVER_KEY</code> line in <code>/var/lib/hermes/data/.env</code>; both containers read it from there.</p>
+<ul>
+<li><strong>Login:</strong> the web UI has no password of its own. Caddy's login check covers the name, but port 8787 on the VM answers anyone on the ldn network without it. Set a password under Settings &gt; System if that matters.</li>
+<li><strong>Agent code:</strong> the web UI reads the agent's code from the agent image itself (an image mount in the compose file), so it follows <code>hermes_image</code>. Each time its container is created it copies that code and installs the agent's Python packages, which takes a few minutes; the page answers once that's done (<code>docker logs -f hermes-webui</code>).</li>
+<li><strong>Package overrides:</strong> the agent's packages only install with the version overrides in its own <code>pyproject.toml</code> (<code>[tool.uv]</code>), which the web UI's installer doesn't read. The compose file's <code>command</code> copies that list to a file for <code>uv</code> (<code>UV_OVERRIDE</code>) before the web UI starts. Without it the container restarts in a loop with "No solution found when resolving dependencies".</li>
+<li><strong>Versions:</strong> the web UI's authors test each release against the agent release of the same date, so merge Renovate's <code>hermes_image</code> and <code>hermes_webui_image</code> bumps together where you can.</li>
+<li><strong>Its own files:</strong> <code>/var/lib/hermes/data/webui</code>.</li>
+</ul>
 <h2 id="telegram"><a class="toclink" href="#telegram">Telegram</a></h2>
 <p>Hermes polls Telegram, so this opens no ports. Create a bot with @BotFather (<code>/newbot</code>) and get your numeric user ID from @userinfobot. Then run the wizard on the VM, choose Telegram and <strong>Manual</strong>, and enter the token and your ID when asked. Only the IDs you list can use the bot.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>hermes<span class="w"> </span>hermes<span class="w"> </span>gateway<span class="w"> </span>setup
@@ -2030,7 +2062,7 @@
 <h2 id="updates"><a class="toclink" href="#updates">Updates</a></h2>
 <p>Run <code>task ansible:deploy-hermes ENV=ldn</code> to update everything:</p>
 <ul>
-<li><strong>Hermes</strong> — Renovate bumps <code>hermes_image</code>, but <code>app_hermes</code> isn't on the <a href="../../guides/gitops/#auto-deploy-allowlist">auto-deploy allowlist</a>, so the VM doesn't change until you deploy.</li>
+<li><strong>Hermes and the web UI</strong> — Renovate bumps <code>hermes_image</code> and <code>hermes_webui_image</code>, but <code>app_hermes</code> isn't on the <a href="../../guides/gitops/#auto-deploy-allowlist">auto-deploy allowlist</a>, so the VM doesn't change until you deploy.</li>
 <li><strong>Skills</strong> — each deploy copies the repo's skills over the VM's. Hermes can edit its own skills as it learns, and a deploy overwrites those edits, so copy any you want to keep into the repo first. <code>docker exec hermes hermes curator ledger</code> lists them, and earlier versions are in <code>/var/lib/hermes/data/.curator_backups/blobs</code>. <code>fastmail-triage</code> is locked, so Hermes can't edit it.</li>
 <li><strong>Claude Code and the plugin</strong> — each deploy moves both to their current release. They live in the data directory, so a new image keeps them. Claude Code doesn't update itself here, because the plugin turns that off.</li>
 </ul>
@@ -2049,7 +2081,7 @@
 </tr>
 <tr>
 <td><code>ansible/playbooks/apps/hermes/templates/compose.yaml.j2</code></td>
-<td>Hermes container</td>
+<td>Hermes and web UI containers</td>
 </tr>
 <tr>
 <td><code>ansible/playbooks/apps/hermes/files/plex-fix/</code></td>
@@ -2065,7 +2097,11 @@
 </tr>
 <tr>
 <td><code>ansible/inventory/group_vars/site_ldn/app_hermes/vars.yml</code></td>
-<td>Hermes image and where the email report goes</td>
+<td>Hermes and web UI images, and where the email report goes</td>
+</tr>
+<tr>
+<td><code>ansible/inventory/group_vars/site_ldn/proxy/ldn.5am.cloud.yml</code></td>
+<td>DNS and Caddy entry <code>hermes</code> for the web UI</td>
 </tr>
 <tr>
 <td><code>ansible/inventory/group_vars/site_ldn/secrets.sops.yml</code></td>

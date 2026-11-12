@@ -1685,6 +1685,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#node-exporters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node exporters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checks-through-the-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checks through the proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#scrape-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1761,6 +1783,17 @@
     <span class="md-ellipsis">
       
         Dashboard Provisioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alerting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alerting
       
     </span>
   </a>
@@ -1944,6 +1977,17 @@
     <span class="md-ellipsis">
       
         Change metrics retention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-or-change-an-alert-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add or change an alert rule
       
     </span>
   </a>
@@ -2244,6 +2288,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#node-exporters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node exporters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checks-through-the-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checks through the proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#scrape-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2320,6 +2386,17 @@
     <span class="md-ellipsis">
       
         Dashboard Provisioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alerting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alerting
       
     </span>
   </a>
@@ -2510,6 +2587,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#add-or-change-an-alert-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add or change an alert rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add-a-service-to-homepage" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2605,7 +2693,7 @@
 
 
 <h1 id="monitoring"><a class="toclink" href="#monitoring">Monitoring</a></h1>
-<p>The monitoring stack provides metrics collection, visualization, a service dashboard, and external uptime monitoring. Prometheus runs as a Docker container on a dedicated VM in each environment; Grafana, Homepage and Uptime Kuma run once for both sites on an OVH VPS outside the lab (see <a href="#grafana">Grafana</a> and <a href="#homepage">Homepage</a>).</p>
+<p>The monitoring stack provides metrics collection, visualization, alerts by email, a service dashboard, and external uptime monitoring. Prometheus runs as a Docker container on a dedicated VM in each environment; Grafana, Homepage and Uptime Kuma run once for both sites on an OVH VPS outside the lab (see <a href="#grafana">Grafana</a> and <a href="#homepage">Homepage</a>).</p>
 <div class="admonition note">
 <p class="admonition-title">Deployment order</p>
 <p>Monitoring deploys after <a href="../networking/">Networking</a>, <a href="../ca/">Step-CA</a>, and <a href="../ntp/">NTP</a>. It is the last infrastructure service to deploy before applications.</p>
@@ -2614,6 +2702,7 @@
 <pre class="mermaid"><code>graph TD
     subgraph Monitoring VM
         Prometheus[Prometheus]
+        Blackbox[blackbox-exporter]
     end
 
     subgraph Dashboard VPS
@@ -2624,12 +2713,15 @@
     end
 
     subgraph Targets
-        NE1[Node Exporter\nmonitoring VM]
-        NE2[Node Exporter\nmedia-stack]
-        NE3[Node Exporter\nnetworking]
+        NE1[Node Exporter\nevery VM]
+        NE2[Node Exporter\nProxmox host]
+        NE3[Node Exporter\ndashboard VPS, from ldn]
+        Names[Proxied names\nDNS, Caddy, certificates]
     end
 
     NE1 &amp; NE2 &amp; NE3 --&gt;|metrics| Prometheus
+    Blackbox --&gt;|one request a minute| Names
+    Blackbox --&gt;|results| Prometheus
     Grafana --&gt;|datasource, over the tailnet| Prometheus
     Homepage --&gt;|widgets, over the tailnet| Prometheus
     Homepage --&gt;|panels| Grafana
@@ -2637,8 +2729,9 @@
     Caddy --&gt;|badges only| UptimeKuma
     GitHub[GitHub README] --&gt;|badge images| Caddy</code></pre>
 <ul>
-<li><strong>Prometheus</strong> scrapes node exporters across all VMs for system metrics</li>
-<li><strong>Grafana</strong> visualizes metrics from both sites' Prometheus with dashboards</li>
+<li><strong>Prometheus</strong> scrapes a node exporter on every host of its site for system metrics: the VMs, the Proxmox host and, from ldn, the dashboard VPS</li>
+<li><strong>blackbox-exporter</strong> requests every name the site's Caddy serves once a minute, which checks the site's DNS, Caddy and its certificates in one go</li>
+<li><strong>Grafana</strong> visualizes metrics from both sites' Prometheus with dashboards, and mails an alert when a rule on them fires (see <a href="#alerting">Alerting</a>)</li>
 <li><strong>Homepage</strong> provides a service dashboard with status widgets and quick links</li>
 <li><strong>Uptime Kuma</strong> checks services from outside the lab and serves the README's status badges</li>
 </ul>
@@ -2658,6 +2751,12 @@
 <td><code>prom/prometheus</code></td>
 <td>9090</td>
 <td>Metrics collection and storage</td>
+</tr>
+<tr>
+<td>blackbox-exporter</td>
+<td><code>prom/blackbox-exporter</code></td>
+<td>9115 (inside the compose network only)</td>
+<td>Requests each proxied name for Prometheus</td>
 </tr>
 <tr>
 <td>Grafana</td>
@@ -2744,6 +2843,10 @@
 <td>Prometheus scrape config</td>
 </tr>
 <tr>
+<td><code>playbooks/infrastructure/monitoring/files/blackbox.yml</code></td>
+<td>blackbox-exporter's one module: an HTTPS request, redirects not followed</td>
+</tr>
+<tr>
 <td><code>playbooks/infrastructure/monitoring/handlers/main.yml</code></td>
 <td>Container lifecycle handlers</td>
 </tr>
@@ -2764,7 +2867,11 @@
 <tbody>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/deploy.yml</code></td>
-<td>Playbook: Tailscale, Docker, Uptime Kuma, Grafana, Homepage</td>
+<td>Playbook: Tailscale, Docker, node-exporter, Uptime Kuma, Grafana, Homepage</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/tasks/node-exporter.yml</code></td>
+<td>node-exporter on the VPS (Ubuntu's package, localhost only), tailnet port 9100</td>
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/tasks/uptime-kuma.yml</code></td>
@@ -2785,6 +2892,10 @@
 <tr>
 <td><code>playbooks/infrastructure/dashboard/files/grafana/provisioning/</code></td>
 <td>Grafana datasources (each site's Prometheus) and dashboard provider</td>
+</tr>
+<tr>
+<td><code>playbooks/infrastructure/dashboard/files/grafana/provisioning/alerting/alerting.yml</code></td>
+<td>Alert rules for both sites, the email contact point and the notification policy</td>
 </tr>
 <tr>
 <td><code>playbooks/infrastructure/dashboard/files/grafana/dashboards/</code></td>
@@ -2828,7 +2939,7 @@
 </tr>
 <tr>
 <td><code>inventory/group_vars/site_ovh/secrets.sops.yml</code></td>
-<td>Widget API keys and Grafana admin password (section <code>infra_dashboard</code>)</td>
+<td>Widget API keys, Grafana admin password and the address alerts are mailed to (section <code>infra_dashboard</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -2841,13 +2952,65 @@
 <ol>
 <li>Creates the directory structure: rendered config under <code>/opt/monitoring/</code>, Prometheus state under <code>/var/lib/monitoring/</code></li>
 <li>Sets ownership to <code>monitoring_uid:monitoring_gid</code></li>
-<li>Deploys Prometheus configuration</li>
+<li>Deploys Prometheus configuration and blackbox-exporter's</li>
 <li>Deploys Docker Compose file</li>
 <li>Starts all containers and removes any that are no longer in <code>compose.yaml</code></li>
 </ol>
 <hr />
 <h2 id="prometheus"><a class="toclink" href="#prometheus">Prometheus</a></h2>
-<p>Prometheus scrapes metrics from node exporters running on infrastructure and application VMs.</p>
+<p>Prometheus scrapes metrics from the node exporter on every host of its site, and the results of blackbox-exporter's requests.</p>
+<h3 id="node-exporters"><a class="toclink" href="#node-exporters">Node exporters</a></h3>
+<p>Every host under <code>[site_&lt;env&gt;]</code> in the inventory is scraped on <code>:9100</code>. Where node-exporter comes from depends on the host:</p>
+<table>
+<thead>
+<tr>
+<th>Host</th>
+<th>node-exporter is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VMs cloned from the Packer template</td>
+<td>Installed by the template (a binary in <code>/usr/local/bin</code>, unit <code>node-exporter</code>)</td>
+</tr>
+<tr>
+<td>wil's media VM</td>
+<td>A container in the media stack's compose project</td>
+</tr>
+<tr>
+<td>Proxmox hosts</td>
+<td>Debian's package <code>prometheus-node-exporter</code>, installed by <code>task ansible:deploy-proxmox</code> (see <a href="../proxmox/">Proxmox Hosts</a>)</td>
+</tr>
+<tr>
+<td>Dashboard VPS</td>
+<td>Ubuntu's package, installed by the dashboard playbook (<code>tasks/node-exporter.yml</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>The VPS has no Prometheus of its own, so ldn's scrapes it, at its tailnet address (<code>sites.ovh.tailnet_ip</code>), and the alert rules for ldn's hosts cover it: an alert about the VPS arrives as an ldn alert for <code>100.116.40.99:9100</code>. The VPS has a public address and no firewall of its own, so its node-exporter listens on <code>127.0.0.1:9100</code> only (<code>/etc/default/prometheus-node-exporter</code>, written before the package is installed, because the package starts the service at once on every address) and <code>tailscale serve --tcp=9100</code> puts it on the tailnet. wil's Prometheus can't take this job: wil's VMs can't open a connection to the VPS's tailnet address (their router drops it).</p>
+<p>Install node-exporter on a host before the monitoring deploy that adds it as a target. A target that doesn't answer raises <em>Target down</em> after 5 minutes.</p>
+<h3 id="checks-through-the-proxy"><a class="toclink" href="#checks-through-the-proxy">Checks through the proxy</a></h3>
+<p>Homepage's status dots and the node exporters reach every backend by IP address, so they stay green when the site's DNS, Caddy or a certificate fails. blackbox-exporter closes that gap. It runs next to Prometheus on the monitoring VM and, once a minute, requests <code>https://&lt;name&gt;.&lt;domain&gt;/</code> for every name the site's Caddy serves, resolving it through the site's BIND like any browser on the LAN. The list is the Caddyfile's: every entry of <code>services</code> with <code>proxied: true</code>, so a new proxied name is checked after the next monitoring deploy. ldn's also requests <code>https://auth.5am.cloud</code> (<code>prometheus_blackbox_targets</code>), the login page that Kanidm serves on the VPS.</p>
+<p>Redirects are not followed (<code>files/blackbox.yml</code>). A name behind the login answers <code>302</code> without its backend being asked, which still shows that DNS, Caddy and the certificate work; a name without the login (Plex, KOSync, Kasm, MicroBin) answers from its backend. The alert rules read two of the results:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>probe_http_status_code</code></td>
+<td>The HTTP status. <code>0</code> is no answer at all: the name didn't resolve, Caddy didn't answer or its certificate was refused. <code>502</code> is Caddy answering for a backend that is down</td>
+</tr>
+<tr>
+<td><code>probe_ssl_earliest_cert_expiry</code></td>
+<td>When the certificate runs out (Unix time)</td>
+</tr>
+</tbody>
+</table>
+<p>In Prometheus the job is <code>blackbox</code> and <code>instance</code> is the name (<code>https://plex.5am.video</code>); the address scraped is always <code>blackbox-exporter:9115</code>. <code>up</code> for this job says whether blackbox-exporter answered, not the name.</p>
 <h3 id="scrape-configuration"><a class="toclink" href="#scrape-configuration">Scrape Configuration</a></h3>
 <p>The <code>prometheus.yml.j2</code> template generates the scrape config:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">global</span><span class="p">:</span>
@@ -2862,11 +3025,11 @@
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">'node-exporter'</span>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'localhost:9100'</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'10.2.20.7:9100'</span>
 <a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'10.2.0.5:9100'</span>
 <a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">          </span><span class="c1"># ... all node targets</span>
 </code></pre></div>
-<p>Three additional jobs — <code>chrony</code>, <code>gpsd</code>, and <code>node</code> — scrape the PTP grandmaster's exporters (deployed by the <code>ptp-experiments</code> repo's <code>monitoring</code> role). Each renders only when its per-environment target list is non-empty; currently only LDN defines them. The <code>node</code> job is kept separate from <code>node-exporter</code> because the Chrony dashboard's CPU-temperature panel selects <code>job="node"</code> unscoped.</p>
+<p>The <code>blackbox</code> job follows (see <a href="#checks-through-the-proxy">Checks through the proxy</a>). Three additional jobs — <code>chrony</code>, <code>gpsd</code>, and <code>node</code> — scrape the PTP grandmaster's exporters (deployed by the <code>ptp-experiments</code> repo's <code>monitoring</code> role). Each renders only when its per-environment target list is non-empty; currently only LDN defines them. The <code>node</code> job is kept separate from <code>node-exporter</code> because the Chrony dashboard's CPU-temperature panel selects <code>job="node"</code> unscoped.</p>
 <h3 id="container-configuration"><a class="toclink" href="#container-configuration">Container Configuration</a></h3>
 <ul>
 <li><strong>Memory:</strong> 2GB limit, 1GB reservation</li>
@@ -2899,10 +3062,22 @@
 <td><code>"30d"</code></td>
 </tr>
 <tr>
+<td><code>blackbox_exporter_image</code></td>
+<td><code>string</code></td>
+<td>Docker image for blackbox-exporter</td>
+<td>(per-env)</td>
+</tr>
+<tr>
 <td><code>prometheus_node_targets</code></td>
 <td><code>list[string]</code></td>
-<td>Node exporter endpoints to scrape (<code>host:port</code>): every host of the site in the inventory (<code>[site_&lt;env&gt;]</code>) on <code>:9100</code>, without the Proxmox host</td>
+<td>Node exporter endpoints to scrape (<code>host:port</code>): every host of the site in the inventory (<code>[site_&lt;env&gt;]</code>) on <code>:9100</code>; ldn's list ends with the dashboard VPS's tailnet address</td>
 <td>(derived)</td>
+</tr>
+<tr>
+<td><code>prometheus_blackbox_targets</code></td>
+<td><code>list[string]</code></td>
+<td>Addresses blackbox-exporter requests besides the site's proxied names (ldn: <code>https://auth.5am.cloud</code>)</td>
+<td><code>[]</code></td>
 </tr>
 <tr>
 <td><code>prometheus_chrony_targets</code></td>
@@ -2988,6 +3163,54 @@
 </tbody>
 </table>
 <p>A new dashboard either binds to one site's uid or gets a datasource variable (type <code>datasource</code>, query <code>prometheus</code>) and uses <code>${&lt;variable&gt;}</code> as each panel's datasource uid.</p>
+<h3 id="alerting"><a class="toclink" href="#alerting">Alerting</a></h3>
+<p>Grafana checks both sites once a minute and sends mail when something is wrong. It runs on the VPS, outside both sites, so it also notices when a whole site stops answering. Nothing watches the VPS itself, by choice (it is hosted at OVH): while it is down, no alert is sent.</p>
+<p>The rules, the contact point and the notification policy are provisioned from one file, <code>files/grafana/provisioning/alerting/alerting.yml</code>. They show in Grafana under <strong>Alerting</strong> (<strong>http://dashboard:3000/alerting/list</strong> lists what is firing) and can't be edited there: change the file and deploy. Grafana stops at start when it can't read the file (a misspelt duration is enough; its log says <code>Failed to provision alerting</code>), so open that page after a deploy.</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Fires when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prometheus unreachable</td>
+<td>Grafana has not been able to query the site's Prometheus for 5 minutes: the site, its tailnet link or the monitoring VM is down</td>
+</tr>
+<tr>
+<td>Target down</td>
+<td>A scrape target has not answered Prometheus for 5 minutes</td>
+</tr>
+<tr>
+<td>Disk almost full</td>
+<td>A filesystem (ext4, xfs, btrfs, zfs or NFS) has been more than 85% full for 15 minutes</td>
+</tr>
+<tr>
+<td>Memory almost full</td>
+<td>A host has used more than 90% of its memory for 15 minutes</td>
+</tr>
+<tr>
+<td>Out-of-memory kills</td>
+<td>The kernel killed a process that ran out of memory in the last 15 minutes</td>
+</tr>
+<tr>
+<td>Clock not synchronised</td>
+<td>A host's clock has not been synchronised to a time server for 15 minutes</td>
+</tr>
+<tr>
+<td>Name not answering</td>
+<td>A name the site's Caddy serves has given no answer, or a <code>5xx</code> status, for 5 minutes (see <a href="#checks-through-the-proxy">Checks through the proxy</a>)</td>
+</tr>
+<tr>
+<td>Certificate expiring</td>
+<td>A certificate runs out in less than 7 days. Caddy renews weeks before that, so renewal has been failing</td>
+</tr>
+</tbody>
+</table>
+<p>A rule reads one datasource, so every rule is written twice in the file: in the group <code>wil</code> (datasource <code>prometheus-wil</code>) and in the group <code>ldn</code> (<code>prometheus-ldn</code>). Change a rule in both groups. In a rule, <code>A</code> is the Prometheus query, which returns one number per host or target, and <code>B</code> is the test on it (<code>$A &gt; 85</code>). The rule fires for every host or target where the test has held for as long as <code>for</code>.</p>
+<p>While a site's Prometheus can't be reached, its other rules keep the state they had (<code>execErrState: KeepLast</code>), so a site that goes down sends one mail, not one per rule.</p>
+<p><strong>Mail.</strong> One mail when an alert starts, one when it ends, and a reminder once a day while it lasts (<code>repeat_interval</code>). Alerts of the same rule share a mail. Grafana sends through Fastmail as <code>noreply@5am.cloud</code>, with the same login as Kanidm's mail sender (<code>GF_SMTP_*</code> in <code>compose.yaml.j2</code>), to <code>grafana_alert_email</code>. The contact point reads that address from the environment variable <code>ALERT_EMAIL</code>, so it is not in the repository. Links in a mail open <code>http://dashboard:3000</code>, so they work on the tailnet only.</p>
 <h3 id="container-configuration_1"><a class="toclink" href="#container-configuration_1">Container Configuration</a></h3>
 <ul>
 <li><strong>Memory:</strong> 1GB limit, 256MB reservation</li>
@@ -3030,6 +3253,12 @@
 <td><code>string</code></td>
 <td>Root URL for links in notifications and dashboards</td>
 <td><code>http://dashboard:3000</code></td>
+</tr>
+<tr>
+<td><code>grafana_alert_email</code></td>
+<td><code>string</code></td>
+<td>Address alerts are mailed to (SOPS-encrypted, <code>site_ovh/secrets.sops.yml</code>)</td>
+<td>(required)</td>
 </tr>
 </tbody>
 </table>
@@ -3257,6 +3486,18 @@
 </code></pre></div>
 </li>
 </ol>
+<h3 id="add-or-change-an-alert-rule"><a class="toclink" href="#add-or-change-an-alert-rule">Add or change an alert rule</a></h3>
+<ol>
+<li>Edit <code>ansible/playbooks/infrastructure/dashboard/files/grafana/provisioning/alerting/alerting.yml</code>. For a new rule, copy an existing one in the group <code>wil</code>, give it a new <code>uid</code> and <code>title</code>, and set its query (<code>expr</code>), its test (<code>expression</code>) and <code>for</code>. Then make the same change in the group <code>ldn</code>.</li>
+<li>
+<p>Deploy; the playbook restarts Grafana, which reads the file when it starts:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh
+</code></pre></div>
+</li>
+<li>
+<p>Check that the page http://dashboard:3000/alerting/list loads and lists the rule with health <code>ok</code>. If Grafana doesn't answer, the file has a mistake: <code>sudo docker logs grafana</code> on the VPS names the rule and the field.</p>
+</li>
+</ol>
 <h3 id="add-a-service-to-homepage"><a class="toclink" href="#add-a-service-to-homepage">Add a service to Homepage</a></h3>
 <ol>
 <li>Edit <code>ansible/playbooks/infrastructure/dashboard/templates/homepage/services.yaml.j2</code></li>
@@ -3264,7 +3505,7 @@
 <li>If the service requires an API key, add the key to the <code>infra_dashboard</code> section of <code>group_vars/site_ovh/secrets.sops.yml</code> and pass it through <code>dashboard/templates/compose.yaml.j2</code></li>
 <li>
 <p>Deploy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>task<span class="w"> </span>ansible:deploy-dashboard<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ovh
 </code></pre></div>
 </li>
 </ol>
@@ -3274,7 +3515,7 @@
 <li>Note its ID from the address bar (<code>/dashboard/&lt;id&gt;</code>)</li>
 <li>
 <p>Add the badge to <code>README.md</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>![<span class="nt">wil</span>](<span class="na">https://uptime.ext.5am.cloud/api/badge/&lt;id&gt;/status?label=wil</span>)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>![<span class="nt">wil</span>](<span class="na">https://uptime.ext.5am.cloud/api/badge/&lt;id&gt;/status?label=wil</span>)
 </code></pre></div>
 </li>
 </ol>

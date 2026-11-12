@@ -2102,7 +2102,7 @@
 </tr>
 <tr>
 <td><code>deploy-monitoring</code></td>
-<td>Prometheus</td>
+<td>Prometheus and blackbox-exporter</td>
 </tr>
 <tr>
 <td><code>deploy-dashboard</code></td>
@@ -2114,7 +2114,7 @@
 </tr>
 <tr>
 <td><code>deploy-proxmox</code></td>
-<td>Proxmox hosts: SR-IOV GPU VFs, PCI resource mappings</td>
+<td>Proxmox hosts: node-exporter; on pve-ldn SR-IOV GPU VFs, PCI resource mappings</td>
 </tr>
 <tr>
 <td><code>deploy-media</code></td>
@@ -2219,7 +2219,7 @@
 <tr>
 <td><code>proxmox/deploy.yml</code></td>
 <td><code>infra_proxmox</code></td>
-<td>SR-IOV GPU VFs and PCI mappings on the hypervisor (no <code>common</code> role: it is not an Ubuntu VM)</td>
+<td>node-exporter on both hypervisors; SR-IOV GPU VFs and PCI mappings on pve-ldn (no <code>common</code> role: they are not Ubuntu VMs)</td>
 </tr>
 </tbody>
 </table>

@@ -1760,7 +1760,7 @@
 
 <h1 id="infrastructure"><a class="toclink" href="#infrastructure">Infrastructure</a></h1>
 <p>Deep operational reference for each infrastructure service. Deploy in dependency order.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-proxmox<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn<span class="w">      </span><span class="c1"># 0. Hypervisor (SR-IOV GPU VFs), ldn only; needs root SSH to the PVE host</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task<span class="w"> </span>ansible:deploy-proxmox<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>ldn<span class="w">      </span><span class="c1"># 0. Hypervisor (node-exporter; on pve-ldn the GPU's SR-IOV VFs); needs root SSH to the PVE host</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>task<span class="w"> </span>ansible:deploy-networking<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">   </span><span class="c1"># 1. Must be first</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>task<span class="w"> </span>ansible:deploy-ca<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">           </span><span class="c1"># 2. Certificate authority</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>task<span class="w"> </span>ansible:deploy-ntp<span class="w"> </span><span class="nv">ENV</span><span class="o">=</span>wil<span class="w">          </span><span class="c1"># 3. Time server</span>
@@ -1768,11 +1768,11 @@
 </code></pre></div>
 <h2 id="services"><a class="toclink" href="#services">Services</a></h2>
 <ol>
-<li><a href="proxmox/"><strong>Proxmox Hosts</strong></a> — SR-IOV GPU virtual functions and PCI resource mappings on the hypervisor</li>
+<li><a href="proxmox/"><strong>Proxmox Hosts</strong></a> — node-exporter on both hypervisors; SR-IOV GPU virtual functions and PCI resource mappings on pve-ldn</li>
 <li><a href="networking/"><strong>Networking</strong></a> — DNS (BIND9), reverse proxy (Caddy), dynamic DNS, VPN (Tailscale)</li>
 <li><a href="ca/"><strong>Certificate Authority</strong></a> — Private CA (Step-CA) for internal TLS</li>
 <li><a href="ntp/"><strong>Time Server</strong></a> — NTP synchronization (Chrony)</li>
-<li><a href="monitoring/"><strong>Monitoring</strong></a> — Metrics (Prometheus), dashboards (Grafana and Homepage, on the OVH VPS), uptime (Uptime Kuma)</li>
+<li><a href="monitoring/"><strong>Monitoring</strong></a> — Metrics (Prometheus), checks through the proxy (blackbox-exporter), dashboards and alerts (Grafana and Homepage, on the OVH VPS), uptime (Uptime Kuma)</li>
 <li><a href="docker/"><strong>Docker Services</strong></a> — Container definitions and compose templates</li>
 <li><a href="gaming/"><strong>Gaming</strong></a> — Wolf (Moonlight streaming) and RomM on the GPU VM (ldn)</li>
 <li><a href="hermes/"><strong>Hermes Agent</strong></a> — AI agent on the Claude subscription (ldn)</li>
